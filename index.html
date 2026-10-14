@@ -21,7 +21,7 @@
         }
 
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
@@ -41,7 +41,7 @@
             flex-wrap: wrap;
             padding: 8px 14px;
             background: linear-gradient(#25190f, #120c09);
-            border-bottom: 2px solid var(--g)
+            border-bottom: 2px solid var(--g);
         }
 
         h1 {
@@ -50,7 +50,7 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--g);
-            text-shadow: 0 0 8px #7a1f1f
+            text-shadow: 0 0 8px #7a1f1f;
         }
 
         input,
@@ -62,37 +62,38 @@
             border: 1px solid var(--ln);
             border-radius: 3px;
             padding: 5px 8px;
-            font: inherit
+            font: inherit;
+            font-weight: 400;
         }
 
         button {
-            cursor: pointer
+            cursor: pointer;
         }
 
         button:hover,
         button.on {
             border-color: var(--g);
             color: #fff;
-            background: #3a2412
+            background: #3a2412;
         }
 
         #q {
             flex: 1;
             min-width: 160px;
-            max-width: 380px
+            max-width: 380px;
         }
 
         main {
             flex: 1;
             display: flex;
-            min-height: 0
+            min-height: 0;
         }
 
         #map {
             flex: 1;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(#1b1410, #080605)
+            background: radial-gradient(#1b1410, #080605);
         }
 
         #sv {
@@ -100,7 +101,7 @@
             height: 100%;
             cursor: grab;
             touch-action: none;
-            display: block
+            display: block;
         }
 
         #bar {
@@ -113,7 +114,7 @@
             padding: 5px 9px;
             border: 1px solid var(--ln);
             border-radius: 4px;
-            font-size: 13px
+            font-size: 13px;
         }
 
         #zc {
@@ -122,29 +123,29 @@
             bottom: 10px;
             display: flex;
             flex-direction: column;
-            gap: 4px
+            gap: 4px;
         }
 
         .h {
             fill: transparent;
             stroke: transparent;
             stroke-width: 2;
-            cursor: pointer
+            cursor: pointer;
         }
 
         .h:hover {
-            stroke: var(--g)
+            stroke: var(--g);
         }
 
         .h.sel {
             stroke: #ffd76a;
-            stroke-width: 4
+            stroke-width: 4;
         }
 
         .dot {
             fill: var(--g);
             stroke: #000;
-            pointer-events: none
+            pointer-events: none;
         }
 
         .lb {
@@ -154,7 +155,7 @@
             stroke: #000;
             stroke-width: 3;
             paint-order: stroke;
-            pointer-events: none
+            pointer-events: none;
         }
 
         #side {
@@ -163,35 +164,35 @@
             flex-direction: column;
             background: var(--p);
             border-left: 2px solid var(--g);
-            min-height: 0
+            min-height: 0;
         }
 
         #tabs {
-            display: flex
+            display: flex;
         }
 
         #tabs button {
             flex: 1;
             border-radius: 0;
             padding: 7px 2px;
-            font-size: 13px
+            font-size: 13px;
         }
 
         #pane {
             flex: 1;
             overflow: auto;
-            padding: 12px 16px
+            padding: 12px 16px;
         }
 
         h2 {
             margin: 0 0 6px;
             color: var(--g);
-            font-size: 21px
+            font-size: 21px;
         }
 
         h2 small {
             color: var(--mu);
-            font-size: 13px
+            font-size: 13px;
         }
 
         h3 {
@@ -200,12 +201,12 @@
             border-bottom: 1px solid var(--ln);
             margin: 16px 0 6px;
             text-transform: uppercase;
-            letter-spacing: 1px
+            letter-spacing: 1px;
         }
 
         h4 {
             margin: 8px 0 2px;
-            color: #cccccc
+            color: #cccccc;
         }
 
         .tag {
@@ -215,18 +216,18 @@
             padding: 0 8px;
             border-radius: 10px;
             font-size: 12px;
-            margin-right: 8px
+            margin-right: 8px;
         }
 
         .read {
             border-left: 3px solid var(--r);
             padding-left: 10px;
             font-style: italic;
-            background: #1b120d
+            background: #1b120d;
         }
 
         .rt {
-            padding-left: 22px
+            padding-left: 22px;
         }
 
         .rt li,
@@ -234,46 +235,46 @@
             cursor: pointer;
             padding: 5px 6px;
             border-radius: 3px;
-            margin: 2px 0
+            margin: 2px 0;
         }
 
         .rt li:hover,
         .res:hover {
-            background: #33200f
+            background: #33200f;
         }
 
         .res {
             border: 1px solid var(--ln);
             background: var(--p2);
-            padding: 6px 8px
+            padding: 6px 8px;
         }
 
         .hit {
             background: #5a1c1c !important;
-            outline: 1px solid var(--g)
+            outline: 1px solid var(--g);
         }
 
         .et {
             width: 100%;
-            border-collapse: collapse
+            border-collapse: collapse;
         }
 
         .et td {
             border-bottom: 1px solid var(--ln);
             padding: 5px;
-            vertical-align: top
+            vertical-align: top;
         }
 
         .et td:first-child {
             color: var(--g);
             width: 28px;
-            text-align: right
+            text-align: right;
         }
 
         .chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px
+            gap: 5px;
         }
 
         .lk {
@@ -281,11 +282,11 @@
             cursor: pointer;
             margin-right: 10px;
             text-decoration: underline dotted;
-            display: inline-block
+            display: inline-block;
         }
 
         .mu {
-            color: var(--mu)
+            color: var(--mu);
         }
 
         details {
