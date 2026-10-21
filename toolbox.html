@@ -322,8 +322,6 @@
             background: #444;
         }
 
-        /* Adventure Generator */
-
         #adventure-generator {
             margin-top: 2rem;
             margin-bottom: 18px;
@@ -420,8 +418,6 @@
         .table-wrap th {
             background: #eee;
         }
-
-        /* Treasure Generator */
 
         #treasure-generator {
             margin-top: 1rem;
@@ -528,8 +524,6 @@
         .monster-abilities li {
             margin-bottom: .3rem;
         }
-
-        /* Pinned monsters */
 
         .pinned-section {
             margin-top: 1.25rem;
@@ -766,6 +760,85 @@
             line-height: 1.2;
         }
 
+        #hex-crawl h3 {
+            margin: 1.2rem 0 .4rem;
+        }
+
+        #hex-crawl .hex-field {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        #hex-crawl .generator-controls {
+            align-items: center;
+        }
+
+        .hex-ladder {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: .8rem;
+        }
+
+        .hex-ladder button {
+            padding: .5rem .2rem;
+            font-size: .85rem;
+        }
+
+        .hex-ladder button.on {
+            background: var(--ink);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .hex-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: .7rem;
+        }
+
+        .hex-stats .item {
+            padding: 9px;
+            background: #fff;
+            border-left: 3px solid #aaa;
+        }
+
+        .hex-log {
+            margin: .6rem 0 0;
+            padding-left: 1.2rem;
+            color: #666;
+            font-size: .85rem;
+        }
+
+        .hex-ref {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+            margin-top: .5rem;
+        }
+
+        #hex-crawl td:first-child {
+            width: auto;
+            color: inherit;
+        }
+
+        #hex-crawl details p,
+        #hex-crawl details ul,
+        #hex-crawl details ol {
+            margin: .5rem 0;
+        }
+
+        #hex-crawl details li {
+            margin-bottom: .3rem;
+        }
+
+        @media (max-width: 600px) {
+            .hex-stats {
+                grid-template-columns: 1fr;
+            }
+        }
 
         /* responsive */
 
@@ -782,8 +855,9 @@
                 align-items: start;
                 flex-direction: column;
             }
+
             .seed {
-            grid-template-columns: 1fr;
+                grid-template-columns: 1fr;
             }
         }
 
@@ -924,6 +998,329 @@
             </article>
         </section>
 
+        <section id="hex-crawl" class="panel" style="margin-top:18px">
+            <h2>Hex Crawling</h2>
+
+            <h3>Weather Roller</h3>
+            <div class="generator-controls">
+                <label class="hex-field">Season
+                    <select id="hexSeason">
+                        <option value="mild">Mild</option>
+                        <option value="harsh">Harsh</option>
+                    </select>
+                </label>
+                <label class="hex-field">Elevation
+                    <select id="hexElevation">
+                        <option value="0">Low (+0 visibility)</option>
+                        <option value="2">Mid (+2 visibility)</option>
+                        <option value="5">High (+5 visibility)</option>
+                    </select>
+                </label>
+            </div>
+            <div class="generator-controls">
+                <button id="hexStart">Roll Starting Weather</button>
+                <button id="hexDaily">Roll Daily Change</button>
+                <button id="hexBoost">One Step Better</button>
+                <button id="hexPredict">Predict 3 Days</button>
+                <button id="hexCopy">Copy</button>
+            </div>
+            <div class="hex-ladder" id="hexLadder"></div>
+            <article class="result-card">
+                <div class="big-result" id="hexName">Roll or pick a starting point</div>
+                <div class="hex-stats" id="hexStats"></div>
+                <div class="roll-result" id="hexRoll"></div>
+            </article>
+            <div class="roll-result" id="hexPredictOut"></div>
+            <ol class="hex-log" id="hexLog" reversed></ol>
+
+            <h3>Quick Reference</h3>
+            <p class="muted">Hexes are 6 miles across. PCs and mounts can travel up to 8 hours a day. Random encounter checks depend on the number of hexes entered.</p>
+            <div class="hex-ref">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Hexes per Day</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Walking</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>Mounted</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>Sailing</td>
+                                <td>8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Terrain</th>
+                                <th>Cost to Enter</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Clear</td>
+                                <td>1 hex</td>
+                            </tr>
+                            <tr>
+                                <td>Difficult</td>
+                                <td>2 hexes</td>
+                            </tr>
+                            <tr>
+                                <td>Perilous</td>
+                                <td>8 hexes</td>
+                            </tr>
+                            <tr>
+                                <td>Impassable</td>
+                                <td>Cannot enter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Danger Level</th>
+                                <th>Encounter</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Unsafe</td>
+                                <td>1:6</td>
+                            </tr>
+                            <tr>
+                                <td>Risky</td>
+                                <td>2:6</td>
+                            </tr>
+                            <tr>
+                                <td>Deadly</td>
+                                <td>3:6</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="adventure-tables">
+                <details>
+                    <summary>Travel Procedure</summary>
+                    <ol>
+                        <li>The GM determines and shares the weather.</li>
+                        <li>The GM determines and shares visible hexes and their danger levels.</li>
+                        <li>The GM rolls a d6 for each newly visible hex. On a 1, it has a point of interest (pg. 25). If it is visible, the GM shares this information.</li>
+                        <li>The PCs make task checks in any order they choose.</li>
+                        <li>The PCs choose a direction and a number of hexes to move, and move accordingly.</li>
+                        <li>The GM checks for a random encounter in every other hex using the hex's danger level.</li>
+                        <li>Each time the PCs enter a hex, the GM repeats steps 2-3.</li>
+                        <li>Repeat steps 4-8 until all hex travel is completed.</li>
+                        <li>When all hex travel is completed, go to Camping on pg. 25.</li>
+                    </ol>
+                </details>
+                <details>
+                    <summary>Travel Tasks</summary>
+                    <p>Each PC can attempt one task per day. PCs can do the same task. Each task effect is limited to once per day. The GM sets the DC based on the situation (default DC 12).</p>
+                    <ul>
+                        <li><b>Forecast.</b> INT or WIS. Treat the weather as one step better until the next rest.</li>
+                        <li><b>March Song.</b> CHA. Grant one luck token.</li>
+                        <li><b>Push.</b> CON or CHA. Increase base hexes per day by 50%. PCs have DISADV on CON checks until the end of the next rest.</li>
+                        <li><b>Scout.</b> DEX or WIS. Reduce the danger level of all hexes by one step until the next rest (minimum unsafe).</li>
+                        <li><b>Trailblaze.</b> STR or INT. For each PC who succeeds, reduce the terrain type of 1d4 adjacent hexes by one step. Can't be used on impassable terrain. The PCs choose which terrain to affect as they travel. Lasts until the next rest.</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>Camping</summary>
+                    <p>PCs can camp during a rest when outside a settlement. Use standard resting rules (Shadowdark RPG pg. 86). Camping without a campfire gives DISADV on all checks.</p>
+                    <p>Each PC can do one task while camping and still get a full rest. PCs can do the same task. Default DC 12.</p>
+                    <ul>
+                        <li><b>Batten Down.</b> INT or CON. Treat the weather as one step better until the end of the rest. Limit 1/day.</li>
+                        <li><b>Cook.</b> INT or WIS. Each PC that consumes a ration wakes up with +2 temporary HP (maximum 6).</li>
+                        <li><b>Craft.</b> DEX. Create 2d4 pieces of mundane weapon ammunition.</li>
+                        <li><b>Entertain.</b> CHA. Grant 1 luck token.</li>
+                        <li><b>Firewood.</b> STR or CON. Make one free campfire this rest.</li>
+                        <li><b>Hunt.</b> STR or DEX. The group gains the benefit of consuming rations without expending any.</li>
+                        <li><b>Keep Watch.</b> WIS. Reduce the danger level of all hexes by one step this rest (minimum unsafe).</li>
+                        <li><b>Predict.</b> INT or WIS. Learn the weather for the next 3 days.</li>
+                    </ul>
+                    <p><b>Procedure.</b> 1. The PCs make task checks in any order. 2. The GM checks for two random encounters. 3. If an encounter occurs, PCs who chose Keep Watch may make DC 12 WIS checks to not be surprised.</p>
+                </details>
+                <details>
+                    <summary>Fast Travel</summary>
+                    <p>PCs can fast travel between two hexes they have previously entered, along a path they have already traveled, or between two hexes with a clear path such as a road. Distances are abstract; the GM factors in the travel method. Close is 1-3 days away, Near is up to a week, Far is up to two weeks.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Distance</th>
+                                    <th>Rations</th>
+                                    <th>Time</th>
+                                    <th>Encounter</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Close</td>
+                                    <td>None</td>
+                                    <td>1d4 days</td>
+                                    <td>2:6</td>
+                                </tr>
+                                <tr>
+                                    <td>Near</td>
+                                    <td>1d4 per PC</td>
+                                    <td>2d4 days</td>
+                                    <td>4:6</td>
+                                </tr>
+                                <tr>
+                                    <td>Far</td>
+                                    <td>2d4 per PC</td>
+                                    <td>4d4 days</td>
+                                    <td>5:6</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ol>
+                        <li>The GM determines distance, rations, and time. The PCs pay ration costs immediately and must permanently sacrifice one item for each ration they lack (bundled gear such as arrows counts as one item).</li>
+                        <li>The GM checks if one random encounter occurs using the listed probability. If so, the GM picks a random day and time for it.</li>
+                        <li>After resolving any encounters, the PCs arrive.</li>
+                    </ol>
+                </details>
+                <details>
+                    <summary>Safe Hexes</summary>
+                    <p>The PCs must declare they want to make a hex safe. The GM then generates threats based on danger level: Unsafe 1, Risky 2, Deadly 3. A dangerous point of interest is the first threat. Remaining threats are generated on pg. 32.</p>
+                    <p>If the PCs alleviate each threat, the hex becomes safe. It stays safe while the PCs or their allies occupy it. Otherwise it stays safe for a number of weeks equal to the average party level, and reentering resets the timer. When the timer runs out, the hex reverts to a random danger level (pg. 24, reroll result 6-8).</p>
+                </details>
+                <details>
+                    <summary>Weather Tables</summary>
+                    <p>Treat the weather steps as a ladder with fair at the center. Roll each day on the season's table and adjust the current weather. It lasts until the end of the next rest. Visibility is the distance in hexes the PCs can see (+2 at mid elevations, +5 at high). Terrain raises the terrain type by the steps shown. PCs must pass the listed CON check to benefit from rest.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>2d6</th>
+                                    <th>Weather</th>
+                                    <th>Visibility</th>
+                                    <th>Terrain</th>
+                                    <th>Rest</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Terrible</td>
+                                    <td>None</td>
+                                    <td>+2 steps</td>
+                                    <td>DC 15 CON</td>
+                                </tr>
+                                <tr>
+                                    <td>3-5</td>
+                                    <td>Bad</td>
+                                    <td>1 hex</td>
+                                    <td>+1 step</td>
+                                    <td>DC 12 CON</td>
+                                </tr>
+                                <tr>
+                                    <td>6-8</td>
+                                    <td>Fair</td>
+                                    <td>1 hex</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td>9-11</td>
+                                    <td>Good</td>
+                                    <td>1 hex</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>Beautiful</td>
+                                    <td>2 hexes</td>
+                                    <td>None</td>
+                                    <td>ADV on CON checks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="hex-ref">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mild 2d6</th>
+                                        <th>Adjustment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2-4</td>
+                                        <td>1 step toward terrible</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5-7</td>
+                                        <td>1 step toward fair</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8-11</td>
+                                        <td>1 step toward beautiful</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>Set to good</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Harsh 2d6</th>
+                                        <th>Adjustment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2-5</td>
+                                        <td>1 step toward terrible</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6-7</td>
+                                        <td>1 step toward fair</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8-10</td>
+                                        <td>1 step toward good</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11-12</td>
+                                        <td>Set to bad</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+                <details>
+                    <summary>Food and Water</summary>
+                    <p>PCs and mounts can go three days without consuming a ration. They take 1 CON damage each day after that (death at 0). Mounts find their rations during a rest unless in a barren location.</p>
+                </details>
+            </div>
+        </section>
+
         <section id="landmark-generator" class="panel landmark-generator" style="margin-top:18px">
             <h2>Landmark Generator</h2>
             <div class="generator-controls">
@@ -1047,6 +1444,8 @@
             <div id="factions"></div>
             <div class="rooms" id="rooms"></div>
         </section>
+
+        
     </div>
 
     <script>
@@ -3046,6 +3445,147 @@ ${g.site.result}`;
             resetBtn.addEventListener('click', reset);
             document.getElementById('torch-minus-five').addEventListener('click', () => adjust(-300));
             document.getElementById('torch-plus-five').addEventListener('click', () => adjust(300));
+            render();
+        })();
+    </script>
+
+    <script>
+        (() => {
+            const LADDER = [
+                { name: 'Terrible', vis: 0, terrain: '+2 steps', rest: 'DC 15 CON' },
+                { name: 'Bad', vis: 1, terrain: '+1 step', rest: 'DC 12 CON' },
+                { name: 'Fair', vis: 1, terrain: 'None', rest: 'None' },
+                { name: 'Good', vis: 1, terrain: 'None', rest: 'None' },
+                { name: 'Beautiful', vis: 2, terrain: 'None', rest: 'ADV on CON checks' }
+            ];
+            const toward = (name, target) => ({ label: `1 step toward ${name}`, apply: b => b + Math.sign(target - b) });
+            const setTo = (name, i) => ({ label: `Set to ${name}`, apply: () => i });
+            const SEASONS = {
+                mild: r => r <= 4 ? toward('terrible', 0) : r <= 7 ? toward('fair', 2) : r <= 11 ? toward('beautiful', 4) : setTo('good', 3),
+                harsh: r => r <= 5 ? toward('terrible', 0) : r <= 7 ? toward('fair', 2) : r <= 10 ? toward('good', 3) : setTo('bad', 1)
+            };
+            const el = id => document.getElementById(id);
+            const roll2d6 = () => [1 + Math.floor(Math.random() * 6), 1 + Math.floor(Math.random() * 6)];
+            const clamp = i => Math.max(0, Math.min(4, i));
+            let base = null, boost = 0, rollText = '', log = [];
+            const HEX_KEY = 'shadowdark-hex-weather';
+            function saveWeather() {
+                try {
+                    localStorage.setItem(HEX_KEY, JSON.stringify({
+                        base, boost, rollText, log,
+                        season: el('hexSeason').value,
+                        elevation: el('hexElevation').value
+                    }));
+                } catch (e) { }
+            }
+            function loadWeather() {
+                try {
+                    const d = JSON.parse(localStorage.getItem(HEX_KEY));
+                    if (!d || typeof d !== 'object') return;
+                    if (Number.isInteger(d.base) && d.base >= 0 && d.base <= 4) base = d.base;
+                    if (Number.isInteger(d.boost) && d.boost >= 0 && d.boost <= 4) boost = d.boost;
+                    if (typeof d.rollText === 'string') rollText = d.rollText;
+                    if (Array.isArray(d.log)) log = d.log.filter(t => typeof t === 'string').slice(0, 8);
+                    if (d.season === 'mild' || d.season === 'harsh') el('hexSeason').value = d.season;
+                    if (['0', '2', '5'].includes(d.elevation)) el('hexElevation').value = d.elevation;
+                } catch (e) { }
+            }
+
+            const season = () => el('hexSeason').value;
+            const hexes = n => n === 0 ? 'None' : n === 1 ? '1 hex' : `${n} hexes`;
+            const current = () => base === null ? null : LADDER[clamp(base + boost)];
+            const stateText = () => {
+                const w = current();
+                if (!w) return '';
+                return `Weather: ${w.name}. Visibility ${hexes(w.vis + Number(el('hexElevation').value))}, terrain ${w.terrain}, rest ${w.rest}.`;
+            };
+            function addLog(text) {
+                log.unshift(text);
+                log = log.slice(0, 8);
+                el('hexLog').innerHTML = '';
+                log.forEach(t => { const li = document.createElement('li'); li.textContent = t; el('hexLog').appendChild(li); });
+            }
+            function render() {
+                saveWeather();
+                const w = current();
+                const eff = base === null ? -1 : clamp(base + boost);
+                el('hexLadder').querySelectorAll('button').forEach((b, i) => {
+                    b.classList.toggle('on', i === eff);
+                    b.setAttribute('aria-pressed', i === eff);
+                });
+                if (!w) return;
+                el('hexName').textContent = w.name + (boost && base !== clamp(base + boost) ? ` (base ${LADDER[base].name}, +${boost} step${boost > 1 ? 's' : ''})` : '');
+                el('hexStats').innerHTML = '';
+                [['Visibility', hexes(w.vis + Number(el('hexElevation').value))], ['Terrain', w.terrain], ['Rest', w.rest]].forEach(([l, v]) => {
+                    const d = document.createElement('div');
+                    d.className = 'item';
+                    d.innerHTML = '<div class="label"></div><div class="value"></div>';
+                    d.firstChild.textContent = l;
+                    d.lastChild.textContent = v;
+                    el('hexStats').appendChild(d);
+                });
+                el('hexRoll').textContent = rollText;
+            }
+            LADDER.forEach((w, i) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = w.name;
+                b.addEventListener('click', () => {
+                    base = i; boost = 0; rollText = 'Set manually.';
+                    addLog(`Set to ${w.name}`);
+                    render();
+                });
+                el('hexLadder').appendChild(b);
+            });
+            el('hexStart').addEventListener('click', () => {
+                const [a, b] = roll2d6(), t = a + b;
+                base = t <= 2 ? 0 : t <= 5 ? 1 : t <= 8 ? 2 : t <= 11 ? 3 : 4;
+                boost = 0;
+                rollText = `Starting roll 2d6: ${a} + ${b} = ${t}`;
+                addLog(`Start (${t}): ${LADDER[base].name}`);
+                render();
+            });
+            el('hexDaily').addEventListener('click', () => {
+                if (base === null) { el('hexStart').click(); return; }
+                const [a, b] = roll2d6(), t = a + b, adj = SEASONS[season()](t), from = LADDER[base].name;
+                base = clamp(adj.apply(base));
+                boost = 0;
+                rollText = `${season() === 'mild' ? 'Mild' : 'Harsh'} season 2d6: ${a} + ${b} = ${t}. ${adj.label}.`;
+                addLog(`Day (${t}): ${from} to ${LADDER[base].name}`);
+                render();
+            });
+            el('hexBoost').addEventListener('click', () => {
+                if (base === null) return;
+                boost = Math.min(boost + 1, 4);
+                rollText = 'Forecast or Batten Down applied. Resets on the next daily roll.';
+                addLog(`One step better: ${current().name}`);
+                render();
+            });
+            el('hexPredict').addEventListener('click', () => {
+                if (base === null) { el('hexPredictOut').textContent = 'Set the current weather first.'; return; }
+                let b = base;
+                const out = [];
+                for (let d = 1; d <= 3; d++) {
+                    const t = roll2d6().reduce((x, y) => x + y, 0);
+                    b = clamp(SEASONS[season()](t).apply(b));
+                    out.push(`Day ${d}: ${LADDER[b].name}`);
+                }
+                el('hexPredictOut').textContent = 'Forecast (not applied). ' + out.join(', ');
+            });
+            el('hexElevation').addEventListener('change', render);
+            el('hexCopy').addEventListener('click', async () => {
+                const text = stateText();
+                if (!text) return;
+                try {
+                    await navigator.clipboard.writeText(text);
+                    const btn = el('hexCopy');
+                    btn.textContent = 'Copied';
+                    setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+                } catch (e) { /* clipboard unavailable */ }
+            });
+            el('hexSeason').addEventListener('change', saveWeather);
+            loadWeather();
+            log.forEach(t => { const li = document.createElement('li'); li.textContent = t; el('hexLog').appendChild(li); });
             render();
         })();
     </script>
