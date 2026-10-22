@@ -722,7 +722,7 @@ let dungeon = {};
 
 function generate() {
 
-    // Each column is now rolled independently.
+    // Each column rolled independently.
     const p = [
         rollColumn(T.purpose, 0),
         rollColumn(T.purpose, 1)
@@ -2136,4 +2136,258 @@ const MONSTERS = [
     loadWeather();
     log.forEach(t => { const li = document.createElement('li'); li.textContent = t; el('hexLog').appendChild(li); });
     render();
+})();
+
+(() => {
+    const el = id => document.getElementById(id);
+    const BEN = `Terrible luck dogs you; re-roll this benefit as a mishap
+You drank with a gossiper and learned a random rumor
+A helpful, friendly raven follows you around for 1 week
+A soothsayer reads your palm; gain a luck token
+A sea wolf raider offers you free passage on his ship
+You stopped a zombie; the Charnel-Men owe you a favor
+A falling gargoyle missed you by an inch; gain a luck token
+Children like you for 1 week thanks to a clever magic trick
+You converted a street thug to piety; gain an acolyte ally
+You've been knighted and don't remember how or why
+You saved a boat; Rowers transport you for free for a month
+You mistakenly receive a sealed letter meant for a noble
+A priest mistakes your revelry for worship; gain a priest ally
+A street cat befriends you; you can't be surprised for 1 week
+You win an arm-wrestling contest; +1 renown
+You distracted a Thieves' Guild mark; gain a thief ally
+A shaman offers you free spiritual cleansing (see pg. 26)
+You got lucky this time; roll your next benefit with ADV
+You won a pit fight; gain +1 renown and a gladiator ally
+An eager, helpful acolyte follows you around for 1 week
+An honest heart-to-heart turns a former enemy into an ally
+You testified for a barrister; he helps you for free next time
+You unwittingly aided in a murder; gain an assassin ally
+You fall in the river and find something you lost long ago
+You caught a thief; gain a City Guard ally (guard), +1 renown
+An ancient beggar gives you a gutter trinket (see pg. 68)
+You're a regular now; +1 on next carousing event roll
+A minor nobles offers you his heir's hand in marriage
+A retiring farmer gave you his best horse and a grumpy pig
+You found and returned a lost wizard hat; gain a mage ally
+You won 50 gp against a famous gambler; +1 renown
+A stray mastiff likes you; it defends you in your next combat
+The Onyx Eye clears you of your next crime accusation
+You discover a codex in the sewers; learn one rare language
+You learn you have a secret ally in The Shroud helping you
+A swordsman offers you free martial training (see pg. 26)
+You earned a flattering nickname or title; +1 renown
+You survived the Rat Plague (see rat); now you're immune
+The Thieves' Guild helps you; cancel your next mishap
+A silk trader from Alkesh gifts you a fine horse worth 100 gp
+You got an epic tattoo in a visible location; gain +1 renown
+Merchants charge you 10% less than normal for 1 week
+You loot a dead body; gain a roll on the Treasure 0-3 Table
+You publicly busted a cheating dice trickster; +1 renown
+You saved a mage's pet; he identifies a magic item for you
+You won a philosophy debate; +1d4 INT points for 1 week
+You sang a beloved sea shanty; gain a pirate ally, +1 renown
+Good rest cleared your mind; +1d4 WIS points for 1 week
+You find a note in your bag: "I.O.U., Montmar Castle, noon"
+You find a discarded bag; roll on your level's Treasure Table
+You start an iconic new fashion trend; +2 renown
+You find the secret sewer entrance to a noble's mansion
+You break into a warrior's tomb and find mithral chainmail
+A beggar gave you herbal oils; +1d4 CON points for 1 week
+You win a well-made dingy after gambling with a fisherman
+You gracefully dodged a bull; +1 renown, +1d4 temporary HP
+You impressed a bard; +2 on your next carousing event roll
+The warlord Krell (berserker) now owes you a blood debt
+You woke up in a lab; gain two random magic potions
+You discover an iron key to the Duke's Donjon in your bag
+You won a weight lifting match; +1d4 STR points for 1 week
+You tossed a thug from a bar; +2 to next carousing event roll
+You beat a wizard at dice and won a Potion of Polymorph
+A retiring street magician gifts you an uncuttable rope
+You filled in for a sick performer at the theater; +2 renown
+You aided a cartographer; gain a useful map of your choice
+A member of the clergy gave you a Potion of Healing
+You won at five-finger filet; +1d4 DEX points for 1 week
+A chatty parrot reveals the name of a noble's illicit paramour
+A thug offers to commit a free crime for you (see pg. 26)
+The Undertaker, a beggar gladiator, protects you for 1 week
+You won a bull-riding match; +1 renown, +1d6 temporary HP
+Treat your renown as 12 for 1 week thanks to a famous bard
+You win The Pumpkin Toss; eat free at this tavern for life
+You freed a pegasus; it serves as your mount for 1 week
+Find a flask of Van Dinkle Whisky (SD pg. 137) with 5 sips left
+You saved a life; gain a City Guard (guard) ally, +2 renown
+Fantastic haircut; +1 renown, +1d4 CHA points for 1 week
+You learn the True Name of a member of the Duke's family
+A nobleman was impressed by your sharp wit; +3 renown
+You find the Golden Rook; trade it for any merchant's item
+You find a Kytherian Cog (SD pg. 305) in a strange place
+A famous sculptor made a public statue of you; +3 renown
+You outsing a famous bard; +5 to next carousing event roll
+A legendary tailor gifts you an 800 gp outfit; +2 renown
+You won at fencing against the Duke's cousin; +3 renown
+You won the annual Jester's Leap contest; +4 renown
+You find a one-time, one-person teleporter to anywhere
+You drank something magical; permanently gain 1 HP
+An exotic animal handler gives you a trained panther
+You stop a noble's assassination; +5 renown and noble ally
+You prayed at the Ducal Tomb; gain Wraithsight (SD pg. 281)
+A kind old lady gifts you a roll on your level's Treasure Table
+A disguised archangel follows you for 1 week to defend you
+You have earned a major favor from the Duke
+Divine favor: permanently gain 1 stat point of your choice
+You get one roll at +15% on your level's Treasure Table
+You get one roll at +20% on your level's Treasure Table
+You get one roll at +20% on the next highest Treasure Table
+You get one roll at +20% on the LV 10+ Treasure Table`.split('\n');
+    const MIS = `You wake up in the Duke's Donjon accused of a major crime
+You wake up in the stocks accused of a minor crime
+A gloating thief burgled 50% of your wealth; -3 renown
+You offended an important advisor to the Duke; -5 renown
+You wake up robbed in a gutter; lose 40% of your wealth
+You lost 35% of your wealth to a notorious con artist
+You lost 30% of your wealth in a string of gambling failures
+You blew a high-level spy's cover; gain an enemy assassin
+You accidentally burned down a tavern; -4 renown
+A pickpocket successfully lifted 1d4 pieces of your gear
+You traded your best weapon for a cooked turkey leg
+You hit your head; lose one common language you spoke
+A seemingly kind old lady stole a random piece of your gear
+A nobleman overheard your joke about him; -3 renown
+Wizard duel crossfire; you are turned into a frog for a week
+The City Guard hunts for you regarding a major crime
+A demagogue priest declared you possessed; -2 renown
+A rival threw a random piece of your gear into the river
+Your cheers distracted a pit fighter; gain an enemy knight
+You deeply insulted a wizard; gain an enemy mage
+You unwittingly interfered in a heist; gain an enemy thief
+You broke the taboos of a church; gain an enemy priest
+You lost a bet to a hated rival; -1 renown and lose 50 gp
+A corrupt City Guard member blackmailed you for 50 gp
+You agreed to a marriage with a disgraced noble in 1 week
+A prophet saw bad omens; roll next mishap with DISADV
+You got an awful tattoo in a visible location; -2 renown
+A pack of children humiliated you with a prank; -2 renown
+You got mugged by the Bywater Barons for 40 gp
+A snide bard performed a rude song about you; -2 renown
+You lost a 40 gp to an amateur gambler; -1 renown
+You sank a boat; Rowers won't transport you for a month
+You wake up wearing a famous noble's missing outfit
+You witnessed a crime; the Thieves' Guild now hunts you
+You bribed a door guard 40 gp to look the other way
+A fashion critic eviscerated your choice in garb; -2 renown
+A rival crawler challenged you to a duel at midday today
+You wake up wearing the signet ring of a murdered noble
+You contract the Rat Plague (see rat) from a poxy old crone
+You upset a barrister; the next one you hire charges 900 gp
+You angered a bard; -2 on your next carousing event roll
+You borrowed 500 gp from a loan shark and lost it all
+You gave 40 gp to a tiny, dancing monkey in a vest and hat
+You've been cursed; you can't use luck tokens for 2 weeks
+Awful haircut; -1 renown, lower CHA 1d4 points for 1 week
+You awake in an alley manacled to an escaped criminal
+You spent 40 gp to win a gold ring; it turned out to be fake
+The Charnel-Men thought you dead; you wake up in a coffin
+The City Guard hunts for you regarding a minor crime
+You got locked in the stocks for three days; -2 renown
+Exhaustion; you have DISADV on all checks for 1d4 days
+An irritating and tricksome ghost has begun haunting you
+You got fleas; -1 HP (min. 1) from itchy sores until treated
+A gambling disagreement turns a former ally into an enemy
+You smell strongly of pickled herring for a week; -1 renown
+You wake up locked inside a tomb in the city's graveyard
+You let 2d6 prize mastiffs escape a kennel; find them or else
+You got an awful, hidden tattoo; -1 renown if anyone sees it
+You joined a strict cult of (d6) 1-2: evil, 3-4: nature, 5-6: purity
+An annoying apprentice has become your clingy admirer
+You confessed a dark secret to a manipulative beggar
+Your nice new boots turned out to be Boots of Dancing
+You've earned an unflattering new nickname; -1 renown
+A robber took pity on you; now you owe him a major favor
+Merchants charge you 20% more than normal for 1 week
+A sorcerer tricked you into looking into a Mirror of Mischief
+Bad concussion; DISADV on INT checks for 1 week
+A fake City Guard "fined" you 30 gp; you'd recognize her
+An angry wizard made you dance like a puppet; -1 renown
+Poked in the eye; DISADV on WIS checks for 1 week
+You dropped a small item into a sewer grate; it's still there!
+You wake up holding a basket with a sleeping baby in it
+Violent food poisoning; DISADV on CON checks for 1 week
+You tipped a raft; Rowers won't transport you for 1 week
+You awake with a contract to buy a 1,000 gp elephant today
+Wrenched your back; DISADV on STR checks for 1 week
+A fortune teller has hexed you; you can't use luck for 1 week
+You forgot to pay a tab; -1 on next carousing event roll
+Knife throwing accident; DISADV on DEX checks for 1 week
+You started a massive fight in a tavern and are now banned
+Your most expensive garb is completely soiled; -1 renown
+Punched in the face; DISADV on CHA checks for 1 week
+You insulted a famous tailor; you can't buy garb for 1 month
+A press gang of 2d6 bandits tries to abduct you by night
+You slapped a street mime; children dislike you for 1 week
+An ally helps you escape arrest; now you owe them a favor
+You stole a tavern's sign; you're in big trouble if you return
+A witch tricked you into drinking a Potion of Forgetfulness
+You wake up with a manor house deed; it might be fake
+You begin to appear on wanted posters around the city
+You find a bloody mask from The Shroud in your bag
+You learned your True Name and told it to 1d4 strangers
+You find a note in your bag: "The Onyx Eye is watching you."
+You fell into sewage; -1 renown and check vs. rat disease
+You awake dangling by a fraying rope tied to a high bridge
+You find a note written in blood in your bag: "I'll be back."
+Total blackout; you can't remember the last two weeks
+You dropped 30 gp into a cursed well; lose all luck tokens
+A bard writes a heroic ode to you but misstates your name
+Misfortune favors you; re-roll this mishap as a benefit`.split('\n');
+    const EVENTS = [[30, 'Night at the tavern to toast and gossip'], [100, 'Festive day of high spirits and revelry'], [300, 'Full day and night of raucous celebration'], [600, 'Three days of merrymaking and antics'], [900, 'Five-day spree of exuberant feasting'], [1200, 'Full week of total excess and indulgence'], [1800, 'Hazy, weeklong voyage into splendid luxury'], [2400, 'Lavish, weeklong party of outrageous finery'], [3000, '2-week, city-wide festival of supreme opulence'], [4000, "Extravagant, 2-week fete in the Duke's court"]];
+    // totals 1..25+: [mishaps, benefits, % modifier, xp]
+    const OUT = [null, [2, 0, -20, 2], [1, 0, -20, 2], [1, 0, -15, 3], [1, 1, -15, 3], [0, 1, -10, 3], [1, 0, 0, 4], [1, 1, 0, 4], [0, 1, 0, 4], [1, 0, 0, 5], [1, 1, 0, 5], [0, 1, 5, 5], [0, 2, 5, 5], [1, 1, 5, 6], [0, 1, 5, 6], [0, 2, 5, 6], [1, 1, 10, 7], [0, 1, 10, 7], [0, 2, 10, 7], [1, 1, 15, 8], [0, 1, 15, 8], [0, 2, 15, 8], [1, 1, 20, 9], [0, 2, 20, 9], [0, 2, 25, 10], [0, 3, 25, 10]];
+    const d = n => 1 + Math.floor(Math.random() * n);
+    const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+    const fmt = n => n > 0 ? '+' + n : String(n);
+    const outcome = t => OUT[clamp(t, 1, 25)];
+    const row = cells => {
+        const tr = document.createElement('tr');
+        cells.forEach(c => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
+        return tr;
+    };
+    const line = text => { const x = document.createElement('div'); x.textContent = text; return x; };
+
+    EVENTS.forEach(([cost, text], i) => {
+        const o = document.createElement('option');
+        o.value = i;
+        o.textContent = `${cost.toLocaleString()} gp: ${text} (${fmt(i)})`;
+        el('carEvent').appendChild(o);
+        el('carEventBody').appendChild(row([cost.toLocaleString() + ' gp', text, fmt(i)]));
+    });
+    OUT.forEach((o, i) => { if (o) el('carOutBody').appendChild(row([i === 25 ? '25+' : i, o[0] || '0', o[1] || '0', o[2] ? fmt(o[2]) : '0', o[3]])); });
+    BEN.forEach((t, i) => el('carBenBody').appendChild(row([String(i + 1).padStart(2, '0'), t])));
+    MIS.forEach((t, i) => el('carMisBody').appendChild(row([String(i + 1).padStart(2, '0'), t])));
+
+    const outcomeText = (t, o) => `Total ${t}: ${o[0]} mishap${o[0] === 1 ? '' : 's'}, ${o[1]} benefit${o[1] === 1 ? '' : 's'}, ${o[2] ? fmt(o[2]) : '0'}% modifier, ${o[3]} XP`;
+
+    el('carRoll').addEventListener('click', () => {
+        const bonus = Number(el('carEvent').value) + (Number(el('carExtra').value) || 0);
+        const r = d(8), total = r + bonus, o = outcome(total);
+        el('carHead').textContent = `d8 ${r} ${fmt(bonus)} = ${total}`;
+        const box = el('carLines');
+        box.innerHTML = '';
+        box.appendChild(line(outcomeText(total, o)));
+        for (let i = 0; i < o[1]; i++) { const x = d(100), f = clamp(x + o[2], 1, 100); box.appendChild(line(`Benefit (rolled ${x}${o[2] ? ' ' + fmt(o[2]) : ''} = ${f}): ${BEN[f - 1]}`)); }
+        for (let i = 0; i < o[0]; i++) { const x = d(100), f = clamp(x + o[2], 1, 100); box.appendChild(line(`Mishap (rolled ${x}${o[2] ? ' ' + fmt(o[2]) : ''} = ${f}): ${MIS[f - 1]}`)); }
+    });
+
+    function lookup() {
+        const parts = [];
+        const t = parseInt(el('carOutIn').value, 10), b = parseInt(el('carBenIn').value, 10), m = parseInt(el('carMisIn').value, 10);
+        if (t >= 1) parts.push(outcomeText(t, outcome(t)));
+        if (b >= 1) parts.push(`Benefit ${clamp(b, 1, 100)}: ${BEN[clamp(b, 1, 100) - 1]}`);
+        if (m >= 1) parts.push(`Mishap ${clamp(m, 1, 100)}: ${MIS[clamp(m, 1, 100) - 1]}`);
+        const box = el('carLookup');
+        box.innerHTML = '';
+        if (!parts.length) box.textContent = 'Enter the final d100 number after adding the % modifier.';
+        parts.forEach(p => box.appendChild(line(p)));
+    }
+    ['carOutIn', 'carBenIn', 'carMisIn'].forEach(id => el(id).addEventListener('input', lookup));
 })();
