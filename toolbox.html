@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
-    <script src="js/toolscript.js" defer></script>
+    <script src="../js/toolscript.js" defer></script>
     <title>Shadowdark Toolbox</title>
     <style>
         :root {
@@ -841,6 +841,34 @@
             }
         }
 
+        #carousing td:first-child {
+            width: auto;
+            color: inherit;
+        }
+
+        #carousing label {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        #carousing h3 {
+            margin: 1.2rem 0 .4rem;
+        }
+
+        #carousing details p,
+        #carousing details ul {
+            margin: .5rem 0;
+        }
+
+        #carousing details li {
+            margin-bottom: .3rem;
+        }
+
+        #carLines div {
+            margin-top: .4rem;
+        }
+
         /* responsive */
 
         @media (max-width: 850px) {
@@ -1322,6 +1350,159 @@
             </div>
         </section>
 
+        <section id="carousing" class="panel" style="margin-top:18px">
+            <h2>Downtime and Carousing</h2>
+
+            <h3>Carousing Roller</h3>
+            <div class="generator-controls">
+                <label>Event <select id="carEvent"></select></label>
+                <label>Extra bonus <input id="carExtra" type="number" value="0" style="width:4.5rem"></label>
+                <button id="carRoll">Roll Carousing</button>
+            </div>
+            <article class="result-card">
+                <div class="big-result" id="carHead">Pick an event and roll</div>
+                <div id="carLines"></div>
+            </article>
+
+            <h3>Look Up a Player's Roll</h3>
+            <div class="generator-controls">
+                <label>d8 + bonus <input id="carOutIn" type="number" min="1" style="width:5rem"></label>
+                <label>Benefit d100 <input id="carBenIn" type="number" min="1" max="100" style="width:5rem"></label>
+                <label>Mishap d100 <input id="carMisIn" type="number" min="1" max="100" style="width:5rem"></label>
+            </div>
+            <div class="roll-result" id="carLookup">Enter the final d100 number after adding the % modifier.</div>
+
+            <div class="adventure-tables">
+                <details>
+                    <summary>Carousing Rules and Event Costs</summary>
+                    <p>Expands Shadowdark RPG pg. 92. Each PC pitches in toward the total cost, then rolls 1d8 + the event's bonus on the Outcome table. Each PC gains the listed XP and rolls the listed number of times on the d100 Benefit and Mishap tables, adding the % modifier to those rolls. Bonuses can also come from renown (pg. 18), holidays (pg. 46), bard talents (pg. 12), garb, or the carousing site.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Total Cost</th>
+                                    <th>Example Event</th>
+                                    <th>Bonus</th>
+                                </tr>
+                            </thead>
+                            <tbody id="carEventBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+                <details>
+                    <summary>Carousing Outcome (d8 + bonus)</summary>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>Mishaps</th>
+                                    <th>Benefits</th>
+                                    <th>% Mod</th>
+                                    <th>XP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="carOutBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+                <details>
+                    <summary>Carousing Benefit (d100)</summary>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>d100</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="carBenBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+                <details>
+                    <summary>Carousing Mishap (d100)</summary>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>d100</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="carMisBody"></tbody>
+                        </table>
+                    </div>
+                </details>
+                <h3>Downtime Rules</h3>
+                <p class="muted">PCs do one downtime activity between adventures. Activities marked * cost 10 gp x PC level. The PC must pass the check, and can't use luck tokens. After a failed check, reduce that DC one step next time (reset after success).</p>
+                <details>
+                    <summary>Downtime: Spiritualism</summary>
+                    <p><b>WIS check.</b> Meditation, prayer, self-reflection, or mystical study.</p>
+                    <ul>
+                        <li><b>DC 9:</b> Gain favor with a local church. Your renown increases by 1 point.</li>
+                        <li><b>DC 12:</b> Spiritual strengthening. You gain 2 XP.</li>
+                        <li><b>DC 15*:</b> Find personal insight. Reroll one prior talent roll.</li>
+                        <li><b>DC 18*:</b> Spiritual cleansing. End one curse afflicting you.</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>Downtime: Skulduggery</summary>
+                    <p>Thievery, criminal activity, or churning the rumor mill.</p>
+                    <p><b>CHA check</b></p>
+                    <ul>
+                        <li><b>DC 9:</b> Start a rumor about one person. Their renown increases or decreases by 1 point (you choose).</li>
+                        <li><b>DC 12:</b> Lay low. Escape the City Guard over a minor crime.</li>
+                        <li><b>DC 15:</b> Extortion. Increase the value of your next sale by 25%, or reduce the cost of your next purchase by 25%.</li>
+                        <li><b>DC 18:</b> Hide out. Escape the City Guard over a major crime.</li>
+                    </ul>
+                    <p><b>DEX check</b></p>
+                    <ul>
+                        <li><b>DC 15*:</b> Get away with a minor crime, such as petty theft. If you fail, the City Guard investigates (pg. 45).</li>
+                        <li><b>DC 18*:</b> Get away with a major crime, such as murder. If you fail, the City Guard investigates (pg. 45).</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>Downtime: Martial Training</summary>
+                    <p>Weapons and armor training by a suitable expert. Training depends on the PC's class hit points die. INT, STR, or DEX check.</p>
+                    <p><b>d4</b></p>
+                    <ul>
+                        <li><b>DC 15*:</b> +1 to hit or damage with one weapon. Limit once of each per weapon.</li>
+                        <li><b>DC 18*:</b> Learn to wield a new weapon (d6 damage max).</li>
+                    </ul>
+                    <p><b>d6</b></p>
+                    <ul>
+                        <li><b>DC 12*:</b> +1 to hit and damage with one weapon. Limit once per weapon.</li>
+                        <li><b>DC 15*:</b> Learn to wield a new weapon (d10 damage max) or the next step up in armor.</li>
+                    </ul>
+                    <p><b>d8+</b></p>
+                    <ul>
+                        <li><b>DC 9*:</b> Learn to wield a new armor or weapon.</li>
+                        <li><b>DC 12*:</b> +1 to hit and damage with one weapon. Limit once per weapon.</li>
+                        <li><b>DC 15*:</b> Increase the damage die of one weapon by one step (d12 damage max). Limit twice per weapon.</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>Downtime: Magical Research</summary>
+                    <p>Studying spells, praying to the gods, or consulting oracles. Spellcasters make spellcasting checks.</p>
+                    <p><b>INT or CHA spellcasters</b></p>
+                    <ul>
+                        <li><b>DC 12:</b> Gain ADV on your next check to learn from a scroll.</li>
+                        <li><b>DC 15*:</b> Create a scroll of one spell you know of tier 3 or less.</li>
+                        <li><b>DC 15*:</b> Create one Potion: Flying, Forgetfulness, Giant Strength, Invisibility, or Polymorph.</li>
+                        <li><b>DC 20*:</b> Create a wand of a spell you know of tier 3 or less. You can't create a new wand of the same spell until the prior wand breaks.</li>
+                    </ul>
+                    <p><b>WIS or CHA spellcasters</b></p>
+                    <ul>
+                        <li><b>DC 12:</b> Gain advantage on the next three spells you cast.</li>
+                        <li><b>DC 15*:</b> Create a scroll of one spell you know of tier 3 or less.</li>
+                        <li><b>DC 15*:</b> Trade one spell you know for another (same tier).</li>
+                        <li><b>DC 18*:</b> Create a Potion of Healing.</li>
+                    </ul>
+                </details>
+            </div>
+        </section>
+
         <section id="landmark-generator" class="panel landmark-generator" style="margin-top:18px">
             <h2>Landmark Generator</h2>
             <div class="generator-controls">
@@ -1445,8 +1626,6 @@
             <div id="factions"></div>
             <div class="rooms" id="rooms"></div>
         </section>
-
-        
     </div>
 </body>
 
