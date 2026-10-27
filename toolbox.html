@@ -813,6 +813,15 @@
             font-size: .85rem;
         }
 
+        .hex-log li:first-child {
+            background-color: rgb(114, 113, 113);
+            color: #fff;
+        }
+
+        .hex-log li::marker {
+            color: #000;
+        }
+
         .hex-ref {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -1063,7 +1072,8 @@
             <ol class="hex-log" id="hexLog" reversed></ol>
 
             <h3>Quick Reference</h3>
-            <p class="muted">Hexes are 6 miles across. PCs and mounts can travel up to 8 hours a day. Random encounter checks depend on the number of hexes entered.</p>
+            <p class="muted">Hexes are 6 miles across. PCs and mounts can travel up to 8 hours a day. One clear terrain hex takes 2 hours to cross.</p>
+            <p class="muted">Roll encounters .</p>
             <div class="hex-ref">
                 <div class="table-wrap">
                     <table>
@@ -1076,11 +1086,11 @@
                         <tbody>
                             <tr>
                                 <td>Walking</td>
-                                <td>4</td>
+                                <td>4 (2 hours per)</td>
                             </tr>
                             <tr>
                                 <td>Mounted</td>
-                                <td>6</td>
+                                <td>6 (1hr20m per)</td>
                             </tr>
                             <tr>
                                 <td>Sailing</td>
@@ -1100,15 +1110,15 @@
                         <tbody>
                             <tr>
                                 <td>Clear</td>
-                                <td>1 hex</td>
+                                <td>1 hex (2 hours)</td>
                             </tr>
                             <tr>
                                 <td>Difficult</td>
-                                <td>2 hexes</td>
+                                <td>2 hexes (4 hours)</td>
                             </tr>
                             <tr>
                                 <td>Perilous</td>
-                                <td>8 hexes</td>
+                                <td>8 hexes (16 hours)</td>
                             </tr>
                             <tr>
                                 <td>Impassable</td>
