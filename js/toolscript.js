@@ -2054,6 +2054,9 @@ const MONSTERS = [
         el('hexLog').innerHTML = '';
         log.forEach(t => { const li = document.createElement('li'); li.textContent = t; el('hexLog').appendChild(li); });
     }
+
+    console.log(current);
+
     function render() {
         saveWeather();
         const w = current();
@@ -2100,7 +2103,7 @@ const MONSTERS = [
         base = clamp(adj.apply(base));
         boost = 0;
         rollText = `${season() === 'mild' ? 'Mild' : 'Harsh'} season 2d6: ${a} + ${b} = ${t}. ${adj.label}.`;
-        addLog(`Day (${t}): ${from} to ${LADDER[base].name}`);
+        addLog(`Roll: (${t}): ${from} to ${LADDER[base].name}`);
         render();
     });
     el('hexBoost').addEventListener('click', () => {
