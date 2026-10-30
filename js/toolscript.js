@@ -2050,12 +2050,11 @@ const MONSTERS = [
     };
     function addLog(text) {
         log.unshift(text);
+        console.log(log);
         log = log.slice(0, 8);
         el('hexLog').innerHTML = '';
         log.forEach(t => { const li = document.createElement('li'); li.textContent = t; el('hexLog').appendChild(li); });
     }
-
-    console.log(current);
 
     function render() {
         saveWeather();

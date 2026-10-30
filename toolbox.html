@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
-    <script src="js/toolscript.js" defer></script>
+    <script src="../js/toolscript.js" defer></script>
     <title>Shadowdark Toolbox</title>
     <style>
         :root {
@@ -929,7 +929,7 @@
                 <h1>Shadowdark Toolbox</h1>
             </div>
         </header>
-        <section id="torchtimer" class="panel" aria-label="Torch timer">
+        <div id="torchtimer" class="panel" aria-label="Torch timer">
             <div class="torch-timer-layout">
                 <div class="torch-flame-wrap" aria-hidden="true">
                     <svg id="torch-flame" viewBox="0 0 43.67 91.19" role="img" aria-label="Torch flame burning down" xmlns="http://www.w3.org/2000/svg">
@@ -966,9 +966,9 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section id="monster-browser" class="panel" style="margin-top:18px">
+        <div id="monster-browser" class="panel" style="margin-top:18px">
             <h2>Monster Browser</h2>
 
             <div class="generator-controls">
@@ -999,9 +999,9 @@
                 <div id="pinnedMonsters"></div>
             </div>
 
-        </section>
+        </div>
 
-        <section id="treasure-generator" class="panel treasure-generator">
+        <div id="treasure-generator" class="panel treasure-generator">
             <h2>Treasure & Item Generator</h2>
             <p class="muted">Generate treasure for the selected level, a mundane item, a boon, or a fully generated magic item.</p>
 
@@ -1034,9 +1034,9 @@
                 <div id="treasureResult" class="treasure-result"></div>
                 <div id="treasureRoll" class="treasure-roll"></div>
             </article>
-        </section>
+        </div>
 
-        <section id="hex-crawl" class="panel" style="margin-top:18px">
+        <div id="hex-crawl" class="panel" style="margin-top:18px">
             <h2>Hex Crawling</h2>
 
             <h3>Weather Roller</h3>
@@ -1358,9 +1358,9 @@
                     <p>PCs and mounts can go three days without consuming a ration. They take 1 CON damage each day after that (death at 0). Mounts find their rations during a rest unless in a barren location.</p>
                 </details>
             </div>
-        </section>
+        </div>
 
-        <section id="carousing" class="panel" style="margin-top:18px">
+        <div id="carousing" class="panel" style="margin-top:18px">
             <h2>Downtime and Carousing</h2>
 
             <h3>Carousing Roller</h3>
@@ -1511,9 +1511,9 @@
                     </ul>
                 </details>
             </div>
-        </section>
+        </div>
 
-        <section id="landmark-generator" class="panel landmark-generator" style="margin-top:18px">
+        <div id="landmark-generator" class="panel landmark-generator" style="margin-top:18px">
             <h2>Landmark Generator</h2>
             <div class="generator-controls">
                 <button id="generateLandmark">Generate Landmark</button>
@@ -1543,10 +1543,10 @@
                     </div>
                 </details>
             </div>
-        </section>
+        </div>
 
 
-        <section id="adventure-generator" class="panel adventure-generator">
+        <div id="adventure-generator" class="panel adventure-generator">
             <h2>Adventure Generator</h2>
             <div class="generator-controls">
                 <button id="generateAdventure">Generate Adventure</button>
@@ -1601,10 +1601,10 @@
                     </div>
                 </details>
             </div>
-        </section>
+        </div>
 
         <div class="grid">
-            <section class="panel">
+            <div class="panel">
                 <h2>Dungeon Seed</h2>
                 <div class="controls"><button class="primary" id="generate">Generate Dungeon</button><button id="copy">Copy Results</button></div>
                 <div class="seed" id="seed"></div>
@@ -1620,22 +1620,22 @@
                     </select>
                     <button id="rerollSeed">Reroll Seed</button>
                 </div>
-            </section>
+            </div>
 
-            <section class="panel">
+            <div class="panel">
                 <h2>Dungeon Map</h2>
                 <div class="mapwrap">
                     <div class="map" id="map"></div>
                 </div>
                 <div class="legend"><span><i class="sw"></i> Standard</span><span><i class="sw d hidden"></i> Hidden</span><span><i class="sw c conditional"></i> Conditional</span><span>Red outline = Entrance</span></div>
-            </section>
+            </div>
         </div>
 
-        <section class="panel" style="margin-top:18px">
+        <div class="panel" style="margin-top:18px">
             <h2>Dungeon Details</h2>
             <div id="factions"></div>
             <div class="rooms" id="rooms"></div>
-        </section>
+        </div>
     </div>
 </body>
 
