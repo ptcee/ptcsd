@@ -23,6 +23,10 @@
             box-sizing: border-box
         }
 
+        .hide {
+            display: none;
+        }
+
         body {
             margin: 0;
             background: var(--bg);
@@ -49,6 +53,13 @@
             letter-spacing: .03em;
             font-family: "Pirata One", system-ui;
             ;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
         }
 
         .hint {
@@ -85,6 +96,18 @@
             margin: auto
         }
 
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
         #legend {
             display: flex;
             flex-direction: column;
@@ -96,8 +119,8 @@
         .map-wrap {
             position: relative;
             width: min(100%, 900px);
-            margin: 0 auto;
-            background: #ddd;
+            /* margin: 0 auto; */
+            background: var(--bg);
             box-shadow: 0 8px 32px #0008;
             line-height: 0
         }
@@ -111,7 +134,7 @@
         .hotspot {
             position: absolute;
             z-index: 2;
-            border: 1px solid #b7d0a055;
+            border: 1px solid var(--line);
             background: #b7d0a00a;
             border-radius: 4px;
             cursor: pointer;
@@ -121,8 +144,8 @@
 
         .hotspot:hover,
         .hotspot:focus {
-            background: #d7f0a344;
-            border: 2px solid #d7f0a3;
+            background: var(--line);
+            border: 2px solid var(--bolden);
             outline: none
         }
 
@@ -158,7 +181,9 @@
             flex-wrap: wrap;
             gap: 6px;
 
-            button {width: 250px;}
+            button {
+                width: 250px;
+            }
         }
 
         .room-chip {
@@ -235,7 +260,9 @@
             margin: 0 0 7px
         }
 
-        strong { color: var(--bolden); }
+        strong {
+            color: var(--bolden);
+        }
 
         .stats {
             white-space: pre-wrap;
@@ -258,12 +285,12 @@
             transform: translate(-50%, -50%);
             border-radius: 50%;
             background: var(--accent);
-            color: #151515;
-            border: 3px solid #151515;
-            box-shadow: 0 0 0 2px #b7d0a0, 0 3px 10px #000a;
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px #000a;
             display: grid;
             place-items: center;
-            font: 800 8px/1 system-ui, sans-serif;
+            font: 800 10px/1 system-ui, sans-serif;
             cursor: grab;
             touch-action: none;
             user-select: none;
@@ -271,12 +298,12 @@
         }
 
         .party-token:hover {
-            background: #d7f0a3
+            background: var(--bolden);
         }
 
         .party-token.dragging {
             cursor: grabbing;
-            box-shadow: 0 0 0 3px #d7f0a3, 0 6px 16px #000c
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px #000c
         }
 
         .compasss {
@@ -296,10 +323,13 @@
         }
 
         .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
             table {
                 border-collapse: collapse;
                 width: 100%;
-                font-size: 12px;
+                font-size: 10px;
             }
 
             td,
@@ -313,8 +343,13 @@
             }
 
             tr:hover {
-                background-color: #545231;
+                background-color: var(--line);
             }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
         }
 
         @media(max-width:600px) {
@@ -345,39 +380,102 @@
 
 <body>
     <header>
-        <h1>Bittermold Keep</h1><span class="hint">Interactive room key</span><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">Close all popups</button><button id="resetParty">Reset party</button>
+        <h1>Bittermold Keep</h1><span class="hint">Interactive room key</span><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">Close all popups</button>
     </header>
     <main>
-        <div class="map-wrap" id="mapWrap">
-            <div class="compasss">
-                <svg id="compass" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                    <defs>
-                        <style>
-                            .cls-1 {
-                                fill: #fff;
-                            }
-
-                            .cls-2 {
-                                fill: #9e7d66;
-                            }
-                        </style>
-                    </defs>
-                    <path class="cls-2" d="M91.75,151.87c.67-1.16,2.3-1.96,3.33-.79.9,1.02,1.98,8.27,2.42,8.28,1.08-1.5,2.23-8.06,3.61-8.69.83-.38,1.81-.14,2.37.57,1.15,1.46,1.74,6.24,2.71,8.12l2.66-8.16c1.22-1.51,3.31-.8,3.44,1.07l-4.64,15.37c-1.13.9-2.35.5-3-.72-1.13-2.11-1.65-5.76-2.47-8.09-2.01,2.11-2.58,13.77-6.76,7.44l-3.66-13.05v-1.34Z" />
-                    <path class="cls-2" d="M48.75,88.63c.71.51.97.85,1.07,1.73.33,2.69.35,11.27,0,13.92-.19,1.45-1.97,2.3-3.09,1.19l-6.55-8.83v8.16c0,.1-.91.9-1.14,1-1.18.51-2.17-.18-2.55-1.33l.06-14.26c.45-.93,1.05-1.52,2.14-1.33,1.59.28,5.71,7.81,7.36,9.09.24-2.47-.32-5.48.03-7.87.14-.94.51-.85,1.05-1.48h1.6Z" />
-                    <path class="cls-2" d="M146.79,99.23c0,25.11-20.35,45.46-45.46,45.46s-45.46-20.36-45.46-45.46,20.35-45.46,45.46-45.46,45.46,20.36,45.46,45.46ZM143.01,99.23c0-23-18.65-41.65-41.65-41.65s-41.65,18.65-41.65,41.65,18.65,41.65,41.65,41.65,41.65-18.65,41.65-41.65Z" />
-                    <path class="cls-2" d="M99.24,35.77v2.67h7.89c.08,0,1.01.94,1.07,1.08.44.95-.49,2.67-1.34,2.67h-7.62v2.94h8.69c.1,0,.91.92,1.01,1.15.55,1.31-.47,2.45-1.8,2.6-1.64.19-8.98.26-10.38-.06-1.19-.27-1.45-1.69-1.54-2.74-.24-2.76-.3-8.8.01-11.51.16-1.4.77-2.37,2.27-2.55s8.52-.24,9.84.06c2.14.49,1.26,3.69.32,3.69h-8.42Z" />
-                    <path class="cls-2" d="M157.01,88.23c3.04-.22,6.35,2.27,6.48,5.41.08,1.76-.74,3.16-2.62,2.34-1.57-.68-.7-2.81-2.23-3.66-2.53-1.41-5.53,2.66-1.46,4.14,2.47.89,5.54,1.04,6,4.43.65,4.79-2.41,8.79-7.48,7.75-3.03-.62-6.58-6.34-3.39-7.7,2.4-1.03,2.32,1.73,2.9,2.84,1.23,2.34,4.79.97,4.19-1.78-.5-2.3-5.48-1.36-7.22-4.28-2.29-3.85.28-9.16,4.82-9.49Z" />
-                    <path class="cls-1" d="M143.01,99.23c0,23-18.65,41.65-41.65,41.65s-41.65-18.65-41.65-41.65,18.65-41.65,41.65-41.65,41.65,18.65,41.65,41.65ZM110.46,90.2l-7.32-27.3c-.61-1.82-2.93-1.7-3.55.07l-7.62,27.95-26.6,6.29c-1.95.73-2.14,3.18-.09,3.82l27.75,7.81,7.36,26.87c.4,1.27,2.4,1.43,3.2.52l7.77-28.06,25.86-7.03c1.9-.52,2.25-2.93.35-3.69l-27.11-7.25ZM90.32,82.26c-2.83-.62-10.24-8.35-11.07-2.71l5.41,9.32,4.31-.82,1.35-5.79ZM120.77,77.45c-.57.1-8.11,4.36-8.37,4.77l1.22,4.94c.96.15,4.08,1.52,4.68.94l4.63-8.22c.47-1.31-.84-2.66-2.15-2.44ZM114.21,111.16c.07,1.28-1.61,4.2-.88,5.18,2.55.87,9.88,7.82,10.07,1.98l-4.56-8.02c-.72-.67-3.65.58-4.63.86ZM91.14,115.89l-1.17-4-5.31-1.55c-.41.1-4.2,6.22-4.68,7.1-1.14,2.12-1,3.77,1.89,3.5l9.27-5.05Z" />
-                    <path class="cls-2" d="M110.46,90.2l27.11,7.25c1.9.76,1.55,3.17-.35,3.69l-25.86,7.03-7.77,28.06c-.8.91-2.81.75-3.2-.52l-7.36-26.87-27.75-7.81c-2.06-.64-1.86-3.09.09-3.82l26.6-6.29,7.62-27.95c.62-1.77,2.94-1.89,3.55-.07l7.32,27.3Z" />
-                    <path class="cls-2" d="M90.32,82.26l-1.35,5.79-4.31.82-5.41-9.32c.84-5.64,8.24,2.08,11.07,2.71Z" />
-                    <path class="cls-2" d="M91.14,115.89l-9.27,5.05c-2.89.27-3.04-1.38-1.89-3.5.48-.88,4.26-7,4.68-7.1l5.31,1.55,1.17,4Z" />
-                    <path class="cls-2" d="M120.77,77.45c1.31-.23,2.62,1.13,2.15,2.44l-4.63,8.22c-.6.58-3.72-.79-4.68-.94l-1.22-4.94c.25-.41,7.8-4.68,8.37-4.77Z" />
-                    <path class="cls-2" d="M114.21,111.16c.97-.29,3.91-1.53,4.63-.86l4.56,8.02c-.19,5.84-7.51-1.11-10.07-1.98-.73-.98.95-3.9.88-5.18Z" />
-                </svg>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Unsafe. (3rds)</p>
+                    <p><strong>Light.</strong> Wet, inky darkness. Halflings have 1d4 lit torches.</p>
+                </div>
+                <h2>Random Encounters</h2>
+                <table>
+                    <tr>
+                        <th>d12</th>
+                        <th>details</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Plogrina Bittermold (Area 29)</strong> with <strong>1d6 Bittermolds</strong> looking for something to feed to Mugdulblub that it's never tasted.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>1d6 Howlers</strong> wrestling a mutant catfish down the hall.</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>An <strong>ichor ooze</strong> slurping toward the nearest source of heat.</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Gordock Breeg (Area 4)</strong> leading a band of <strong>2d6 Howlers</strong> in pursuit of <strong>1d4 wounded Bittermolds</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>1d6 Bittermolds</strong> stealthily looking for Howlers to capture.</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>A new pocket of <strong>acid quicksand</strong> gives way beneath <strong>1d4 characters</strong> (DC 12 DEX to escape, 1d4 damage/round).</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><strong>1d4 vengeful mutant catfish</strong> out for violence (can be distracted with tasty food or sympathy).</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><strong>1d6 bandits</strong> looking for treasure who are realizing coming here was a bad idea; they refuse to leave empty-handed.</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><strong>2d4 Bittermolds</strong> dragging <strong>1d4 tied Howlers</strong> to Mugdulblub.</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>A <strong>lone cultist</strong> in an algae-induced fever dream looking for Mugdulblub; mutters about how all must be Dissolved.</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td><strong>2d6 roosting tar bats</strong>; open flame makes them frenzy.</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>A fat glob of sticky slime drips onto a light source, ruining it.</td>
+                    </tr>
+                </table>
             </div>
-            <img src="adv-maps/bittermold-keep.jpg" alt="Bittermold Keep">
-
-            <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">PC</button>
+            <div class="map-wrap" id="mapWrap">
+                <div class="compasss">
+                    <svg id="compass" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                        <defs>
+                            <style>
+                                .cls-1 {
+                                    fill: #fff;
+                                }
+    
+                                .cls-2 {
+                                    fill: #9e7d66;
+                                }
+                            </style>
+                        </defs>
+                        <path class="cls-2" d="M91.75,151.87c.67-1.16,2.3-1.96,3.33-.79.9,1.02,1.98,8.27,2.42,8.28,1.08-1.5,2.23-8.06,3.61-8.69.83-.38,1.81-.14,2.37.57,1.15,1.46,1.74,6.24,2.71,8.12l2.66-8.16c1.22-1.51,3.31-.8,3.44,1.07l-4.64,15.37c-1.13.9-2.35.5-3-.72-1.13-2.11-1.65-5.76-2.47-8.09-2.01,2.11-2.58,13.77-6.76,7.44l-3.66-13.05v-1.34Z" />
+                        <path class="cls-2" d="M48.75,88.63c.71.51.97.85,1.07,1.73.33,2.69.35,11.27,0,13.92-.19,1.45-1.97,2.3-3.09,1.19l-6.55-8.83v8.16c0,.1-.91.9-1.14,1-1.18.51-2.17-.18-2.55-1.33l.06-14.26c.45-.93,1.05-1.52,2.14-1.33,1.59.28,5.71,7.81,7.36,9.09.24-2.47-.32-5.48.03-7.87.14-.94.51-.85,1.05-1.48h1.6Z" />
+                        <path class="cls-2" d="M146.79,99.23c0,25.11-20.35,45.46-45.46,45.46s-45.46-20.36-45.46-45.46,20.35-45.46,45.46-45.46,45.46,20.36,45.46,45.46ZM143.01,99.23c0-23-18.65-41.65-41.65-41.65s-41.65,18.65-41.65,41.65,18.65,41.65,41.65,41.65,41.65-18.65,41.65-41.65Z" />
+                        <path class="cls-2" d="M99.24,35.77v2.67h7.89c.08,0,1.01.94,1.07,1.08.44.95-.49,2.67-1.34,2.67h-7.62v2.94h8.69c.1,0,.91.92,1.01,1.15.55,1.31-.47,2.45-1.8,2.6-1.64.19-8.98.26-10.38-.06-1.19-.27-1.45-1.69-1.54-2.74-.24-2.76-.3-8.8.01-11.51.16-1.4.77-2.37,2.27-2.55s8.52-.24,9.84.06c2.14.49,1.26,3.69.32,3.69h-8.42Z" />
+                        <path class="cls-2" d="M157.01,88.23c3.04-.22,6.35,2.27,6.48,5.41.08,1.76-.74,3.16-2.62,2.34-1.57-.68-.7-2.81-2.23-3.66-2.53-1.41-5.53,2.66-1.46,4.14,2.47.89,5.54,1.04,6,4.43.65,4.79-2.41,8.79-7.48,7.75-3.03-.62-6.58-6.34-3.39-7.7,2.4-1.03,2.32,1.73,2.9,2.84,1.23,2.34,4.79.97,4.19-1.78-.5-2.3-5.48-1.36-7.22-4.28-2.29-3.85.28-9.16,4.82-9.49Z" />
+                        <path class="cls-1" d="M143.01,99.23c0,23-18.65,41.65-41.65,41.65s-41.65-18.65-41.65-41.65,18.65-41.65,41.65-41.65,41.65,18.65,41.65,41.65ZM110.46,90.2l-7.32-27.3c-.61-1.82-2.93-1.7-3.55.07l-7.62,27.95-26.6,6.29c-1.95.73-2.14,3.18-.09,3.82l27.75,7.81,7.36,26.87c.4,1.27,2.4,1.43,3.2.52l7.77-28.06,25.86-7.03c1.9-.52,2.25-2.93.35-3.69l-27.11-7.25ZM90.32,82.26c-2.83-.62-10.24-8.35-11.07-2.71l5.41,9.32,4.31-.82,1.35-5.79ZM120.77,77.45c-.57.1-8.11,4.36-8.37,4.77l1.22,4.94c.96.15,4.08,1.52,4.68.94l4.63-8.22c.47-1.31-.84-2.66-2.15-2.44ZM114.21,111.16c.07,1.28-1.61,4.2-.88,5.18,2.55.87,9.88,7.82,10.07,1.98l-4.56-8.02c-.72-.67-3.65.58-4.63.86ZM91.14,115.89l-1.17-4-5.31-1.55c-.41.1-4.2,6.22-4.68,7.1-1.14,2.12-1,3.77,1.89,3.5l9.27-5.05Z" />
+                        <path class="cls-2" d="M110.46,90.2l27.11,7.25c1.9.76,1.55,3.17-.35,3.69l-25.86,7.03-7.77,28.06c-.8.91-2.81.75-3.2-.52l-7.36-26.87-27.75-7.81c-2.06-.64-1.86-3.09.09-3.82l26.6-6.29,7.62-27.95c.62-1.77,2.94-1.89,3.55-.07l7.32,27.3Z" />
+                        <path class="cls-2" d="M90.32,82.26l-1.35,5.79-4.31.82-5.41-9.32c.84-5.64,8.24,2.08,11.07,2.71Z" />
+                        <path class="cls-2" d="M91.14,115.89l-9.27,5.05c-2.89.27-3.04-1.38-1.89-3.5.48-.88,4.26-7,4.68-7.1l5.31,1.55,1.17,4Z" />
+                        <path class="cls-2" d="M120.77,77.45c1.31-.23,2.62,1.13,2.15,2.44l-4.63,8.22c-.6.58-3.72-.79-4.68-.94l-1.22-4.94c.25-.41,7.8-4.68,8.37-4.77Z" />
+                        <path class="cls-2" d="M114.21,111.16c.97-.29,3.91-1.53,4.63-.86l4.56,8.02c-.19,5.84-7.51-1.11-10.07-1.98-.73-.98.95-3.9.88-5.18Z" />
+                    </svg>
+                </div>
+                <img src="adv-maps/bittermold-keep.jpg" alt="Bittermold Keep">
+    
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">PC</button>
+            </div>
         </div>
 
         <div id="legend">
@@ -437,7 +535,6 @@
         </div>
     </main>
     <div id="popupContainer"></div>
-
 
     <script>
         const rooms = {
@@ -775,53 +872,53 @@
         const popupContainer = document.getElementById('popupContainer');
         let popupZIndex = 20;
         let popupOffset = 0;
- 
+
         function createPopup(titleText, contentBuilder) {
             const popup = document.createElement('section');
             popup.className = 'popup open';
             popup.setAttribute('role', 'dialog');
             popup.setAttribute('aria-modal', 'false');
- 
+
             const head = document.createElement('div');
             head.className = 'popup-head';
- 
+
             const title = document.createElement('strong');
             title.textContent = titleText;
- 
+
             const close = document.createElement('button');
             close.type = 'button';
             close.textContent = '×';
             close.setAttribute('aria-label', 'Close popup');
             close.addEventListener('click', () => popup.remove());
- 
+
             const body = document.createElement('div');
             body.className = 'popup-body';
- 
+
             head.append(title, close);
             popup.append(head, body);
             popupContainer.appendChild(popup);
- 
+
             // Cascade newly opened windows, starting at the top-left.
             const offset = (popupOffset++ % 8) * 28;
             popup.style.left = `${offset}px`;
             popup.style.top = `${offset}px`;
             popup.style.zIndex = ++popupZIndex;
- 
+
             contentBuilder(body);
             makeDraggable(popup, head);
- 
+
             popup.addEventListener('pointerdown', () => {
                 popup.style.zIndex = ++popupZIndex;
             });
- 
+
             return popup;
         }
- 
+
         function makeDraggable(popup, handle) {
             let dragging = false;
             let dx = 0;
             let dy = 0;
- 
+
             handle.addEventListener('pointerdown', e => {
                 if (e.target.closest('button')) return;
                 dragging = true;
@@ -833,7 +930,7 @@
                 popup.style.top = rect.top + 'px';
                 handle.setPointerCapture(e.pointerId);
             });
- 
+
             handle.addEventListener('pointermove', e => {
                 if (!dragging) return;
                 const maxX = window.innerWidth - popup.offsetWidth;
@@ -841,11 +938,11 @@
                 popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
                 popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
             });
- 
+
             handle.addEventListener('pointerup', () => dragging = false);
             handle.addEventListener('pointercancel', () => dragging = false);
         }
- 
+
         // Turns **word** into bold text. Everything else is inserted as plain text (safe).
         function fmt(el, text) {
             text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
@@ -862,16 +959,16 @@
         function openRoom(id) {
             const r = rooms[id];
             if (!r) return;
- 
+
             createPopup('Area ' + id + ': ' + r.name, body => {
                 const p = document.createElement('p');
                 fmt(p, r.description);
                 body.appendChild(p);
- 
+
                 const h = document.createElement('h3');
                 h.textContent = 'Room key';
                 body.appendChild(h);
- 
+
                 const ul = document.createElement('ul');
                 r.bullets.forEach(item => {
                     const li = document.createElement('li');
@@ -880,12 +977,12 @@
                     ul.appendChild(li);
                 });
                 body.appendChild(ul);
- 
+
                 if (r.stats) {
                     const sh = document.createElement('h3');
                     sh.textContent = 'Creature / special stats';
                     body.appendChild(sh);
- 
+
                     const pre = document.createElement('div');
                     pre.className = 'stats';
                     pre.textContent = r.stats;
@@ -893,7 +990,7 @@
                 }
             });
         }
- 
+
         function openRandomEncounterTable() {
             createPopup('Random Encounter Table', body => {
                 const note = document.createElement('div');
@@ -902,7 +999,7 @@
                 body.appendChild(note);
             });
         }
- 
+
         const statblocks = [
             {
                 "name": "Bittermold",
@@ -1020,14 +1117,14 @@
         document.querySelectorAll('[data-room]').forEach(el => {
             el.addEventListener('click', () => openRoom(el.dataset.room));
         });
- 
+
         document.querySelector('.rngenc').addEventListener('click', openRandomEncounterTable);
         document.querySelector('.statblocks').addEventListener('click', openStatblocks);
- 
+
         document.getElementById('reset').addEventListener('click', () => {
             popupContainer.replaceChildren();
         });
- 
+
         const search = document.getElementById('search');
         search.addEventListener('input', () => {
             const q = search.value.trim().toLowerCase();
@@ -1043,7 +1140,7 @@
         });
         // Party token: drag to move, position saved in localStorage as % of the map
         (function () {
-            const KEY = '2010-party-pos';
+            const KEY = '2006-party-pos';
             const DEFAULT = { x: 26.5, y: 50.8 };
             const wrap = document.getElementById('mapWrap');
             const token = document.getElementById('partyToken');
