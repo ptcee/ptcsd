@@ -328,7 +328,7 @@ const ADV = {
     "1712": "", // Golden Waves: The Beacon Inn
     "1713": "", // Golden Waves: The Antler Thicket
     "1714": "", // Winter's Edge: The Whistling Vents
-    "1715": "", // Winter's Edge: The Whistling Vents
+    "1715": "adv/1715.html", // Winter's Edge: The Whistling Vents
     "1716": "", // Winter's Edge: The Whistling Vents
     "1717": "", // Winter's Edge: The Rime Stair
     "1718": "", // Winter's Edge: The Rime Stair
