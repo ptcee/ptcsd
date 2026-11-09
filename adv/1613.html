@@ -510,89 +510,129 @@
     <div id="popupContainer"></div>
 
     <script>
-        const rooms = {
+                        const rooms = {
             "1": {
-                "name": "Mural Chamber",
-                "description": "**Walls:** Floor-to-ceiling murals painted in vibrant jewel tones. **Red Pillars:** Tapered, banded in black marble at top and bottom.",
+                "name": "Roadside Carnage",
+                "description": "Saddled **horses**, small **dogs**, and green **bodies** litter the dusty road, spattered in fresh **blood**. A young **man** hangs upside-down, roped to a tree trunk.",
                 "bullets": [
-                    "**Murals.** People in white robes kneeling in a room of red pillars before a colossal, onyx bull with horns lowered.",
-                    "▶ **Hidden Niche.** Behind bull statue. Silver-inlaid bull horn (30 gp).",
-                    "**Ettercap NPC. Eska** (weaselly, disloyal). Just hid a stolen pearl in Area 2. Hides on the northeast corner of ceiling. Screeches an alarm and flees toward Area 4 if attacked.",
-                    "▶ **Escapes.** Three ettercaps from Area 4 set an **ambush** in Area 2."
+                    "**Horses**. Three, shredded by sharp teeth (worgs).",
+                    "▶ **Treasure**. 3 rations, 1 torch, fancy suits and dresses, 1 bottle of tasteful citrus perfume, 1 mirror.",
+                    "**Dogs**. Two gray terriers, killed by sharp teeth (worgs).",
+                    "**Bodies**. 3 goblins (small, green, spear wounds).",
+                    "**Blood**. Trail leads into the **Brambles** to #2, then fades away. Many goblin footprints, and two human drag-marks.",
+                    "**Man**. A human youth (squire Ned), upside-down, tied to a tree trunk, near the ground.",
+                    "▶ Dead, heart carved out.",
+                    "▶ Left arm is green, warty, shrunken (goblin bite).",
+                    "▶ **Trap**. When the ropes are cut, three sawn-off tree branches fall from above. DC 9 DEX or d4 damage."
                 ],
                 "stats": ""
             },
             "2": {
-                "name": "Blinding Cave",
-                "description": "**Walls:** Flecked with countless, smooth shards of quartz. **White Bundles:** Man-sized, several stuffed into cave corners.",
+                "name": "Rocky Pit",
+                "description": "The thorny passage **narrows** around a rocky **pit**. There is no way around it.",
                 "bullets": [
-                    "**Ettercap Ambush.** If Eska in Area 1 raised alarm, three hostile ettercaps from Area 4 cling to 20' ceiling.",
-                    "**Walls.** Dazzlingly reflective. DC 12 DEX when entering with bright light or blinded for 1d4 rounds (ettercaps are unaffected).",
-                    "▶ **Prying.** Carefully extracted piece of cave wall serves as a mirror.",
-                    "**White Bundles.** Five **beastmen** wrapped in ettercap silk. 1:6 chance one still lives. Pearl (40 gp) hidden inside one's mouth."
+                    "**Narrows**. Must go single file.",
+                    "**Pit**. 5 feet across, 10 feet deep. Far side glistens (slippery with hagfish oil). 2 tiny **lights** float in the darkness.",
+                    "▶ **Lights**. Fairies (Vix and Pix, playful, cruel).",
+                    "▶ **Danger**. DC 9 DEX to jump safely, or else slip and fall down into a heap of old bones: d4 damage.",
+                    "**Danger**. Two **goblins** lurk in nooks in the thicket walls just beyond the rocky pit.",
+                    "▶ **Hedgeby**. Small, scarred, clever. **Asks** intruders loudly about how many types of animals they have eaten, buying time for a **worg** to arrive in 2 rounds.",
+                    "▶ **Sedgeby**. Large, round, dim. **Wants** to shove intruders in the pit so he can go back to sleep.",
+                    "▶ **Treasure**. Clubs, slings, rags, jar of hagfish oil (slippery, flammable)."
                 ],
                 "stats": ""
             },
             "3": {
-                "name": "Web-Choked Cave",
-                "description": "**Walls and Floor:** Covered in thick, gauzy sheets of webbing.",
+                "name": "Worg Den",
+                "description": "Furry **beasts** lie in the thick yellow grass, some **sleeping** and some **snarling** to each other.",
                 "bullets": [
-                    "**Webs.** Sticky. DC 12 STR to break free and move each turn. Highly flammable (1d6 damage to stuck creatures, burns 1d4 rounds).",
-                    "▶ **Rolled Parchment.** Stuck in webs, 10' up. Scroll of Hold Portal.",
-                    "**Secret Tunnel.** Hidden by a wall of webs. Ettercaps reseal it each time they pass through.",
-                    "▶ **Chittering.** Listeners hear shrill, tittering whispers from Area 4."
+                    "**Beasts**. Five **worgs**. Intelligent. Work for meat.",
+                    "**Sleeping**. 2 pups. Light sleepers! Loud but harmless. DC 18 WIS or CHA to adopt a worg pup (hungry, yappy).",
+                    "**Snarling**. 3 **worgs** gnawing on boar legs and arguing in Goblin-speak.",
+                    "▶ **Nibbler** wants to stay with the goblins. Easy meals!",
+                    "▶ **Cringer** wants to find a new den. No more taking orders from goblins!",
+                    "▶ **Snapper** wants to kill all the goblins and take over the Brambles.",
+                    "**Danger #1**. 1-in-6 chance a wild **boar** dashes by, stirring the **worgs** into a frenzy.",
+                    "**Danger #2**. 2-in-6 chance a wicked **fairy** deliberately alerts the **worgs** to the Party.",
+                    "**Treasure**. Half a boar carcass (2d4 rations). A lump of fresh worg scat (attracts nearby worgs and repels other animals for 5 rounds)."
                 ],
                 "stats": ""
             },
             "4": {
-                "name": "Ettercap Nest",
-                "description": "**Creatures:** Group of purple-furred, potbellied humanoids with spindly legs. Snarling at each other about a missing pearl. **Cave:** Cramped, tufts of spiderweb everywhere. **Floor:** Neat piles of gold and lustrous objects. **Ceiling:** Low (10'), three narrow shafts (1').",
+                "name": "Goblin Warren",
+                "description": "Beyond a **curtain** of writhing snakes, the ground is carpeted with muddy **clothing**. Goblins **sprawl** in swaying hammocks or **fidget** on the filthy ground.",
                 "bullets": [
-                    "**Ettercaps.** Five. Three go to Area 2 if **Eska** (Area 1) raises an alarm. Might parlay, but are fatally treasure-crazed. Squeeze through ceiling shafts with scoops of each other's loot if outclassed.",
-                    "▶ **NPCs. Skir** (animated, loud), **Yisha** (tiny, sinister), **Grisk** (old, irritable), **Uliss** (lumbering, dull), **Chee** (silver fur, elegant).",
-                    "**Treasure.** 12 evenly-valued piles (some belong to wanderers). **Eska** (Area 1) stole a pearl from Grisk's share and hid it in Area 2.",
-                    "▶ **Details.** 200 gp, 2 pearls (40 gp each), alabaster statuette of a bull (20 gp), 2 silver incense bowls (15 gp each), jade snake bracelet (20 gp), necklace of thick gold links (30 gp)."
+                    "**Curtain.** Nine live kingsnakes (red-and-white stripes, NOT venomous), tails nailed over the entrance. DC 12 DEX to dodge or d4 damage.",
+                    "**Clothing**. Linen tunics, wool skirts, leather boots, knit shawls (peasant apparel).",
+                    "**Sprawl**. 1 pretending to sleep. **Thistle** is a terrified halfling herbalist disguised as a goblin, desperate to escape!",
+                    "**Fidget**. 3 awake. **Grom** sharpens his teeth. **Goba** picks her nose. **Gort** torments five glowing **fairies** trapped in a dingy glass **bottle**.",
+                    "▶ **Fairies**. Names: Bitz, Mav, Nix, Din, Frip. Hate all Big Folk. When freed, attack the goblins and Party.",
+                    "▶ **Bottle**. Trapped fairies make a good lantern for about 1 hour, and then the fairies suffocate.",
+                    "**Treasure**. All muddy: glasses, cane, compass, hats, belts, kettle, tin whistle, cow bell, wood Amulet of Gede (2gp)."
                 ],
                 "stats": ""
             },
             "5": {
-                "name": "Robing Chamber",
-                "description": "**Skeleton:** Pinned to wall. Hands clasp a spear jutting from ribcage. **Walls:** Chipped mosaic of cavorting dolphins. White robes on pegs.",
+                "name": "Bubbling Pots",
+                "description": "Two **goblins** with cleavers chase a squealing **boar** through a thick haze of **smoke**. Nine tin **pots** bubble on red fires by a mound of dead **animals**.",
                 "bullets": [
-                    "**Skeleton.** Wears decaying, crimson-dyed leather armor. Bronze shortsword hangs from belt.",
-                    "▶ **Spear.** Driven deep into stone with inhuman force. Bronze tip.",
-                    "**Robes.** Four. Musty, rotten. Bronze **key** to Area 21 in one's pocket."
+                    "**Goblins**. Cooks **Grava** and **Golb** (loud, clumsy) giggle as they try to butcher the boar.",
+                    "▶ **Danger**. 3-in-6 chance the boar charges at the Party before the goblins notice they have arrived.",
+                    "▶ **Treasure**. Meat cleavers, skewers, barbed wire.",
+                    "**Boar.** Just an unlucky pig.",
+                    "**Smoke**. Duck low or DC 12 CON to avoid coughing loudly and drawing attention.",
+                    "**Pots**. Nine boiling **stews**: 4 of rat (gross), 2 of rabbit (delicious), 1 of rattlesnake (poison), 1 of hagfish (oily, flammable), 1 human hands (horrifying, DC 12 WIS or weep loudly for 3 rounds).",
+                    "**Animals**. Rats, squirrels, rabbits, snakes, beetles, worms, sparrows, lizards.",
+                    "**Danger**. 2-in-6 chance that 2 more **goblins** (Lunk and Dunk, love wrestling) wander in, looking for a snack."
                 ],
                 "stats": ""
             },
             "6": {
-                "name": "Bathhouse",
-                "description": "**Statue:** A life-sized, snake-haired woman with arms raised and mouth open in a scream. **Stone Basins:** Smooth, human-sized.",
+                "name": "Jeweled Corpse",
+                "description": "A goblin **corpse** hangs on a pole. Jeweled **baubles** sparkle in its eyes and mouth. **Tripwires**, dangling **blades**, and half-hidden **pit traps** litter the area.",
                 "bullets": [
-                    "**Statue.** Turning the hinged arms down causes scalding water to spew from mouth (DC 12 DEX to leap aside or 1d4 damage).",
-                    "**Basins.** Six. Coiling snake carvings. Stone plugs wedged in drains.",
-                    "▶ **Removing Plugs.** Cumulative 1:6 to unleash a **scarab swarm**."
+                    "**Corpse**. Ex-chief **Crudfoot**.",
+                    "**Baubles**. All muddy and bloody. Gold chain (20gp), uncut ruby (30gp), pearl earring (20gp), silver tiara (20gp), opal bracelet (20gp), diamond ring (30gp), turquoise brooch (20gp).",
+                    "**Tripwires**. Like a spider web! DC 12 INT to disarm, DC 12 DEX to sneak by, or else dozens of colorful poison dart frogs are launched at the Party. DC 12 CON or poisoned for 3 rounds, roll **d4**:",
+                    "1. Take d4 damage",
+                    "2. Giggle madly (loud)",
+                    "3. Projectile vomiting (stink)",
+                    "4. Lick the thorny walls",
+                    "▶ **Secret**. Nine spring-loaded sacks of poison dart frogs hidden in the thorny walls. Croaking.",
+                    "**Blades**. Pitchforks and knives at neck-height. Make a **loud clatter** if a storm of frogs hits them, summons 2 **goblins**.",
+                    "**Pit traps**. 2 of them, 1 at each entrance. 5 feet across, 5 feet deep. Sharp wooden stakes. Poorly hidden with leaves and blankets. Easy to spot."
                 ],
                 "stats": ""
             },
             "7": {
-                "name": "Bull Statue",
-                "description": "**Bull Statue:** Towering (10'), bronze. Horns lowered for a charge. **Hall:** 15' high. Pairs of deep holes punched into wall opposite statue.",
+                "name": "Black Cauldron",
+                "description": "A **woman** dangles on a rope just above a bubbling **cauldron**. Two sneering **goblins** tend the fire and rope, while a goblin **elder** in a feathered headdress recites a loud, phlegmy chant.",
                 "bullets": [
-                    "**Statue.** Motion-activated. 3:6 chance/round it animates and charges to end of hall (ignores Scarlet Minotaur). DC 15 DEX or 2d6 damage and knocked flat. Trots back to position and resets.",
-                    "▶ **Emerald.** 120 gp, embedded in statue's forehead. Shattering (AC 20, 1 HP) deactivates statue but reduces gem's value to 20 gp."
+                    "**Woman**. This is **Lady Tessa** (stylish scholar, noble). Wants to be saved. Loves Sir Luke. Likes cats and tea. Expert in botany, history, and archery.",
+                    "**Cauldron**. Big enough for a human. Reeks of Chaos.",
+                    "▶ **Danger**. After 1 round inside, a creature turns green and warty. After 2 rounds they are bald with sharp teeth. After 3 rounds they shrink into a goblin.",
+                    "**Goblins**. Cruel **Brik** and **Brak**.",
+                    "▶ **Danger**. When the Party appears, Brik and Brak instantly drop Lady Tessa in the cauldron. They also whistle for 1 **worg** to come in 2 rounds.",
+                    "**Elder**. The **goblin shaman Mama Yaska** (hunchback, wrinkled, cunning). Worships Shune the Vile. Wants to turn everyone into goblins!",
+                    "▶ **Treasure**. **Mama Yaska’s Headdress**. Speak Goblin, identify animals by scent. 1/day, summon an owl to perform a simple task."
                 ],
                 "stats": ""
             },
             "8": {
-                "name": "Blood Bowls",
-                "description": "**Alcoves:** Square, black plinths each hold a simple terracotta bowl.",
+                "name": "Black Throne",
+                "description": "**Armor** litters the ground by a **man** kneeling before a twisted **throne**. A **worg** and **will-o-wisp** rest by the high seat, as a stout **goblin** with a black **crown** waves a steel spear about.",
                 "bullets": [
-                    "**Bowls.** Six. Stamped with a seal that shows a warrior kneeling in a black rain, arms and mouth open to the sky.",
-                    "▶ **Blood.** Filling a bowl with fresh blood charges the blood with healing magic (1d4 HP, must drink). Once used, bowl crumbles."
+                    "**Armor**. A suit of plate mail.",
+                    "**Man**. This is **Sir Luke** (large, square, quiet). His back is to the entrance, hands bound. Quite dead, heart cut out.",
+                    "**Throne**. Hewn from the ebon heart of a wychwood tree. The **sitter** can see through the eyes of every goblin within a mile. Also **restores** creatures to their true form!",
+                    "**Worg**. Loyal mount **Fangsy**.",
+                    "**Will-o-wisp**. Soul of the last goblin chief, **Crudfoot**.",
+                    "**Goblin**. This is **Krunshlik** the **goblin boss** (disturbingly clever, murderous). Wants a goblin kingdom. Eats human hearts to grow stronger.",
+                    "▶ “Kneel, villains, and I’ll kill you quickly! Or don’t, and this will just take longer!”",
+                    "**Crown**. The fabled **Black Briar Crown**. The wearer becomes an official Goblin King. Any goblin within near must roll DC 15 CHA or obey the wearer (but will not harm themselves or each other)."
                 ],
                 "stats": ""
-            },
+            }
         };
         const popupContainer = document.getElementById('popupContainer');
         let popupZIndex = 20;
