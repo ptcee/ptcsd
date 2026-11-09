@@ -801,10 +801,10 @@
             popup.append(head, body);
             popupContainer.appendChild(popup);
  
-            // Cascade newly opened windows so they remain individually accessible.
+            // Cascade newly opened windows, starting at the top-left.
             const offset = (popupOffset++ % 8) * 28;
-            popup.style.left = `calc(50% - 210px + ${offset}px)`;
-            popup.style.top = `${90 + offset}px`;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
             popup.style.zIndex = ++popupZIndex;
  
             contentBuilder(body);
