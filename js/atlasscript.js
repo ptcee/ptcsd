@@ -473,7 +473,7 @@ function pCamp() {
     const n = D.hexes.filter(h => S.notes[h.id]); return `<h2>GM Screen</h2><div style="margin-bottom:8px"><button data-eco="1">Economy</button> <button data-car="1">Carousing</button></div>${qrBlk()}<h2 style="margin-top:22px">Campaign</h2><input type="text" id="ct" value="${e(S.title)}" placeholder="Campaign title"><h3>Campaign notes</h3><textarea id="cn">${e(S.camp)}</textarea>
      <h3>Hexes with GM notes (${n.length})</h3>${n.map(h => `<div class="res" data-go="${h.id}"><b>${h.id}</b> <i class="mu">${e(h.region)}</i><br>${e(S.notes[h.id].slice(0, 120))}</div>`).join('') || '<p class="mu">None yet.</p>'}
     <h3>Fog of war</h3><button data-fogall="1">Mark all explored</button> <button data-fogall="0">Clear explored</button> <button data-reset="1">Reset everything</button>
-    <p class="mu">Notes autosave in this browser (localStorage). Export JSON to back up or move your campaign.<br><br><br><a href="adv/trial_of_the_slime_lord_interactive.html" target="_blank"><button class="linky">Adv: Slimelord</button></a></p>`}
+    <p class="mu">Notes autosave in this browser (localStorage). Export JSON to back up or move your campaign.<br><br><br></p>`}
 function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab == tab)); pane.innerHTML = ({ hex: pHex, search: pSearch, dun: pDun, enc: pEnc, rum: pRum, fac: pFac, camp: pCamp })[tab]();
     if (pend != null) { const r = pane.querySelector(`[data-i="${pend}"]`); if (r) { r.classList.add('hit'); r.scrollIntoView({ block: 'center' }) } pend = null }
