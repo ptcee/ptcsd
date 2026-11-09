@@ -374,7 +374,7 @@ const ADV = {
     "2003": "", // Rimewastes: The Sleeping Bear
     "2004": "", // Emerald Wood: The Fog Basin
     "2005": "", // Emerald Wood: The Fog Basin
-    "2006": "", // Emerald Wood: The Fog Basin
+    "2006": "adv/2006.html", // Emerald Wood: The Fog Basin
     "2007": "", // Emerald Wood: The Fog Basin
     "2008": "", // Emerald Wood: The Resin Wood
     "2009": "", // Emerald Wood: The Resin Wood
