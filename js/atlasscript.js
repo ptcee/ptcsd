@@ -307,7 +307,7 @@ const ADV = {
     "1610": "", // Emerald Wood: The Resin Wood
     "1611": "", // Emerald Wood: The Resin Wood
     "1612": "", // Golden Waves: The Spiral Hill
-    "1613": "", // Golden Waves: The Spiral Hill
+    "1613": "adv/1613.html", // Golden Waves: The Spiral Hill
     "1614": "", // Golden Waves: Seven Eyes Citadel Ruins
     "1615": "", // Winter's Edge: The Whistling Vents
     "1616": "", // Winter's Edge: The Rime Stair
