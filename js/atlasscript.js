@@ -31,7 +31,7 @@ const ADV = {
     "0111": "", // Behemoth's Rift: Behemoth's Rift
     "0112": "", // Behemoth's Rift: Behemoth's Rift
     "0113": "", // Cinder Peaks: The Weeping Gorge
-    "0114": "", // Cinder Peaks: The Needle Teeth
+    "0114": "adv/0114.html", // Cinder Peaks: The Needle Teeth
     "0115": "", // Cinder Peaks: The Needle Teeth
     "0116": "", // Cinder Peaks: Sleepers' Rim
     "0117": "", // Cinder Peaks: Sleepers' Rim
@@ -307,7 +307,7 @@ const ADV = {
     "1610": "", // Emerald Wood: The Resin Wood
     "1611": "", // Emerald Wood: The Resin Wood
     "1612": "", // Golden Waves: The Spiral Hill
-    "1613": "adv/1613.html", // Golden Waves: The Spiral Hill
+    "1613": "", // Golden Waves: The Spiral Hill
     "1614": "", // Golden Waves: Seven Eyes Citadel Ruins
     "1615": "", // Winter's Edge: The Whistling Vents
     "1616": "", // Winter's Edge: The Rime Stair
@@ -374,7 +374,7 @@ const ADV = {
     "2003": "", // Rimewastes: The Sleeping Bear
     "2004": "", // Emerald Wood: The Fog Basin
     "2005": "", // Emerald Wood: The Fog Basin
-    "2006": "adv/2006.html", // Emerald Wood: The Fog Basin
+    "2006": "", // Emerald Wood: The Fog Basin
     "2007": "", // Emerald Wood: The Fog Basin
     "2008": "", // Emerald Wood: The Resin Wood
     "2009": "", // Emerald Wood: The Resin Wood
@@ -473,7 +473,7 @@ function pCamp() {
     const n = D.hexes.filter(h => S.notes[h.id]); return `<h2>GM Screen</h2><div style="margin-bottom:8px"><button data-eco="1">Economy</button> <button data-car="1">Carousing</button></div>${qrBlk()}<h2 style="margin-top:22px">Campaign</h2><input type="text" id="ct" value="${e(S.title)}" placeholder="Campaign title"><h3>Campaign notes</h3><textarea id="cn">${e(S.camp)}</textarea>
      <h3>Hexes with GM notes (${n.length})</h3>${n.map(h => `<div class="res" data-go="${h.id}"><b>${h.id}</b> <i class="mu">${e(h.region)}</i><br>${e(S.notes[h.id].slice(0, 120))}</div>`).join('') || '<p class="mu">None yet.</p>'}
     <h3>Fog of war</h3><button data-fogall="1">Mark all explored</button> <button data-fogall="0">Clear explored</button> <button data-reset="1">Reset everything</button>
-    <p class="mu">Notes autosave in this browser (localStorage). Export JSON to back up or move your campaign.<br><br><br></p>`}
+    <p class="mu">Notes autosave in this browser (localStorage). Export JSON to back up or move your campaign.<br><br><br><a href="adv/trial_of_the_slime_lord_interactive.html" target="_blank"><button class="linky">Adv: Slimelord</button></a></p>`}
 function render() {
     document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab == tab)); pane.innerHTML = ({ hex: pHex, search: pSearch, dun: pDun, enc: pEnc, rum: pRum, fac: pFac, camp: pCamp })[tab]();
     if (pend != null) { const r = pane.querySelector(`[data-i="${pend}"]`); if (r) { r.classList.add('hit'); r.scrollIntoView({ block: 'center' }) } pend = null }
