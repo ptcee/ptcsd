@@ -1,0 +1,1287 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>Fortress of the Burning Brothers</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #e09045;
+            --line: #4d4c4c;
+            --accent: #ff5e0e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            /* margin: 0 auto; */
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* .hotspot {
+            position: absolute;
+            z-index: 2;
+            border: 1px solid var(--line);
+            background: var(--bg);
+            border-radius: 4px;
+            cursor: pointer;
+            line-height: 1;
+            transition: background .12s, border .12s;
+        }
+
+        .hotspot:hover,
+        .hotspot:focus {
+            background: var(--line);
+            border: 2px solid var(--bolden);
+            outline: none;
+        }
+
+        .hotspot span {
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--ink);
+            border-radius: 50%;
+            width: 21px;
+            height: 21px;
+            display: grid;
+            place-items: center;
+            line-height: 1;
+        } */
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--panel);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .compasss {
+            position: fixed;
+            top: 70px;
+            right: 100px;
+            width: 100px;
+            display: none;
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+
+            /* .hotspot span {
+                width: 17px;
+                height: 17px;
+                font-size: 10px;
+            } */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Fortress of the Burning Brothers</h1><span id="levelTabs" role="group" aria-label="Map level" style="display:flex;gap:6px;flex-wrap:wrap"></span><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">× Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+            <div class="lvl-panel" data-panel="1F">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Dim, orange magma glow.</p>
+                </div>
+                <h2>Random Encounters</h2>
+                <table>
+                    <tr>
+                        <th>d6</th>
+                        <th>details</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1d4 <strong>salamanders</strong> take a <strong>duergar</strong> slave to prison (Area 10) who they caught sneaking around outside of the mines</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Halim</strong> (Malik's rakshasa spy) in illusory disguise as a salamander; he's fishing for gossip from another <strong>salamander</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>A spooked <strong>nightmare</strong> that escaped from the stables (Area 18) crashes toward where the PCs are</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>2d4 vicious <strong>scorpions</strong> burst from the shadows</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>Gaspar</strong> (Area 8) angrily storms toward a nearby building with a retinue of 4 <strong>salamanders</strong></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>A <strong>strangler</strong> that crept into the fortress follows the PCs and tries to stealthily pick off the rear character</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lvl-panel hide" data-panel="2F">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Dim light in rooms with magma. Otherwise, total darkness.</p>
+                </div>
+                <h2>Random Encounters</h2>
+                <table>
+                    <tr>
+                        <th>d6</th>
+                        <th>details</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>A concussive blast of hot air blows out any torches/lanterns</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>1d4 <strong>hell hounds</strong> broken loose from the kennels (Area 28) race up the halls, looking to cause mayhem</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>1d6 grouchy <strong>duergar</strong> hurrying to the forge hall (Area 20) to start their shift; fearful of being late</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Rashik</strong> (Area 30), Gaspar's salamander spy, slinks through the halls and eavesdrops</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>2d4 exhausted <strong>duergar</strong> headed to rest (Area 27) after their work shift; DISADV for them to notice hidden creatures</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>A roving <strong>bulette</strong> breaks through the wall, goes on a rampage (1d4 rounds), and then retreats into its collapsing tunnel</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/ironfortress1F.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Gate of Fire</button>
+                <button class="room-chip" data-room="2">Area 2: West Gate Tower</button>
+                <button class="room-chip" data-room="3">Area 3: East Gate Tower</button>
+                <button class="room-chip" data-room="4">Area 4: Courtyard</button>
+                <button class="room-chip" data-room="5">Area 5: Mess Hall</button>
+                <button class="room-chip" data-room="6">Area 6: Captain's Quarters</button>
+                <button class="room-chip" data-room="7">Area 7: Barracks</button>
+                <button class="room-chip" data-room="8">Area 8: Castellan's Tower</button>
+                <button class="room-chip" data-room="9">Area 9: Gaspar's Quarters</button>
+                <button class="room-chip" data-room="10">Area 10: Prison</button>
+                <button class="room-chip" data-room="11">Area 11: Northeast Tower</button>
+                <button class="room-chip" data-room="12">Area 12: Rear Gatehouse</button>
+                <button class="room-chip" data-room="13">Area 13: Desecrated Temple</button>
+                <button class="room-chip" data-room="14">Area 14: Vault</button>
+                <button class="room-chip" data-room="15">Area 15: Extraplanar Portal</button>
+                <button class="room-chip" data-room="16">Area 16: West Tower</button>
+                <button class="room-chip" data-room="17">Area 17: Southwest Tower</button>
+                <button class="room-chip" data-room="18">Area 18: Stables</button>
+                <button class="room-chip" data-room="19">Area 19: Hidden Mine Entrance</button>
+                <button class="room-chip" data-room="20">Area 20: Forge Hall</button>
+                <button class="room-chip" data-room="21">Area 21: Malik's Quarters</button>
+                <button class="room-chip" data-room="22">Area 22: Secret Summoning Lair</button>
+                <button class="room-chip" data-room="23">Area 23: Mining Tunnels</button>
+                <button class="room-chip" data-room="24">Area 24: Defaced Statues</button>
+                <button class="room-chip" data-room="25">Area 25: Naga Cave</button>
+                <button class="room-chip" data-room="26">Area 26: Iron Trees</button>
+                <button class="room-chip" data-room="27">Area 27: Duergar Camp</button>
+                <button class="room-chip" data-room="28">Area 28: Hell Hound Kennels</button>
+                <button class="room-chip" data-room="29">Area 29: Empty Cell</button>
+                <button class="room-chip" data-room="30">Area 30: Silent Gallery</button>
+                <button class="room-chip" data-room="31">Area 31: Mine Junction</button>
+                <button class="room-chip" data-room="32">Area 32: Mining Tunnels</button>
+                <button class="room-chip" data-room="33">Area 33: Mining Tunnels</button>
+                <button class="room-chip" data-room="34">Area 34: Mining Tunnels</button>
+                <button class="room-chip" data-room="35">Area 35: Hidden Cave</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <h3>Background.</h3>
+                        <p>The efreeti lord Pasha Jefar has twin sons, Malik and Gaspar. Both are as cruel and conniving as their father. By the laws of the Sultan, Jefar must choose one of his firstborn sons to inherit his title. To determine their fate, Jefar has sent them to share the command of the Iron Fortress, a duergar mine on the Material plane. They know their unspoken task: Prove yourself worthy. The Sultan's law prohibits overt murder, so each brother seeks a deniable way to get rid of the other. Both crave to return to the City of Brass in triumph.</p>
+
+                        <h3>Factions.</h3>
+                            <ul>
+                                <li><strong>Malik the Cunning.</strong> Malik is thin as a whip and shrewd as a viper, wielding sorcery that even his tutors in the City of Brass feared to use. He's in charge of the rich mines and forgeworks beneath the Iron Fortress, as well as its duergar slaves, allies who are fanatically loyal to him due to his clever use of enslaving magic. He also has an opportunistic rakshasa ally, Halim, who spies on Gaspar.</li>
+                                <li><strong>Gaspar the Fierce.</strong> Gaspar towers over his brother, wielding his black-bladed scimitar with ferocity. He's in charge of the fortress itself and commands the militant salamanders who defend it. The salamanders have sworn an oath of allegiance to the efreet in exchange for elevated status in society; they're a cut above slaves. They're ruthlessly loyal to those who guarantee their position. Rashik, Gaspar's salamander spy, secretly lurks in the mines.</li>
+                            </ul>
+
+                        <h3>The Iron Fortress.</h3>
+                        <p>The Iron Fortress was a duergar mining stronghold before falling to the efreet. It stands in a cathedral cavern deep inside the Howling Caves (pg. 35). Churning rivers of magma flow through the cave, filling the air with an orange glow and suffocating heat. The fortress is made of dark basalt with thick crenellations of blackened iron.</p>
+                        <h4>Features</h4>
+                            <ul>
+                                <li><strong>Light.</strong> Magma fills the entire cavern with a dim, orange glow.</li>
+                                <li><strong>Walls.</strong> 30' high, razor edges (ropes 2:6 tear). Smooth surface is impossible to climb with bare hands.</li>
+                                <li><strong>Towers.</strong> 10' above walls (40' high), razor edges (ropes 2:6 tear).
+                                    <ul>
+                                        <li>Iron ladders (10', removable) connect walkways to towers.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Iron Crenels.</strong> On walls and towers. DISADV to hit covered targets.</li>
+                                <li><strong>Interior Buildings.</strong> Black basalt. Peaked roofs, 20' high at center.</li>
+                                <li><strong>Magma River.</strong> 20' deep. Deals 5d10 damage/rd, death at 0 HP.</li>
+                            </ul>
+                        <h4>Encounters</h4>
+                            <ul>
+                                <li><strong>Risky.</strong> Check for a random encounter every 2 crawling rounds.</li>
+                                <li><strong>Salamander Guards.</strong> The salamanders look out into the cavern (DC 15 DEX to avoid notice from outside walls/DC 12 DEX inside).
+                                    <ul>
+                                        <li><strong>Guard Change.</strong> Every two hours. Takes 1d4 rounds. During the rotation, it's easy to avoid notice (DC 9 DEX).</li>
+                                        <li>Guard rotations mean the salamanders change locations every two hours. Roll on the <strong>Salamander NPCs</strong> list on pg. 63 when you need to determine who is currently nearby. Remove dead NPCs from the list.</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Order of Battle.</strong> Each tower has a brass gong for raising the alarm. If raised, the 12 salamanders atop towers (Areas 2, 3, 8, 11, 12, 16, 17) provide longbow cover, and the 13 from Areas 5, 6, and 7 arm and muster in the courtyard (Area 4) in 2 rounds.
+                                    <ul>
+                                        <li><strong>Gaspar.</strong> A third of the salamanders go to protect him (Area 8).</li>
+                                        <li><strong>Sweeps.</strong> Salamanders atop towers remain in position. The rest sweep the fortress in groups of 3-5 for an hour. Intruders are preferably captured alive and taken before Gaspar.</li>
+                                        <li><strong>Afterwards.</strong> Guard numbers double for 24 hours after an alarm is raised. All checks to avoid notice become DC 18.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        <h3>The Mines.</h3>
+                        <p>A pitch-dark webwork of tunnels beneath the Iron Fortress. Duergar slaves hack relentlessly at the sharp rock, pulling out rich veins of iron and gold. The duergar use a vast furnace room to refine the ore, preparing it for its final destination in the City of Brass. The baking heat inside the cramped tunnels is stifling.</p>
+                        <h4>Features</h4>
+                            <ul>
+                                <li><strong>Light.</strong> Dim light in rooms with magma. Otherwise, total darkness.</li>
+                                <li><strong>Tunnels.</strong> Flinty, black granite. 10' high unless noted. The constant clangor of mining and forging makes sneaking easy (DEX DC 9).</li>
+                                <li><strong>Magma.</strong> 20' deep. Deals 5d10 damage/rd, death at 0 HP.</li>
+                            </ul>
+                        <h4>Encounters</h4>
+                            <ul>
+                                <li><strong>Risky.</strong> Check for a random encounter every 2 crawling rounds.</li>
+                                <li><strong>Duergar.</strong> They bellow for help if under attack; all duergar in adjacent rooms arrive in 1d4 rounds. They try to capture invaders and bring them before Malik rather than kill them.
+                                </li>
+                                <li><strong>Order of Battle.</strong> The duergar don't have an organized defense; they rely on yelling to nearby allies for help. If their morale breaks, they flee toward Malik in Area 21, collecting allies along the way.
+                                    <ul>
+                                        <li><strong>Malik.</strong> If alerted, he barricades in Area 22 with any duergar at hand and casts defensive spells on himself. If no threat materializes after an hour, he sends the duergar back to work.</li>
+                                        <li><strong>Afterwards.</strong> Malik and duergar are more alert for 24 hours after an incident (DC 15 DEX to escape their notice).</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Duergar Slaves.</strong> Most duergar are under the effects of enslave spells Malik regularly refreshes. Repeated brainwashings have given them all a shared, cultish devotion to Malik, even without the magic (DC 15 CHA for an un-enslaved duergar to overcome fanaticism, if given evidence).</li>
+                                <li>When the PCs encounter unnamed duergar, determine who they are with the <strong>Duergar NPCs</strong> list on pg. 64. Remove dead duergar.</li>
+                            </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            { id: '1F', label: 'Iron Fortress (1F)', img: 'adv-maps/ironfortress1F.png', start: { x: 50, y: 50 } },
+            { id: '2F', label: 'The Mines (2F)', img: 'adv-maps/ironfortress2F.png', start: { x: 50, y: 50 } }
+            // To add another level: add an entry here, set "level" on its rooms,
+            // and (optionally) add a <div class="lvl-panel hide" data-panel="ID"> to .rngenc.
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "1F",
+                "name": "Gate of Fire",
+                "description": "A glowing river of **magma** flows beneath the teeth of an iron **portcullis** and into a shadowy courtyard. Two sturdy towers flank the river; burning figures move about on top of them.",
+                "bullets": [
+                    "**Salamanders.** Two salamanders watch Area 1 from the towers in Areas 2 and 3. Their flamelike coloration creates the illusion of fire.",
+                    "**Magma.** Magma completely fills the 10' wide entrance, leaving no walkway on either side. It passes into the courtyard (Area 4).",
+                    "**Portcullis.** Sits just above the surface of the magma. The **winch** in Area 2 raises and lowers it."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "1F",
+                "name": "West Gate Tower",
+                "description": "A **salamander** watches from the top of the fortified tower; a brass **gong** stands a few steps away from it.",
+                "bullets": [
+                    "**Interior.** Grimy floors. A hefty winch protrudes from the east wall.",
+                    "▶ **Winch.** Raises or lowers the iron portcullis (Area 1) in 2 rounds.",
+                    "▶ **Paper Scrap.** In a dirty corner. Torn. Says, “...and I know they don't respect you, Malchiz. Come speak to me in the mines...”"
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "1F",
+                "name": "East Gate Tower",
+                "description": "A **salamander** stands guard beside a hammered brass **gong**.",
+                "bullets": [
+                    "**Interior.** Six weighty, dark rocks are strewn about the floor. An iron sculpture of a smirking dwarf face hangs from the door.",
+                    "▶ **Rocks.** Lifting one causes a stream of magma to gout from a small hole in the flagstone (DC 12 DEX or 3d8 damage).",
+                    "▶ **Dwarf Face.** Touching it while speaking in Dwarvish causes the matched faces (Area 8, 16) to animate and repeat the words."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "1F",
+                "name": "Courtyard",
+                "description": "Looming buildings of black stone surround a courtyard split by a churning river of **magma**. A **bridge** arches over its fiery path.",
+                "bullets": [
+                    "**Danger Level.** Deadly (a high-traffic area). Check for random encounters every round (1:6 chance).",
+                    "**Bridge.** A duergar named Rotid crouches in the shadows under the bridge. Anyone crossing has a 2:6 chance of hearing his ragged mouth-breathing.",
+                    "▶ **Rotid.** Asthmatic, jumpy, wild hair. Malik (Area 21) sent him to spy on the guard rotation schedule. If discovered, he turns invisible and flees toward the secret door in Area 13.",
+                    "**Broken Flagstone.** Where Area 18 meets the south wall, a cracked flagstone lifts to reveal a Potion of Fire Protection (immunity to fire for 5 rounds) and a glass vial containing 2 Beads of Force."
+                ],
+                "stats": ""
+            },
+            "5": {
+                "level": "1F",
+                "name": "Mess Hall",
+                "description": "Six **salamanders** hiss and spit at each other around a broad iron table. They pause only to grab fleshy **fire slugs** off the table and jam them in their mouths.",
+                "bullets": [
+                    "**Salamanders.** Arguing in sibilant Common about each other's failures on the job. Nobody is safe from lacerating critique.",
+                    "▶ 3:6 chance a brawl breaks out that lasts 1d4 rounds. During this time, DEX checks to sneak past them are easy (DC 9).",
+                    "**Fire Slugs.** 2d4 on the table, potato-sized, quivering lumps of orange flesh. They try to inch away and leave trails of burning oil. Can be thrown near, explode in flames on impact (1d6)."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "1F",
+                "name": "Captain's Quarters",
+                "description": "A **hammock** of woven iron threads hangs from the ceiling. A dented brass **chest** with a heavy latch sits beneath it.",
+                "bullets": [
+                    "**Trap.** A faint arc of enchanted gold dust encircles the floor in front of the inside door. Any creature who breaks the ring summons a hostile fire elemental (lesser) for 2d4 rounds.",
+                    "**Captain Isshak.** 3:6 chance Isshak, the salamander captain, is sleeping in the hammock. If not, he's in Area 8. He has the key to the brass chest on an iron cord around his neck.",
+                    "▶ **Isshak.** Charcoal scales, sinewy, shrewd. Wields a black iron +1 spear called Screamer. It shrieks hideously when thrown.",
+                    "**Brass Chest.** Locked (DC 20 DEX pick, DC 18 STR break). Empty. A secret compartment in base hides an obsidian ring shaped like a cobra with ruby eyes (80 gp), 200 gp, and a Potion of Healing."
+                ],
+                "stats": ""
+            },
+            "7": {
+                "level": "1F",
+                "name": "Barracks",
+                "description": "Snoring, hissing **salamanders** sleep in rows of double bunk beds.",
+                "bullets": [
+                    "**Salamanders.** Six sleep here in shifts. Loud noises wake them. Their weapons hang from hooks on each bunk."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "1F",
+                "name": "Castellan's Tower",
+                "description": "Three **salamanders** keep watch from a tower that looms over all the others. Its iron crenels are shaped into a crown of cruel barbs.",
+                "bullets": [
+                    "**Interior.** A high-backed, granite chair sits before a desk stacked with piles of clay tablets. Sparking braziers belch out blue-black incense. A sneering, iron dwarf face hangs from the west door.",
+                    "▶ **Gaspar** (efreeti, LV 12, +9 melee). 5:6 chance he's at the desk white-knuckling through tedious work (if not, he's in Area 9).",
+                    "▷ **Meticulous.** Forcefully contained anger just below the surface. Plans to kill Malik using the broken iron golem in Area 13. Offers the PCs safety and one of his prized nightmares (Area 18) if they help, or, better yet, kill Malik themselves. Throws unruly PCs in the prison (Area 10).",
+                    "▷ Granting a mortal a wish (especially under duress) is an unbearable dishonor to an efreeti noble; he'd rather die.",
+                    "▶ **Isshak** (salamander captain, Area 6). 3:6 chance he's here to talk to Gaspar about “the dwarf spies.” If not, he's sleeping (Area 6).",
+                    "▶ **Incense.** Intoxicating to the unaccustomed. DC 12 CON or become clumsy and suggestible (DISADV on related checks).",
+                    "▶ **Dwarf Face.** Touching it while speaking in Dwarvish causes the matched faces (Area 3, 16) to animate and repeat the words."
+                ],
+                "stats": ""
+            },
+            "9": {
+                "level": "1F",
+                "name": "Gaspar's Quarters",
+                "description": "Two **salamanders** stand at firm attention outside a towering, iron **door**. Its surface is carved with lines that weave to form knots.",
+                "bullets": [
+                    "**Salamanders.** Skizzik (blood red, grim, calm) and Burgaz (saffron, muscled, brash), honor guards. Alert (DC 18 DEX to avoid notice).",
+                    "**Interior.** Plush bed, red and gold silk. Six obsidian plaques with five mithral horseshoes (one missing). Silk robes on hooks.",
+                    "▶ **Gaspar.** 1:6 chance he's here sleeping (if not, he's in Area 8).",
+                    "▶ **Horseshoes.** The nightmares' (Area 18) trophies. 100 gp each."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "1F",
+                "name": "Prison",
+                "description": "A **salamander** stands guard before two blocks of barred **cells** that reek like animal cages. Dark **shapes** lie inside them. Muted **shrieks** come from behind the east door at irregular intervals.",
+                "bullets": [
+                    "**Salamander.** Fazad (pale yellow, snide, boastful). Has a cell key.",
+                    "**Shapes.** Four miserable, bruised duergar lie in their own filth (use Duergar NPCs tables, pg. 64). Cell locks DC 20 DEX to pick."
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "1F",
+                "name": "Northeast Tower",
+                "description": "A **salamander** patrols around the top of the tower, pausing every so often to glare out into the cavern. A dull brass **gong** hangs in a shadowy corner. Faint **screams** emanate from somewhere below.",
+                "bullets": [
+                    "**Gong.** Inspection reveals it's cracked in two (can't be rung).",
+                    "**Interior.** A grey-skinned, shirtless dwarf with snowy hair and beard hangs from wall manacles. A hissing salamander pokes him with a red-hot trident, eliciting ragged yelps.",
+                    "▶ **Salamander.** Usmik (wine-red, cruel, impatient). Interrogating duergar (“Why were you skulking around up here?” “What's Malik planning?”). Has key to manacles and cells (Area 10).",
+                    "▶ **Duergar.** Gungol (young, filthy, defiant, magically enslaved by Malik). Answers all questions with, “Only Malik knows!”"
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "1F",
+                "name": "Rear Gatehouse",
+                "description": "Two **salamanders** watch from the tower, a brass **gong** between them. **Magma** flows beneath the spikes of a rusty **portcullis** set in the tower's center. A dim courtyard lurks beyond the gate.",
+                "bullets": [
+                    "**Tower.** A roof crank raises or lowers the portcullis in 2 rounds. It's rusted shut (DC 15 STR each round to operate).",
+                    "**Portcullis.** Rusted iron bars (bends on DC 20 STR).",
+                    "**Magma.** Magma completely fills the 10' wide entrance, leaving no walkway on either side. It passes into the courtyard (Area 4)."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "1F",
+                "name": "Desecrated Temple",
+                "description": "Dusty, brooding silence. A toppled iron **statue** lies amid the pieces of a shattered stone **altar**. **Carvings** of lines and knots fill the walls.",
+                "bullets": [
+                    "**Statue (Broken Iron Golem).** 10-foot tall duergar god, Dorgrim; hollow eye sockets. Deactivated by efreet invaders long ago. Requires a magical pair of ruby eyes to power it (Malik, Area 21, has recently found them, but doesn't know what they do yet).",
+                    "▶ **Gaspar** has learned how the golem works from old records and now seeks the rubies; he wants to let it loose in the mines in a “horrific accident” to kill his brother. In 2d4 days, his salamander spy (Rashik, Area 30) discovers the rubies' location.",
+                    "**Secret Door.** Rotating panel. Only the duergar know of it."
+                ],
+                "stats": ""
+            },
+            "14": {
+                "level": "1F",
+                "name": "Vault",
+                "description": "A scarred iron **door** bears a **lock** inside the mouth of a snarling dwarf. Gruff voices and metallic **clanging** echo from the other side.",
+                "bullets": [
+                    "**Lock.** DC 20 DEX to pick. Too fortified to be smashed open.",
+                    "**Interior.** Dwarves with wild, white hair stagger up a set of stairs with armloads of ingots they dump unceremoniously on the floor.",
+                    "▶ **Duergar.** Four from the Duergar NPCs table (pg. 64).",
+                    "▶ **Ingots.** 30 iron (10 gp each) and 20 gold (20 gp each).",
+                    "**Secret Door.** Rotating panel. Only the duergar know of it."
+                ],
+                "stats": ""
+            },
+            "15": {
+                "level": "1F",
+                "name": "Extraplanar Portal",
+                "description": "A billowing curtain of **fire** rages along the south wall. Oven-like heat.",
+                "bullets": [
+                    "**Duergar.** 3:6 chance a duergar is here tossing 5 gold ingots (20 gp each) into the flames (use Duergar NPCs table, pg. 64).",
+                    "**Fire.** Passing through the fire deals 4d6 damage. It leads to a swooping ivory and brass balcony in the inferno-hot City of Brass. Four efreet guards try to cast all but their own back through.",
+                    "▶ Malik and Gaspar are currently forbidden from passing through."
+                ],
+                "stats": ""
+            },
+            "16": {
+                "level": "1F",
+                "name": "West Tower",
+                "description": "Two **salamanders** peer out into the cave from behind the thick, iron crenels; a shiny brass **gong** sits between them.",
+                "bullets": [
+                    "**Interior.** Numerous scuffs in the ash and grime on floor. An iron sculpture of an evilly grinning dwarf face hangs from the door.",
+                    "▶ **Dwarf Face.** Touching it while speaking in Dwarvish causes the matched faces (Area 3, 8) to animate and repeat the words.",
+                    "▶ **Hidden Door.** Dwarf-sized bootprints lead to a hidden trapdoor in the floor (to Area 24). The salamanders are unaware of it."
+                ],
+                "stats": ""
+            },
+            "17": {
+                "level": "1F",
+                "name": "Southwest Tower",
+                "description": "Two **salamanders** patrol around the broad tower's parapets. A **gong** glints in the magma-light behind them.",
+                "bullets": [
+                    "**Interior.** Faint snorting and clip-clopping audible through door.",
+                    "▶ **Salamander.** 3:6 chance a salamander is crouching in here gorging on 2d4 fire slugs pilfered from the mess hall (Area 5)."
+                ],
+                "stats": ""
+            },
+            "18": {
+                "level": "1F",
+                "name": "Stables",
+                "description": "Three jet-black **horses** with flaming manes trot around spacious, iron stalls. A runty **salamander** brushes jasmine oil into their coats.",
+                "bullets": [
+                    "**Horses.** Thoroughbred racing nightmares. Zenda, Burning Moon, Red Sultan. Each worth 500 gp. Vicious; only allow chaotic riders.",
+                    "**Salamander.** Xaviss. Unarmed, shrimpy, self-important. Takes care of the nightmares. Mithral horseshoe (100 gp) hidden among his tools that he filched from Gaspar's quarters (Area 9)."
+                ],
+                "stats": ""
+            },
+            "19": {
+                "level": "1F",
+                "name": "Hidden Mine Entrance",
+                "description": "A squat **stalagmite** has a cleft at its point, as if split by an axe.",
+                "bullets": [
+                    "**Concealed Stairs.** The stalagmite echoes if tapped. A hidden door in its north side reveals narrow stairs leading down to the mines.",
+                    "▶ Only the duergar know of this entrance."
+                ],
+                "stats": ""
+            },
+            "20": {
+                "level": "2F",
+                "name": "Forge Hall",
+                "description": "**Duergar** toil at massive forges set before a surging lake of magma. Their dolorous chanting keeps a tempo for their ringing hammer strikes. The air shimmers with intense **heat**.",
+                "bullets": [
+                    "**Heat.** Unaccustomed creatures DC 12 CON upon entering or DISADV on attacks and checks until leaving.",
+                    "**Duergar.** Eight sweating duergar smelt iron and gold ingots.",
+                    "▶ Forgemaster **Torgrim** (burly, dour, singed hair) watches with his arms crossed. Bellows instructions. Pretends to be loyal to Malik, but hates him. He's the only duergar not brainwashed.",
+                    "**Forges.** Four. Iron grates that belch flames. Opening a grate unleashes a gout of fire (DC 12 DEX to all in close or 2d6 damage).",
+                    "▶ **Ingots.** 2 gold (20 gp each) and 4 iron (10 gp each) in each forge."
+                ],
+                "stats": ""
+            },
+            "21": {
+                "level": "2F",
+                "name": "Malik's Quarters",
+                "description": "A thick, iron **lock** seals a stone **door** streaked with black forge ash.",
+                "bullets": [
+                    "**Lock.** DC 20 DEX to pick, DC 20 STR to force. Malik has the key.",
+                    "**Interior.** Two growling, black-haired hell hounds flank the entrance, magma dripping from their jaws. A rumpled bed of scarlet silk sits in the corner. Piles of creased robes litter the floor.",
+                    "▶ **Hell Hounds.** Eyesore and Scab-Biter. Snorting, frothing brutes. DC 12 WIS for them to hear noise outside (they go wild).",
+                    "▷ **Gold-Spiked Collars.** One on each hound. 80 gp each.",
+                    "▶ **Malik** (efreeti). 3:6 chance he's here resting (otherwise, Area 22).",
+                    "▷ Disheveled, charming, intense. Bruised face. Practices night and day to summon and control a greater earth elemental long enough to “accidentally” unleash it near his brother (it's not going well). Offers the PCs safety and a trained hell hound each (from Area 28, hounds worth 100 gp each) if they'll help him or kill Gaspar. Locks unruly PCs in Area 29.",
+                    "▷ **Spellcasting.** 1 spell in place of attacks, +6. DC 11: cloak of flame (self, 5 rounds, AC 17), enslave (1 humanoid target, close, fervently loyal 1d6 days). DC 13: whitefire (as fireball, ignores fire immunity). DC 15: summon greater elemental (as summon extraplanar, elementals of LV 9 only)."
+                ],
+                "stats": ""
+            },
+            "22": {
+                "level": "2F",
+                "name": "Secret Summoning Lair",
+                "description": "An intricate **circle** drawn in red paint covers the floor. Shattered stone **furniture** and plate-sized **holes** pepper the room. The only intact object is a stone **desk** scattered with overturned books.",
+                "bullets": [
+                    "**Malik.** 3:6 chance he's here tinkering with the summoning circle (otherwise, Area 21). He keeps losing control of earth elementals.",
+                    "**Summoning Circle.** +1 on spellcasting checks to summon beings.",
+                    "**Twin Rubies.** On desk under an open book. Eye-shaped, 200 gp each. They power the iron golem in Area 13 (Malik isn't aware)."
+                ],
+                "stats": ""
+            },
+            "23": {
+                "level": "2F",
+                "name": "Mining Tunnels",
+                "description": "Twisting **tunnels** reach into the dark rock. Metallic clanging and baritone chanting reverberate loudly, drowning out other sounds.",
+                "bullets": [
+                    "**Duergar.** Two chip at the stone in the western tunnels. Noise from Area 20 hides any sounds they make.",
+                    "▶ **Ore.** Each carries a bucket with 20 gp of gold ore nuggets."
+                ],
+                "stats": ""
+            },
+            "24": {
+                "level": "2F",
+                "name": "Defaced Statues",
+                "description": "Three alcoves each hold a **statue** of a stocky figure. A pile of oddly shaped **rubble** lies against the west wall. **Stairs** rise to the ceiling.",
+                "bullets": [
+                    "**Statues.** Grim duergar with limbs hewn off and hollow eye sockets. Inspection reveals pry marks around their eyes.",
+                    "**Rubble.** Broken statue limbs. An eye-shaped emerald (120 gp) is buried in the pile. If placed in a statue, the statue whispers in Dwarvish in a dying voice: “Find Thorgol the Anvil...”",
+                    "**Stairs.** Rise to a trapdoor to Area 16 (hidden from other side)."
+                ],
+                "stats": ""
+            },
+            "25": {
+                "level": "2F",
+                "name": "Naga Cave",
+                "description": "A billowing **curtain** of black silk hangs over a wide cave entrance.",
+                "bullets": [
+                    "**Interior.** An enormous, blood-red cobra coils itself on a pile of sumptuous cushions. A duergar and salamander hang from the ceiling on bronze chains (food offerings from Malik and Gaspar).",
+                    "▶ **Cobra.** Vilaxis Morgotha, naga (sneering, droll, flashing eyes and tongue). A servant of Pasha Jefar, Gaspar and Malik's father. Neutral observer to make sure the brothers kill each other fairly.",
+                    "▷ Finds PCs amusing. Asks whether they think Malik or Gaspar is superior. Happily shares routine information about either. Savagely devours the duergar and salamander while talking.",
+                    "▶ **Duergar.** Cut throat. Very dead.",
+                    "▶ **Salamander.** Grievous stab wound, but alive. Whimpers and kicks slightly. Use Salamander NPCs (pg. 63), if needed."
+                ],
+                "stats": ""
+            },
+            "26": {
+                "level": "2F",
+                "name": "Iron Trees",
+                "description": "A gnarled, black **tree** grows in each alcove. Glistening **fruits** hang from their twisted branches. Dark, powdery **stones** cover the floor.",
+                "bullets": [
+                    "**Iron Trees.** Metallic bark. Their magical fruits ripen and wither each day, dropping off and turning into chunks of coal.",
+                    "▶ **Iron Plums.** Quench all thirst, taste of bitter anise. Induce drowsiness (DC 12 CON or sleep for 1 hour).",
+                    "▶ **Iron Pears.** Sour. Fully nourishing, but never relieves hunger.",
+                    "▶ **Iron Oranges.** Cure injury (2d8 HP, once/day). Taste of copper."
+                ],
+                "stats": ""
+            },
+            "27": {
+                "level": "2F",
+                "name": "Duergar Camp",
+                "description": "A vast, natural cavern cut through with a glowing river of **magma**. Grey **dwarves** lie against the walls wrapped in their cloaks, snoring. An arched **bridge** crosses over the magma river.",
+                "bullets": [
+                    "**Duergar.** Eight sleep here (loud noises wake them). Some still clutch half-eaten iron tree fruits (Area 26) in their hands.",
+                    "▶ **Gear.** Dwarvenkind sleep on their shields and cradle their weapons. DC 12 DEX to remove either without waking them."
+                ],
+                "stats": ""
+            },
+            "28": {
+                "level": "2F",
+                "name": "Hell Hound Kennels",
+                "description": "Six wolf-sized **mongrels** lope around the room, snarling and snapping at each other. A grey **dwarf** walks among them and growls commands, cracking a length of chain at any who defy him.",
+                "bullets": [
+                    "**Duergar.** Kennelmaster Morgid (white mohawk, confident, brash). Wields a razor chain (pg. 17) in place of shield and war pick. The hell hounds fear and obey him.",
+                    "**Hell Hounds.** Six beasts trained as Malik's guards and war dogs. DC 12 WIS for them to hear noises, even when asleep.",
+                    "▶ **Silver-Spiked Collars.** One on each hound. 20 gp each.",
+                    "**North Door.** Locked from the outside. DC 20 DEX to pick, 20 STR to force. The key is long lost."
+                ],
+                "stats": ""
+            },
+            "29": {
+                "level": "2F",
+                "name": "Empty Cell",
+                "description": "An expansive prison **cell** large enough to hold an elephant. Faint **scratches** cover the stone walls.",
+                "bullets": [
+                    "**Lock.** DC 20 DEX to pick. Too heavy to break open.",
+                    "**Scratches.** Countless tally marks and phrases carved in Dwarvish (“Efreet murderers,” “Dorgrim rot their souls,” “Thorgol hidden up the river,” “Replace the statue's ruby eyes”)."
+                ],
+                "stats": ""
+            },
+            "30": {
+                "level": "2F",
+                "name": "Silent Gallery",
+                "description": "Dusty, quiet cavern with burbling river of **magma** cutting off passage to the north. Flickering, orange light. Deep **shadows**.",
+                "bullets": [
+                    "**Rashik.** Salamander spy for Gaspar (coal-black scales, sinister, observant). Sleeps in the shadowy corners between furtive outings. Dives into the magma river to hide if he hears intruders.",
+                    "▶ In 2d4 days, he discovers Malik (Area 21) unknowingly has the rubies that power the broken iron golem in Area 13.",
+                    "**South Door.** Locked from the inside. DC 20 DEX to pick, 20 STR to force. The key is long lost."
+                ],
+                "stats": ""
+            },
+            "31": {
+                "level": "2F",
+                "name": "Mine Junction",
+                "description": "Vast cavern echoing with distant hammer strikes and chanting. Intricate **carvings** on the walls. Branching **passages** twist off in every direction.",
+                "bullets": [
+                    "**Danger Level.** Deadly (a high-traffic area). Check for random encounters every round (1:6 chance).",
+                    "**Noise.** Noise from Area 20 makes sneaking quietly easy (DC 9).",
+                    "**Carvings.** Bas-reliefs of great skill depict dozens of grim duergar mining the stone and building the Iron Fortress. A duergar in a spiked crown lifts a black warhammer (Thorgol the Anvil).",
+                    "**Steep Slope.** Creatures running down tunnel toward Area 30 DC 12 DEX or fall. Roll into magma river if fail by 5+ points."
+                ],
+                "stats": ""
+            },
+            "32": {
+                "level": "2F",
+                "name": "Mining Tunnels",
+                "description": "A lone **duergar** probes at a shallow niche in the wall with a pickaxe.",
+                "bullets": [
+                    "**Duergar.** Working on expanding a new southern tunnel.",
+                    "▶ **Ore.** Carries a bucket with worthless iron chips and, unknown to him, a geode holding a small sapphire (100 gp)."
+                ],
+                "stats": ""
+            },
+            "33": {
+                "level": "2F",
+                "name": "Mining Tunnels",
+                "description": "Three grumbling **duergar** hack at the flinty rock with pickaxes.",
+                "bullets": [
+                    "**Duergar.** DISADV on checks to notice sneaking creatures.",
+                    "▶ **Ore.** Each carries a bucket with worthless iron chips.",
+                    "**Weak Wall.** The southernmost tunnel has a weak wall (visible to any dwarf). An explosive force opens it into Area 35."
+                ],
+                "stats": ""
+            },
+            "34": {
+                "level": "2F",
+                "name": "Mining Tunnels",
+                "description": "Ear-splitting **clanging** and deep **chanting** echoes from the west.",
+                "bullets": [
+                    "**Duergar.** Works in the southernmost tunnel. Noise from Area 20 masks any sounds he makes.",
+                    "▶ **Ore.** Bucket with 20 gp of gold nuggets and a lost scorpion."
+                ],
+                "stats": ""
+            },
+            "35": {
+                "level": "2F",
+                "name": "Hidden Cave",
+                "description": "A dull black **rowboat** lies on its side against the cave wall. A boiling **magma** river drains into a dark, narrow **pit**.",
+                "bullets": [
+                    "**Rowboat.** Magical iron (500 pounds) carved with intricate knots. Floats on magma. Water rusts it instantly. Two oars, four riders.",
+                    "▶ **Warhammer.** Thorgol the Anvil lies inside the rowboat. Heavy, black iron with triangular knots on each face. +2 warhammer that can instantly fuse together two metal objects it strikes at the same time, if its wielder chooses.",
+                    "▷ Duergar immediately rally around anyone wielding Thorgol.",
+                    "**Magma.** Drains deep into the fathoms of the Shadowdark."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade new popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** into bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const h = document.createElement('h3');
+                h.textContent = 'Room key';
+                body.appendChild(h);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                body.appendChild(ul);
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        function openRandomEncounterTable() {
+            createPopup('Random Encounter Table', body => {
+                const note = document.createElement('div');
+                note.className = 'rngenc';
+                note.innerHTML = '';
+                body.appendChild(note);
+            });
+        }
+
+        const statblocks = [];
+
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.rngenc').addEventListener('click', openRandomEncounterTable);
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            // document.querySelectorAll('.hotspot').forEach(el => {
+            //     const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+            //     el.style.opacity = (!q || text.includes(q)) ? '1' : '.18';
+            //     el.style.background = (q && text.includes(q)) ? 'var(--accent)' : '';
+            // });
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels + party token (one remembered position per level)
+        const PARTY_KEY = '0114-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                panel.classList.toggle('hide', panel.dataset.panel !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        levels.forEach(l => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.dataset.level = l.id;
+            btn.textContent = l.label;
+            btn.addEventListener('click', () => setLevel(l.id));
+            levelTabs.appendChild(btn);
+        });
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
