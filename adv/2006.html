@@ -12,15 +12,15 @@
         :root {
             --bg: #151515;
             --panel: #222;
-            --ink: #eee8dc;
-            --muted: #b7afa2;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
             --bolden: #c85555;
             --line: #514b43;
             --accent: #d12121;
         }
 
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         .hide {
@@ -31,7 +31,7 @@
             margin: 0;
             background: var(--bg);
             color: var(--ink);
-            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
         }
 
         header {
@@ -44,7 +44,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
-            flex-wrap: wrap
+            flex-wrap: wrap;
         }
 
         h1 {
@@ -52,7 +52,6 @@
             margin: 0 12px 0 0;
             letter-spacing: .03em;
             font-family: "Pirata One", system-ui;
-            ;
         }
 
         h2,
@@ -60,17 +59,18 @@
         h4 {
             margin-bottom: 5px;
             margin-top: 5px;
+            color: var(--accent);
         }
 
         .hint {
             color: var(--muted);
-            font-size: 13px
+            font-size: 13px;
         }
 
         input {
-            background: #111;
+            background: var(--panel);
             color: var(--ink);
-            border: 1px solid #5a554c;
+            border: 1px solid var(--line);
             border-radius: 5px;
             padding: 8px 10px;
             min-width: 190px
@@ -79,21 +79,21 @@
         button {
             cursor: pointer;
             color: var(--ink);
-            background: #34332f;
-            border: 1px solid #70695e;
+            background: var(--bg);
+            border: 1px solid var(--line);
             border-radius: 5px;
             padding: 7px 10px;
             height: 35px;
         }
 
         button:hover {
-            background: #49473f;
+            background: var(--line);
         }
 
         main {
             padding: 16px;
             max-width: 1500px;
-            margin: auto
+            margin: auto;
         }
 
         .top {
@@ -120,33 +120,33 @@
             position: relative;
             width: min(100%, 900px);
             /* margin: 0 auto; */
-            background: #ddd;
-            box-shadow: 0 8px 32px #0008;
-            line-height: 0
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
         }
 
         .map-wrap img {
             display: block;
             width: 100%;
-            height: auto
+            height: auto;
         }
 
-        .hotspot {
+        /* .hotspot {
             position: absolute;
             z-index: 2;
             border: 1px solid var(--line);
-            background: #b7d0a00a;
+            background: var(--bg);
             border-radius: 4px;
             cursor: pointer;
             line-height: 1;
-            transition: background .12s, border .12s
+            transition: background .12s, border .12s;
         }
 
         .hotspot:hover,
         .hotspot:focus {
             background: var(--line);
             border: 2px solid var(--bolden);
-            outline: none
+            outline: none;
         }
 
         .hotspot span {
@@ -155,22 +155,22 @@
             top: 3px;
             font-size: 12px;
             font-weight: 800;
-            color: #fff;
-            background: #24251fe8;
-            border: 1px solid #d8d2c4;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--ink);
             border-radius: 50%;
             width: 21px;
             height: 21px;
             display: grid;
             place-items: center;
-            line-height: 1
-        }
+            line-height: 1;
+        } */
 
         .instructions {
             max-width: 900px;
             margin: 12px auto;
             color: var(--muted);
-            font-size: 13px
+            font-size: 13px;
         }
 
         #room-list {
@@ -187,7 +187,7 @@
         }
 
         .room-chip {
-            font-size: 13px
+            font-size: 13px;
         }
 
         .popup {
@@ -197,46 +197,46 @@
             top: 90px;
             width: min(420px, calc(100vw - 20px));
             max-height: calc(100vh - 110px);
-            background: #242421;
-            border: 1px solid #81796a;
+            background: var(--panel);
+            border: 1px solid var(--muted);
             border-radius: 8px;
-            box-shadow: 0 16px 48px #000b;
+            box-shadow: 0 16px 48px var(--bg);
             display: none;
             overflow: hidden;
             resize: both;
             min-width: 280px;
-            min-height: 180px
+            min-height: 180px;
         }
 
         .popup.open {
             display: flex;
-            flex-direction: column
+            flex-direction: column;
         }
 
         .popup-head {
-            background: #34332e;
+            background: var(--line);
             padding: 10px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: move;
             user-select: none;
-            border-bottom: 1px solid #625b50
+            border-bottom: 1px solid var(--bg);
         }
 
         .popup-head strong {
             font-size: 16px;
-            flex: 1
+            flex: 1;
         }
 
         .popup-head button {
-            padding: 3px 9px
+            padding: 3px 9px;
         }
 
         .popup-body {
             padding: 14px;
             overflow: auto;
-            line-height: 1.5
+            line-height: 1.5;
         }
 
         .popup-body h3 {
@@ -244,11 +244,11 @@
             text-transform: uppercase;
             letter-spacing: .1em;
             color: var(--accent);
-            margin: 16px 0 6px
+            margin: 16px 0 6px;
         }
 
         .popup-body p {
-            margin: 0 0 10px
+            margin: 0 0 10px;
         }
 
         .popup-body ul {
@@ -257,7 +257,7 @@
         }
 
         .popup-body li {
-            margin: 0 0 7px
+            margin: 0 0 7px;
         }
 
         strong {
@@ -266,15 +266,15 @@
 
         .stats {
             white-space: pre-wrap;
-            background: #171715;
+            background: var(--bg);
             border-left: 3px solid var(--accent);
             padding: 10px;
             margin-top: 12px;
-            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
         }
 
         .popup-body li.no-bullet {
-            list-style: none
+            list-style: none;
         }
 
         .party-token {
@@ -287,14 +287,14 @@
             background: var(--accent);
             color: var(--ink);
             border: 3px solid var(--bg);
-            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px #000a;
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
             display: grid;
             place-items: center;
             font: 800 15px/1 system-ui, sans-serif;
             cursor: grab;
             touch-action: none;
             user-select: none;
-            padding: 0
+            padding: 0;
         }
 
         .party-token:hover {
@@ -303,7 +303,7 @@
 
         .party-token.dragging {
             cursor: grabbing;
-            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px #000c
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
         }
 
         .compasss {
@@ -320,6 +320,7 @@
             flex-direction: row;
             justify-content: center;
             gap: 10px;
+            display: none;
         }
 
         .rngenc {
@@ -334,12 +335,12 @@
 
             td,
             th {
-                border: 1px solid #ddd;
+                border: 1px solid var(--ink);
                 padding: 8px;
             }
 
             tr:nth-child(even) {
-                background-color: #1a1a1a;
+                background-color: var(--panel);
             }
 
             tr:hover {
@@ -354,11 +355,11 @@
 
         @media(max-width:600px) {
             main {
-                padding: 8px
+                padding: 8px;
             }
 
             header {
-                position: static
+                position: static;
             }
 
             .popup {
@@ -366,14 +367,14 @@
                 top: 80px !important;
                 width: calc(100vw - 20px);
                 max-height: 75vh;
-                resize: vertical
+                resize: vertical;
             }
 
-            .hotspot span {
+            /* .hotspot span {
                 width: 17px;
                 height: 17px;
-                font-size: 10px
-            }
+                font-size: 10px;
+            } */
         }
     </style>
 </head>

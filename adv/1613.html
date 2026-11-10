@@ -12,15 +12,15 @@
         :root {
             --bg: #151515;
             --panel: #222;
-            --ink: #eee8dc;
-            --muted: #b7afa2;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
             --bolden: #c88955;
-            --line: #514b43;
+            --line: #4d4c4c;
             --accent: #ff960e;
         }
 
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         .hide {
@@ -31,7 +31,7 @@
             margin: 0;
             background: var(--bg);
             color: var(--ink);
-            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
         }
 
         header {
@@ -44,7 +44,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
-            flex-wrap: wrap
+            flex-wrap: wrap;
         }
 
         h1 {
@@ -52,7 +52,6 @@
             margin: 0 12px 0 0;
             letter-spacing: .03em;
             font-family: "Pirata One", system-ui;
-            ;
         }
 
         h2,
@@ -65,13 +64,13 @@
 
         .hint {
             color: var(--muted);
-            font-size: 13px
+            font-size: 13px;
         }
 
         input {
-            background: #111;
+            background: var(--panel);
             color: var(--ink);
-            border: 1px solid #5a554c;
+            border: 1px solid var(--line);
             border-radius: 5px;
             padding: 8px 10px;
             min-width: 190px
@@ -80,21 +79,21 @@
         button {
             cursor: pointer;
             color: var(--ink);
-            background: #34332f;
-            border: 1px solid #70695e;
+            background: var(--bg);
+            border: 1px solid var(--line);
             border-radius: 5px;
             padding: 7px 10px;
             height: 35px;
         }
 
         button:hover {
-            background: #49473f;
+            background: var(--line);
         }
 
         main {
             padding: 16px;
             max-width: 1500px;
-            margin: auto
+            margin: auto;
         }
 
         .top {
@@ -121,33 +120,33 @@
             position: relative;
             width: min(100%, 900px);
             /* margin: 0 auto; */
-            background: #ddd;
-            box-shadow: 0 8px 32px #0008;
-            line-height: 0
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
         }
 
         .map-wrap img {
             display: block;
             width: 100%;
-            height: auto
+            height: auto;
         }
 
-        .hotspot {
+        /* .hotspot {
             position: absolute;
             z-index: 2;
             border: 1px solid var(--line);
-            background: #b7d0a00a;
+            background: var(--bg);
             border-radius: 4px;
             cursor: pointer;
             line-height: 1;
-            transition: background .12s, border .12s
+            transition: background .12s, border .12s;
         }
 
         .hotspot:hover,
         .hotspot:focus {
             background: var(--line);
             border: 2px solid var(--bolden);
-            outline: none
+            outline: none;
         }
 
         .hotspot span {
@@ -156,22 +155,22 @@
             top: 3px;
             font-size: 12px;
             font-weight: 800;
-            color: #fff;
-            background: #24251fe8;
-            border: 1px solid #d8d2c4;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--ink);
             border-radius: 50%;
             width: 21px;
             height: 21px;
             display: grid;
             place-items: center;
-            line-height: 1
-        }
+            line-height: 1;
+        } */
 
         .instructions {
             max-width: 900px;
             margin: 12px auto;
             color: var(--muted);
-            font-size: 13px
+            font-size: 13px;
         }
 
         #room-list {
@@ -188,7 +187,7 @@
         }
 
         .room-chip {
-            font-size: 13px
+            font-size: 13px;
         }
 
         .popup {
@@ -198,46 +197,46 @@
             top: 90px;
             width: min(420px, calc(100vw - 20px));
             max-height: calc(100vh - 110px);
-            background: #242421;
-            border: 1px solid #81796a;
+            background: var(--panel);
+            border: 1px solid var(--muted);
             border-radius: 8px;
-            box-shadow: 0 16px 48px #000b;
+            box-shadow: 0 16px 48px var(--bg);
             display: none;
             overflow: hidden;
             resize: both;
             min-width: 280px;
-            min-height: 180px
+            min-height: 180px;
         }
 
         .popup.open {
             display: flex;
-            flex-direction: column
+            flex-direction: column;
         }
 
         .popup-head {
-            background: #34332e;
+            background: var(--line);
             padding: 10px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: move;
             user-select: none;
-            border-bottom: 1px solid #625b50
+            border-bottom: 1px solid var(--bg);
         }
 
         .popup-head strong {
             font-size: 16px;
-            flex: 1
+            flex: 1;
         }
 
         .popup-head button {
-            padding: 3px 9px
+            padding: 3px 9px;
         }
 
         .popup-body {
             padding: 14px;
             overflow: auto;
-            line-height: 1.5
+            line-height: 1.5;
         }
 
         .popup-body h3 {
@@ -245,11 +244,11 @@
             text-transform: uppercase;
             letter-spacing: .1em;
             color: var(--accent);
-            margin: 16px 0 6px
+            margin: 16px 0 6px;
         }
 
         .popup-body p {
-            margin: 0 0 10px
+            margin: 0 0 10px;
         }
 
         .popup-body ul {
@@ -258,7 +257,7 @@
         }
 
         .popup-body li {
-            margin: 0 0 7px
+            margin: 0 0 7px;
         }
 
         strong {
@@ -267,15 +266,15 @@
 
         .stats {
             white-space: pre-wrap;
-            background: #171715;
+            background: var(--bg);
             border-left: 3px solid var(--accent);
             padding: 10px;
             margin-top: 12px;
-            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
         }
 
         .popup-body li.no-bullet {
-            list-style: none
+            list-style: none;
         }
 
         .party-token {
@@ -288,14 +287,14 @@
             background: var(--accent);
             color: var(--ink);
             border: 3px solid var(--bg);
-            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px #000a;
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
             display: grid;
             place-items: center;
             font: 800 15px/1 system-ui, sans-serif;
             cursor: grab;
             touch-action: none;
             user-select: none;
-            padding: 0
+            padding: 0;
         }
 
         .party-token:hover {
@@ -304,7 +303,7 @@
 
         .party-token.dragging {
             cursor: grabbing;
-            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px #000c
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
         }
 
         .compasss {
@@ -321,6 +320,7 @@
             flex-direction: row;
             justify-content: center;
             gap: 10px;
+            display: none;
         }
 
         .rngenc {
@@ -335,12 +335,12 @@
 
             td,
             th {
-                border: 1px solid #ddd;
+                border: 1px solid var(--ink);
                 padding: 8px;
             }
 
             tr:nth-child(even) {
-                background-color: #1a1a1a;
+                background-color: var(--panel);
             }
 
             tr:hover {
@@ -355,11 +355,11 @@
 
         @media(max-width:600px) {
             main {
-                padding: 8px
+                padding: 8px;
             }
 
             header {
-                position: static
+                position: static;
             }
 
             .popup {
@@ -367,14 +367,14 @@
                 top: 80px !important;
                 width: calc(100vw - 20px);
                 max-height: 75vh;
-                resize: vertical
+                resize: vertical;
             }
 
-            .hotspot span {
+            /* .hotspot span {
                 width: 17px;
                 height: 17px;
-                font-size: 10px
-            }
+                font-size: 10px;
+            } */
         }
     </style>
 </head>
@@ -439,7 +439,7 @@
                 </table>
             </div>
             <div class="map-wrap" id="mapWrap">
-                <div class="compasss">
+                <!-- <div class="compasss">
                     <svg id="compass" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                         <defs>
                             <style>
@@ -464,7 +464,7 @@
                         <path class="cls-2" d="M120.77,77.45c1.31-.23,2.62,1.13,2.15,2.44l-4.63,8.22c-.6.58-3.72-.79-4.68-.94l-1.22-4.94c.25-.41,7.8-4.68,8.37-4.77Z" />
                         <path class="cls-2" d="M114.21,111.16c.97-.29,3.91-1.53,4.63-.86l4.56,8.02c-.19,5.84-7.51-1.11-10.07-1.98-.73-.98.95-3.9.88-5.18Z" />
                     </svg>
-                </div>
+                </div> -->
                 <img src="adv-maps/goblinking.png" alt="Dungeon Map">
 
                 <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">⚔️</button>
@@ -510,7 +510,7 @@
     <div id="popupContainer"></div>
 
     <script>
-                        const rooms = {
+        const rooms = {
             "1": {
                 "name": "Roadside Carnage",
                 "description": "Saddled **horses**, small **dogs**, and green **bodies** litter the dusty road, spattered in fresh **blood**. A young **man** hangs upside-down, roped to a tree trunk.",
@@ -663,8 +663,8 @@
             popup.append(head, body);
             popupContainer.appendChild(popup);
 
-            // Cascade newly opened windows, starting at the top-left.
-            const offset = (popupOffset++ % 8) * 28;
+            // cascade new popups
+            const offset = (popupOffset++ % 2) * 28;
             popup.style.left = `${offset}px`;
             popup.style.top = `${offset}px`;
             popup.style.zIndex = ++popupZIndex;
@@ -708,7 +708,7 @@
             handle.addEventListener('pointercancel', () => dragging = false);
         }
 
-        // turn **word** into bold text. everything else is inserted as plain text
+        // turn **word** into bold
         function fmt(el, text) {
             text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
                 if (i % 2) {
@@ -760,7 +760,7 @@
             createPopup('Random Encounter Table', body => {
                 const note = document.createElement('div');
                 note.className = 'rngenc';
-                note.innerHTML = '<h2>Random Encounters</h2><table><tr><td>1</td><td>Plogrina Bittermold (Area 29) with 1d6 Bittermolds looking for something to feed to Mugdulblub that it\'s never tasted</td></tr><tr><td>2</td><td>1d6 Howlers wrestling a mutant catfish down the hall</td></tr><tr><td>3</td><td>An ichor ooze slurping toward the nearest source of heat</td></tr><tr><td>4</td><td>Gordock Breeg (Area 4) leading a band of 2d6 Howlers in pursuit of 1d4 wounded Bittermolds</td></tr><tr> <td>5</td><td>1d6 Bittermolds stealthily looking for Howlers to capture</td></tr><tr><td>6</td><td>A new pocket of acid quicksand gives way beneath 1d4 characters (DC 12 DEX to escape, 1d4 damage/round)</td></tr><tr><td>7</td><td>1d4 vengeful mutant catfish out for violence (can be distracted with tasty food or sympathy)</td></tr><tr><td>8</td><td>1d6 bandits looking for treasure who are realizing coming here was a bad idea; they refuse to leave empty-handed</td></tr><tr><td>9</td><td>2d4 Bittermolds dragging 1d4 tied Howlers to Mugdulblub</td></tr><tr><td>10</td><td>A lone cultist in an algae-induced fever dream looking for Mugdulblub; mutters about how all must be Dissolved</td></tr><tr><td>11</td><td>2d6 roosting tar bats; open flame makes them frenzy</td></tr><tr><td>12</td><td>A fat glob of sticky slime drips onto a light source, ruining it</td></tr></table>';
+                note.innerHTML = '';
                 body.appendChild(note);
             });
         }
@@ -774,82 +774,6 @@
                     "**Rubbery.** Half damage from stabbing weapons."
                 ]
             },
-            {
-                "name": "Bogthorn",
-                "description": "A skittering nest of nettles and thorns with marshlights for eyes.",
-                "line": "**AC** 13, **HP** 11, **ATK** 1 stab +0 (1d4) or 1 thorn hail (near) +2 (1d4 + poison), **MV** near (climb), **S** +0, **D** +2, **C** +2, **I** -3, **W** +1, **Ch** -3, **AL** C, **LV** 2",
-                "traits": [
-                    "**Poison.** DC 12 CON or paralyzed for 1d4 rounds."
-                ]
-            },
-            {
-                "name": "Dralech",
-                "description": "As tall as two humans with a pair of curved horns, a shark's grin, and an axe of white bone.",
-                "line": "**AC** 13, **HP** 29, **ATK** 3 bone axe +5 (2d6), **MV** near, **S** +4, **D** +1, **C** +2, **I** +0, **W** +0, **Ch** +1, **AL** C, **LV** 6",
-                "traits": [
-                    "**Shatter.** Destroy one non-magic gear instead of dealing damage."
-                ]
-            },
-            {
-                "name": "Gordock Breeg",
-                "description": "A halfling with a distant gaze and black veins around his lips.",
-                "line": "**AC** 15 (chainmail), **HP** 19, **ATK** 1 bastard sword +3 (1d10) or 1 sling (far) +2 (1d4), **MV** near, **S** +3, **D** +2, **C** +1, **I** +1, **W** +2, **Ch** +2, **AL** N, **LV** 4",
-                "traits": [
-                    "**Algae-Eater.** Lose 1d4 HP to gain advantage on next check/attack."
-                ]
-            },
-            {
-                "name": "Hexling",
-                "description": "A whispering, writhing shadow that coils and snaps like a whip.",
-                "line": "**AC** 12, **HP** 11, **ATK** 1 chill touch +2 (1d6 + energy drain), **MV** near, **S** +0, **D** +2, **C** +2, **I** +0, **W** +1, **Ch** +0, **AL** C, **LV** 2",
-                "traits": [
-                    "**Energy Drain.** 1d4 CON damage. If reduced to 0, become hexling."
-                ]
-            },
-            {
-                "name": "Howler",
-                "description": "A lunging halfling with sharpened teeth wearing a cloak of coyote pelts.",
-                "line": "**AC** 15 (leather + shield), **HP** 5, **ATK** 1 club +2 (1d4) or 1 sling (far) +2 (1d4), **MV** near, **S** +2, **D** +2, **C** +1, **I** +0, **W** +0, **Ch** +0, **AL** N, **LV** 1",
-                "traits": [
-                    "**Mob.** Deal +1 damage in melee when beside an ally."
-                ]
-            },
-            {
-                "name": "Ichor Ooze",
-                "description": "A trembling mass of filmy bile that slurps toward warmth.",
-                "line": "**AC** 12, **HP** 15, **ATK** 2 tendril +3 (1d6), **MV** near (climb), **S** +3, **D** +2, **C** +2, **I** -3, **W** +1, **Ch** -3, **AL** N, **LV** 3",
-                "traits": [
-                    "**Rubbery.** Half damage from stabbing weapons.",
-                    "**Corrosive.** Metal or wood that touches the ooze is destroyed on a d6 roll of 1."
-                ]
-            },
-            {
-                "name": "Marrow Fiend",
-                "description": "A wolfish hulk of razor bone and sinewy muscle. Black marrow tree sap drips from its jaws and the gaps in its bony plating.",
-                "line": "**AC** 15, **HP** 39, **ATK** 2 claws +7 (1d10) and 1 sap gout (near line) +5 (2d6 + sap), **MV** near (climb), **S** +4, **D** +4, **C** +3, **I** +2, **W** +3, **Ch** +3, **AL** C, **LV** 8",
-                "traits": [
-                    "**Devour.** Use turn to devour a humanoid body to regain 3d8 HP.",
-                    "**Sap.** DC 15 DEX check or stuck in place. Repeat check on turn to escape."
-                ]
-            },
-            {
-                "name": "Mugdulblub",
-                "description": "A roiling mass of stars floating in a whirlpool of purple goo.",
-                "line": "**AC** 16, **HP** 58, **ATK** 3 tendril (near) +8 (2d8) and 1 dissolve, **MV** near (climb, swim), **S** +5, **D** +3, **C** +4, **I** +2, **W** +3, **Ch** +4, **AL** C, **LV** 12",
-                "traits": [
-                    "**Rubbery.** Half damage from stabbing weapons.",
-                    "**Mutagenic.** Creatures within near 1:6 chance on their turn of a mutation. 1d4: **1.** Extra eye, **2-3.** Lost bone, **4.** Extra finger",
-                    "**Dissolve.** One creature in far DC 15 CON or 1d4 CON damage. If reduced to 0, become ichor ooze under Mugdulblub's control."
-                ]
-            },
-            {
-                "name": "Mutant Catfish",
-                "description": "A slimy, enormous catfish with four limbs and webbed claws. Amphibious and dimly intelligent.",
-                "line": "**AC** 11, **HP** 11, **ATK** 1 claw +2 (1d6) or 1 barb (near) +2 (1d4 + poison), **MV** near (swim), **S** +2, **D** +1, **C** +2, **I** -2, **W** +0, **Ch** -2, **AL** N, **LV** 2",
-                "traits": [
-                    "**Poison.** DC 12 CON or paralyzed 1d4 rounds."
-                ]
-            }
         ];
 
         function openStatblocks() {
@@ -893,17 +817,17 @@
         const search = document.getElementById('search');
         search.addEventListener('input', () => {
             const q = search.value.trim().toLowerCase();
-            document.querySelectorAll('.hotspot').forEach(el => {
-                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
-                el.style.opacity = (!q || text.includes(q)) ? '1' : '.18';
-                el.style.background = (q && text.includes(q)) ? '#d7f0a366' : '';
-            });
+            // document.querySelectorAll('.hotspot').forEach(el => {
+            //     const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+            //     el.style.opacity = (!q || text.includes(q)) ? '1' : '.18';
+            //     el.style.background = (q && text.includes(q)) ? 'var(--accent)' : '';
+            // });
             document.querySelectorAll('.room-chip').forEach(el => {
                 const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
                 el.style.display = (!q || text.includes(q)) ? '' : 'none';
             });
         });
-        // Party token: drag to move, position saved in localStorage as % of the map
+        // party token
         (function () {
             const KEY = '1613-party-pos';
             const DEFAULT = { x: 26.5, y: 50.8 };
