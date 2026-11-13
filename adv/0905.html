@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>Eroding Isle of the Executioner</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #75bfff;
+            --line: #4d4c4c;
+            --accent: #ffc30e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            /* margin: 0 auto; */
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* .hotspot {
+            position: absolute;
+            z-index: 2;
+            border: 1px solid var(--line);
+            background: var(--bg);
+            border-radius: 4px;
+            cursor: pointer;
+            line-height: 1;
+            transition: background .12s, border .12s;
+        }
+
+        .hotspot:hover,
+        .hotspot:focus {
+            background: var(--line);
+            border: 2px solid var(--bolden);
+            outline: none;
+        }
+
+        .hotspot span {
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--ink);
+            border-radius: 50%;
+            width: 21px;
+            height: 21px;
+            display: grid;
+            place-items: center;
+            line-height: 1;
+        } */
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .compasss {
+            position: fixed;
+            top: 70px;
+            right: 100px;
+            width: 100px;
+            display: none;
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+
+            /* .hotspot span {
+                width: 17px;
+                height: 17px;
+                font-size: 10px;
+            } */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Eroding Isle of the Executioner</h1><span class="hint">Interactive room key</span><span id="levelTabs" role="group" aria-label="Map level" style="display:flex;gap:6px;flex-wrap:wrap"></span><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">Close all popups</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Darkness.</p>
+                </div>
+            <div class="lvl-panel" data-panel="all">
+                <h2>Random Encounters</h2>
+                <table>
+                    <tr>
+                        <th>d4</th>
+                        <th>details</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>A distant wailing heralds the arrival of 2d4 <strong>sirens</strong> in 2 rounds</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>1d4 <strong>merfolk</strong> investigate noises</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>The <strong>wraith</strong> from Area 7 appears</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>2d6 <strong>sahuagin</strong> burst from the sea, following the scent of flesh</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/eroding-isle.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Hall of Music</button>
+                <button class="room-chip" data-room="2">Area 2: Sunken Vestibule</button>
+                <button class="room-chip" data-room="3">Area 3: Fountain</button>
+                <button class="room-chip" data-room="4">Area 4: Gorgoth Tree</button>
+                <button class="room-chip" data-room="5">Area 5: Great Hall</button>
+                <button class="room-chip" data-room="6">Area 6: Portrait Chamber</button>
+                <button class="room-chip" data-room="7">Area 7: Burial Vault</button>
+                <button class="room-chip" data-room="8">Area 8: Dead Dryad</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>Tread carefully in the gilded halls where slow death comes for the condemned!</em></p>
+
+                        <h3>Background.</h3>
+                        <p>A distant island <strong>palace</strong> sinks into the sea, its sinister purpose hidden among pillars of gold and marble. Even the <strong>sahuagin</strong> avoid this place, for it is a bejeweled prison where only poison grows! Who found their opulent deaths here, and what haunted treasures did they leave?</p>
+                        <h3>Gorgoth Fruit.</h3>
+                        <p>Called “the executioner” in black markets. A tantalizing, red globe of sweet juice and pulp. Eating it causes 1 permanent HP damage and 1d4 rounds of blind euphoria. Maddeningly addictive (DC 15 WIS to resist eating again).</p>
+                        <h3>Map Notes.</h3>
+                        <p><strong>Sinkhole.</strong> DC 12 DEX avoid, 20' deep tunnel of water.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "main",
+                "label": "The Isle",
+                "img": "adv-maps/eroding-isle.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "main",
+                "name": "Hall of Music",
+                "description": "A patina-caked pipe **organ** rests against the north wall. Rotted viols and cellos with snapped strings are shoved into the corner. When the sea breeze rises, it carries the ghostly sound of distant music.",
+                "bullets": [
+                    "**Cellos.** 3 shadows sleep inside the cellos.",
+                    "**Organ.** The pipe organ plays in a honking, tuneless bellow. Playing it causes a 40 gp pearl to pop out of its pipes."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "main",
+                "name": "Sunken Vestibule",
+                "description": "The hollow crash of the sea echoes here. The marble walls and floor are smeared with seaweed and grime. Six gold-flecked, teetering **pillars** drunkenly hold up the ceiling (10 gp in gold leaf on each). Soiled **curtains** of purple silk hang in rags over the open archways to Areas 1 and 4.",
+                "bullets": [],
+                "stats": ""
+            },
+            "3": {
+                "level": "main",
+                "name": "Fountain",
+                "description": "A cracked, marble **sculpture** of a mournful woman pours a stream of fresh water from a jar into the encroaching sea. The water causes ravenous hunger (DC 15 CON or devour the nearest food). A 280 gp teardrop sapphire softly rattles inside the jar.",
+                "bullets": [
+                    "**Sea Hag.** A sea hag (Area 4) lurks in the water to the north (DC 12 WIS to notice)."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "main",
+                "name": "Gorgoth Tree",
+                "description": "A thin, twisted **tree** of black branches bursts from a plot of earth in an alcove. 2d10 red, juicy globes of gorgoth fruit sprout from the tree each week.",
+                "bullets": [
+                    "**Ragatha.** A pair of wet tracks leads from the tree to where Ragatha the sea hag hides in the water (DC 12 WIS to notice). She has shapechanged into a gaunt, sallow mermaid. She's a mewling gorgoth fruit addict and attacks anyone who takes them. One of her milky eyes is a Pearl of Power."
+                ],
+                "stats": ""
+            },
+            "5": {
+                "level": "main",
+                "name": "Great Hall",
+                "description": "Moldering, silk **pillows** are scattered around an uneven floor. Peeling wall **murals** depict sparkling-eyed gods reveling at a great feast.",
+                "bullets": [
+                    "**Gem.** One of the nature god's green eyes is a 120 gp emerald.",
+                    "**Sinkholes.** Weight on a marked area causes the floor to collapse into a 20' deep shaft full of icy water. DC 12 DEX to avoid. Difficult to climb out due to collapsing edges (DC 15 STR)."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "main",
+                "name": "Portrait Chamber",
+                "description": "Off-kilter **paintings** hang from the walls. Each is a portrait of a primped and bejeweled noble. Three are intact and worth 60 gp each.",
+                "bullets": [
+                    "**Note.** A note is on the back of a painting of a young man with piercing blue eyes: “Enjoy a gentle death, dear brother. There is no food, other than the fruit. I will think of you at my coronation.”"
+                ],
+                "stats": ""
+            },
+            "7": {
+                "level": "main",
+                "name": "Burial Vault",
+                "description": "Chilly and damp. **Stairs** lead down to a narrow room scattered with the bones and skulls of a dozen people. Two noble signet rings (60 gp each) lie among the remains. The heavy, stone **coffins** inside the wall niches are empty, except one that houses a wraith.",
+                "bullets": [],
+                "stats": ""
+            },
+            "8": {
+                "level": "main",
+                "name": "Dead Dryad",
+                "description": "A heap of rotting **wood** lies against the wall. Several thin, knotty **roots** reach out of the pile at a strange angle and plunge into the earth.",
+                "bullets": [
+                    "**Dryad.** The wood is the curled-up body of a dryad. Her rootlike fingers burrow into the earth and fuse with the roots of the gorgoth tree in Area 4.",
+                    "**Dagger.** A +1 Dagger of Venom (1/day weep scorpion poison for 1d4 rounds) is buried in her back. Removing it causes the gorgoth tree to become an ordinary apple tree in 2d6 days."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade new popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** into bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        const statblocks = [];
+
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            // document.querySelectorAll('.hotspot').forEach(el => {
+            //     const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+            //     el.style.opacity = (!q || text.includes(q)) ? '1' : '.18';
+            //     el.style.background = (q && text.includes(q)) ? 'var(--accent)' : '';
+            // });
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels + party token (one remembered position per level)
+        const PARTY_KEY = 'eroding-isle-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // Switch the map to another level (also called when a room popup is opened).
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>

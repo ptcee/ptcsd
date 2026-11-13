@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>Grotto of the Golden Swan</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #ffef60;
+            --line: #4d4c4c;
+            --accent: #ffcb0e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            /* margin: 0 auto; */
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* .hotspot {
+            position: absolute;
+            z-index: 2;
+            border: 1px solid var(--line);
+            background: var(--bg);
+            border-radius: 4px;
+            cursor: pointer;
+            line-height: 1;
+            transition: background .12s, border .12s;
+        }
+
+        .hotspot:hover,
+        .hotspot:focus {
+            background: var(--line);
+            border: 2px solid var(--bolden);
+            outline: none;
+        }
+
+        .hotspot span {
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--ink);
+            border-radius: 50%;
+            width: 21px;
+            height: 21px;
+            display: grid;
+            place-items: center;
+            line-height: 1;
+        } */
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .compasss {
+            position: fixed;
+            top: 70px;
+            right: 100px;
+            width: 100px;
+            display: none;
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+
+            /* .hotspot span {
+                width: 17px;
+                height: 17px;
+                font-size: 10px;
+            } */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Grotto of the Golden Swan</h1><span class="hint">Interactive room key</span><span id="levelTabs" role="group" aria-label="Map level" style="display:flex;gap:6px;flex-wrap:wrap"></span><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">Close all popups</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Darkness.</p>
+                </div>
+            <div class="lvl-panel" data-panel="all">
+                <h2>Random Encounters</h2>
+                <table>
+                    <tr>
+                        <th>d4</th>
+                        <th>details</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>A <strong>spectral guardian</strong> silently patrols the tunnels (see Area 8)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>1d4 mangy <strong>bandits</strong> tail the PCs, looking for opportunities</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>An <strong>acolyte</strong> brings holy offerings</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>1d4 curious <strong>fairies</strong> flit around</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+            <div class="map-wrap" id="mapWrap">
+                
+                <img id="mapImg" src="adv-maps/gold-swan.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Grotto Entrance</button>
+                <button class="room-chip" data-room="2">Area 2: Swan Songs</button>
+                <button class="room-chip" data-room="3">Area 3: Father's Nest</button>
+                <button class="room-chip" data-room="4">Area 4: Cave of Portents</button>
+                <button class="room-chip" data-room="5">Area 5: Offering Cave</button>
+                <button class="room-chip" data-room="6">Area 6: False Eggs</button>
+                <button class="room-chip" data-room="7">Area 7: Tapestry Cave</button>
+                <button class="room-chip" data-room="8">Area 8: Golden Grotto</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>A golden swan egg is worth more than six merchants and their donkeys!</em></p>
+
+                        <h3>Background.</h3>
+                        <p>The golden swan lays her precious eggs inside a sunlit grotto of caves in the forest. But she is not alone! Fey guardians sent by the Swan Prince protect her and her nest. Can the characters seize one of her eggs and escape with a small fortune?</p>
+                        <h3>Golden Swan.</h3>
+                        <p>A regal swan with pure gold feathers that glow with inner light.</p>
+                        <div class="stats">AC 12, HP 19, ATK 2 beak +4 (1d6) or 1 song, MV near (fly), S +1, D +2, C +1, I -2, W +1, Ch +2, AL N, LV 4.
+Song. All in near DC 12 CHA or blinded by tears 1d4 rds.</div>
+                        <h3>Map Notes.</h3>
+                        <p><strong>Rock Fall.</strong> DC 12 DEX or 1d4 damage, random encounter check.</p>
+                        <p><strong>Holes.</strong> Holes in the ceiling 10' up (Areas 1 and 4).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "main",
+                "label": "The Grotto",
+                "img": "adv-maps/gold-swan.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "main",
+                "name": "Grotto Entrance",
+                "description": "Narrow cave, cool and damp, smells of fresh rain. A high-relief **carving** of a stately angel with a mighty sword and shield wraps its wings out along the walls. It subtly moves as if breathing.",
+                "bullets": [
+                    "**Carving.** A person who enters the cave in possession of a golden egg (see Area 8) causes the carving to erupt from the wall as a hostile domini angel.",
+                    "**Hole.** A hole in the ceiling 10' up goes to the surface."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "main",
+                "name": "Swan Songs",
+                "description": "Two exquisite stained glass **swans** with curving necks hang like chandeliers. One is smoky black, the other prismatic white.",
+                "bullets": [
+                    "**Black Swan.** Sings a fluting dirge when touched and weeps 1d4 golden tears (treat as gp).",
+                    "**White Swan.** Sings a joyful hymn when touched, healing listeners 1 HP.",
+                    "Activating either more than 3 times/day causes it to snap at the offender (DC 12 DEX or 1d4 damage) and refuse to sing.",
+                    "**Noise.** Each time a swan sings, cumulative 1:6 chance 4 spectral guardians (Area 8) come investigate."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "main",
+                "name": "Father's Nest",
+                "description": "A massive white **swan** sleeps soundly in a floor nest, head tucked under his wing. Golden egg **shells** litter the nest.",
+                "bullets": [
+                    "**Swan.** DC 12 DEX each round to move without waking him (treat as a mastiff).",
+                    "**Shells.** Worth 60 gp total.",
+                    "**Noise.** The golden swan comes with 4 spectral guardians (Area 8) to investigate unusual noises."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "main",
+                "name": "Cave of Portents",
+                "description": "**Jola Madroth**, a shy and superstitious young peasant, lies on the floor by a lantern. She stares at the thick layer of purple quartz on the ceiling, hoping to glimpse a portent about her unrequited love.",
+                "bullets": [
+                    "**Hole.** A hole in the ceiling 10' up goes to the surface."
+                ],
+                "stats": ""
+            },
+            "5": {
+                "level": "main",
+                "name": "Offering Cave",
+                "description": "Hundreds of burning **candles** and incense sticks fill the cave with a warm glow and strong perfume. Scattered on the floor are dozens of gold pieces (80 total).",
+                "bullets": [
+                    "**Offering.** Leaving 1 gp grants a luck token (once a day). Taking any removes the offender's luck tokens."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "main",
+                "name": "False Eggs",
+                "description": "A cozy little cave with a warm swan **nest**. Scattered within are 10 golden swan **feathers** (each worth 2 gp) and two coconut-sized golden **eggs**.",
+                "bullets": [
+                    "**Eggs.** The eggs are trapped fakes; DC 12 DEX when handling one or it cracks, spilling acid (1d6 damage). If put in a backpack, it breaks, destroying 1d4 pieces of gear."
+                ],
+                "stats": ""
+            },
+            "7": {
+                "level": "main",
+                "name": "Tapestry Cave",
+                "description": "Six woven **tapestries** depict flowery forest scenes of birds, swans, and unicorns.",
+                "bullets": [
+                    "**Niche.** Behind one hides a niche housing an Alabaster Destrier."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "main",
+                "name": "Golden Grotto",
+                "description": "Unmoving, ghostly **knights** (8 spectral guardians) stand at attention facing away from a knee-high **pond** dappled with thin beams of sunlight. The regal golden **swan** sits in a nest on an island at the center of the pond.",
+                "bullets": [
+                    "**Eggs.** She incubates three coconut-sized golden eggs, each worth 500 gp.",
+                    "**Golden Swan.** She only attacks in defense of herself or the eggs. She goes to Area 3 to investigate unusual noise near her mate's sleeping nest.",
+                    "**Spectral Guardians.** They only leave their posts to investigate loud noises for 1d4 rounds (the nearest 4 go)."
+                ],
+                "stats": "Golden Swan. A regal swan with pure gold feathers that glow with inner light.\nAC 12, HP 19, ATK 2 beak +4 (1d6) or 1 song, MV near (fly), S +1, D +2, C +1, I -2, W +1, Ch +2, AL N, LV 4. Song. All in near DC 12 CHA or blinded by tears 1d4 rds.\n\nSpectral Guardian. Shimmering, ghostly knights with indistinct faces.\nAC 15 (chainmail + shield), HP 5, ATK 1 longsword +2 (1d8), MV near, S +1, D +0, C +1, I +0, W +1, Ch +0, AL L, LV 1. Ghostly. Ignore any non-magical damage dealt to the knight of 3 points total or less."
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade new popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** into bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        function openRandomEncounterTable() {
+            createPopup('Random Encounter Table', body => {
+                const note = document.createElement('div');
+                note.className = 'rngenc';
+                note.innerHTML = '';
+                body.appendChild(note);
+            });
+        }
+
+        const statblocks = [];
+
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.rngenc').addEventListener('click', openRandomEncounterTable);
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            // document.querySelectorAll('.hotspot').forEach(el => {
+            //     const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+            //     el.style.opacity = (!q || text.includes(q)) ? '1' : '.18';
+            //     el.style.background = (q && text.includes(q)) ? 'var(--accent)' : '';
+            // });
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels + party token (one remembered position per level)
+        const PARTY_KEY = 'golden-swan-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // Switch the map to another level (also called when a room popup is opened).
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
