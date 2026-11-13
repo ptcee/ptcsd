@@ -4340,6 +4340,26 @@ const MONSTERS = [
             "Ability 3": "Sunlight Sensitivity. DISADV on attacks in sunlight and 1d4 damage per round of exposure."
         },
         {
+            "Name": "Void Being",
+            "Source": "CR",
+            "Flavor Text": "Vaguely humanoid, 10-foot tall horrors made of purple-black oil slick. Their bodies can protrude writhing arms, and they share a cold and calculating hive mind where their actions and decisions are unified.",
+            "AC": "11",
+            "HP": "41",
+            "ATK": "3 arm stab +8 (2d8) or 1 brain meld",
+            "MV": "near (climb)",
+            "S": "+1",
+            "D": "+1",
+            "C": "+1",
+            "I": "+4",
+            "W": "+2",
+            "Ch": "+4",
+            "AL": "C",
+            "Level": "9",
+            "Ability 1": "Greater Undead. Immune to morale checks. Only damaged by silver or magical sources.",
+            "Ability 2": "Brain Meld. One undead creature within near DC 15 CHA or fall under the control of the void being for 1d4 days.",
+            "Ability 3": "Sunlight Sensitivity. DISADV on attacks in sunlight and 1d4 damage per round of exposure."
+        },
+        {
             "Name": "Owlbear",
             "Source": "CR",
             "Flavor Text": "Cantankerous bears with owl eyes, beaks, and feathers.",
