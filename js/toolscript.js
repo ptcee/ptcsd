@@ -6382,6 +6382,24 @@ const MONSTERS = [
             "Level": "1",
             "Ability 1": "Ghostly. Ignore any non-magical damage dealt to the knight of 3 points total or less.",
         },
+        {
+            "Name": "Dire Stingbat",
+            "Source": "Mini Adventures",
+            "Flavor Text": "A bloated, six-winged stingbat the size of a horse.",
+            "AC": "11",
+            "HP": "23",
+            "ATK": "2 beak +4 (1d6 + drain)",
+            "MV": "near (fly)",
+            "S": "+3",
+            "D": "+1",
+            "C": "+1",
+            "I": "-2",
+            "W": "+1",
+            "Ch": "-2",
+            "AL": "N",
+            "Level": "5",
+            "Ability 1": "Drain. Attach to target; attacks auto-hit next round. DC 18 STR remove.",
+        },
     ]
 ];
 
