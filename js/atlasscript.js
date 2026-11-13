@@ -420,7 +420,7 @@ $('#zi').onclick = () => zb(1.3); $('#zo').onclick = () => zb(1 / 1.3); $('#zr')
 function paint() {
     const fog = $('#fog').checked, rg = $('#rgn').checked, ft = $('#ft').checked;
     D.hexes.forEach(h => { P[h.id].style.fill = fog && !S.ex[h.id] ? 'rgba(6,4,3,.72)' : rg ? RC[h.region] + '3a' : 'transparent'; P[h.id].classList.toggle('sel', h.id == cur); P[h.id].classList.toggle('party', h.id == S.party) }); if (S.party && P[S.party]) hx.append(P[S.party]);
-    mk.innerHTML = ''; D.hexes.forEach(h => { const [x, y] = ctr(h); if (S.notes[h.id]) mk.append(el('circle', { cx: x + 30, cy: y - 26, r: 6, class: 'dot' })); if (ft) [['ruin', '#d9b27a', -14], ['land', '#7fc97f', 0], ['lair', '#e05a5a', 14]].forEach(([k, c, dx]) => { if (h[k]) mk.append(el('circle', { cx: x + dx, cy: y + 31, r: 5, fill: c, stroke: '#000', 'stroke-width': 1.5, 'pointer-events': 'none' })) }) })
+    mk.innerHTML = ''; D.hexes.forEach(h => { const [x, y] = ctr(h); if (S.notes[h.id]) mk.append(el('circle', { cx: x + 30, cy: y - 26, r: 6, class: 'dot' })); if (ft) [['ruin', '#d9b27a', -14], ['land', '#7fc97f', 0], ['lair', '#e05a5a', 14]].forEach(([k, c, dx]) => { if (h[k]) mk.append(el('circle', { cx: x + dx, cy: y + 31, r: 5, fill: c, stroke: '#000', 'stroke-width': 1.5, 'pointer-events': 'none' })) }); if (ft && (ADV[h.id] || '').trim()) mk.append(el('circle', { cx: x + 25, cy: y + 31, r: 3.5, fill: '#a259e6', stroke: '#000', 'stroke-width': 1.25, 'pointer-events': 'none' })) })
 }
 function goHex(id, fit = 1, push = 1) { if (push && cur && cur != id) hist.push(cur); cur = id; edD = null; rumH = H[id].area; tab = 'hex'; hx.append(P[id]); if (fit) focus(id); paint(); render() }
 const inl = s => e(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
