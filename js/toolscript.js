@@ -6440,6 +6440,25 @@ const MONSTERS = [
             "Level": "5",
             "Ability 1": "Drain. Attach to target; attacks auto-hit next round. DC 18 STR remove.",
         },
+        {
+            "Name": "Spider, Enormous",
+            "Source": "CR",
+            "Flavor Text": "Hairy and monstrous tarantulae, the size of a small elephant. They weave enormous webs.",
+            "AC": "14",
+            "HP": "28",
+            "ATK": "2 bites +5 (1d8 + poison) or 1 webweave",
+            "MV": "near (climb)",
+            "S": "+4",
+            "D": "+3",
+            "C": "+1",
+            "I": "-2",
+            "W": "+1",
+            "Ch": "-2",
+            "AL": "N",
+            "Level": "6",
+            "Ability 1": "Poison: DC 15 CON or paralyzed for 1d4 hours.",
+            "Ability 2": "Webweave: Covers a Near-sized cube extending from it with sticky web. Moving in that area requires a DC 15 STR check (spiders are immune). Flammable."
+        }
     ]
 ];
 
@@ -6884,7 +6903,7 @@ const MONSTERS = [
 
             <div class="pin-atk"><strong>ATK</strong> ${esc(monster.ATK || "-")}</div>
 
-            <details class="pin-details">
+            <details class="pin-details" open>
                 <summary>Stats and abilities</summary>
                 <div class="monster-stat-grid">${statGrid}</div>
                 ${abilities ? `<ul>${abilities}</ul>` : ""}
