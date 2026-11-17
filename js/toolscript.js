@@ -6458,6 +6458,29 @@ const MONSTERS = [
             "Level": "6",
             "Ability 1": "Poison: DC 15 CON or paralyzed for 1d4 hours.",
             "Ability 2": "Webweave: Covers a Near-sized cube extending from it with sticky web. Moving in that area requires a DC 15 STR check (spiders are immune). Flammable."
+        },
+        {
+            "Name": "Ignisax the Smoldering",
+            "Source": "CR",
+            "Flavor Text": "Blood-red scales cover the hide of this mighty, volcanic wyrm. Leaping flames glow at the back of its throat.",
+            "AC": "19",
+            "HP": "120",
+            "ATK": "4 rend +12 (2d12) or 1 fire breath",
+            "MV": "double near (fly)",
+            "S": "+6",
+            "D": "+5",
+            "C": "+4",
+            "I": "+4",
+            "W": "+4",
+            "Ch": "+5",
+            "AL": "C",
+            "Level": "18",
+            "Ability 1": "Legendary. Only damaged by magical sources. Hostile spells targeting Ignisax are DC 18 to cast.",
+            "Ability 2": "Magma Blood. Regains 2d8 HP each round while touching lava. Water or cold stops it for 1d4 rounds. Immune to fire.",
+            "Ability 3": "Smolder. While awake, each round all in near DC 12 CON or 1d4 fire damage (DISADV on the save in metal armor).",
+            "Ability 4": "Tectonic Roar. Once per fight, a roar shakes the cavern: all in near DC 12 DEX or 2d6 damage from falling rock, and a rockslide blocks one tunnel.",
+            "Ability 5": "Fire Breath. Fills a double near-sized cube extending from dragon. DC 15 DEX or 6d10 damage.",
+            "Ability 6": "Greed Sense. Knows when any gem or treasure leaves his domain.",
         }
     ]
 ];
