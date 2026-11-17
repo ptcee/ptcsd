@@ -18,6 +18,7 @@
             --tx: #e5e5e3;
             --mu: #eaeaea;
             --g: #e3e3e3;
+            --c: #ece6d9;
             --r: #299dea;
         }
 
@@ -32,7 +33,8 @@
             flex-direction: column;
             background: var(--bg);
             color: var(--tx);
-            font: 12px/1 'Montserrat', sans-serif;
+            font: 12px/1 Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            /* font-family: 'Montserrat', sans-serif; */
         }
 
         header {
@@ -42,7 +44,7 @@
             flex-wrap: wrap;
             padding: 8px 14px;
             background: linear-gradient(#25190f, #120c09);
-            border-bottom: 2px solid var(--g);
+            border-bottom: 2px solid var(--tx);
         }
 
         h1 {
@@ -74,7 +76,7 @@
         button:hover,
         button.on {
             border-color: var(--g);
-            color: #fff;
+            color: var(--tx);
             background: #302e2d;
         }
 
@@ -198,7 +200,7 @@
         }
 
         h3 {
-            color: #c6c6c6;
+            color: var(--mu);
             font-size: 14px;
             border-bottom: 1px solid var(--ln);
             margin: 16px 0 6px;
@@ -208,7 +210,7 @@
 
         h4 {
             margin: 8px 0 2px;
-            color: #cccccc;
+            color: var(--mu);
         }
 
         .tag {
@@ -303,33 +305,33 @@
 
         summary {
             cursor: pointer;
-            color: #55caf9
+            color: var(--r);
         }
 
         textarea {
             width: 100%;
             min-height: 150px;
-            resize: vertical
+            resize: vertical;
         }
 
         #pane select {
             max-width: 100%;
-            margin-bottom: 6px
+            margin-bottom: 6px;
         }
 
         #pane input[type=text] {
-            width: 100%
+            width: 100%;
         }
 
         .chk {
             display: inline-block;
-            margin: 6px 16px 6px 0
+            margin: 6px 16px 6px 0;
         }
 
         .h.party,
         .h.party:hover {
             stroke: #b266ff;
-            stroke-width: 5
+            stroke-width: 5;
         }
 
         .rng {
@@ -337,7 +339,7 @@
             background: #1b1410;
             border-radius: 4px;
             padding: 6px 8px;
-            margin-bottom: 12px
+            margin-bottom: 12px;
         }
 
         .rng b {
@@ -345,16 +347,16 @@
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-right: 6px
+            margin-right: 6px;
         }
 
         #pane .rng select {
-            margin: 0
+            margin: 0;
         }
 
         #rr {
             margin-top: 6px;
-            min-height: 22px
+            min-height: 22px;
         }
 
         #rr .n,
@@ -367,7 +369,7 @@
             border-radius: 3px;
             padding: 0 6px;
             margin-right: 6px;
-            font-weight: bold
+            font-weight: bold;
         }
 
         #ref {
@@ -380,11 +382,11 @@
             background: var(--p);
             border: 2px solid var(--g);
             border-radius: 4px;
-            box-shadow: 0 6px 24px #000
+            box-shadow: 0 6px 24px #000;
         }
 
         #ref[hidden] {
-            display: none
+            display: none;
         }
 
         #rfh {
@@ -400,7 +402,7 @@
             font-size: 13px;
             cursor: move;
             touch-action: none;
-            user-select: none
+            user-select: none;
         }
 
         #rfb {
@@ -408,18 +410,18 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             padding: 10px;
-            font-size: 13px
+            font-size: 13px;
         }
 
         #rfb>div {
             display: flex;
             flex-direction: column;
-            gap: 10px
+            gap: 10px;
         }
 
         #rfb table {
             width: 100%;
-            border-collapse: collapse
+            border-collapse: collapse;
         }
 
         #rfb caption {
@@ -427,28 +429,28 @@
             color: var(--g);
             font-weight: bold;
             padding: 4px;
-            letter-spacing: 1px
+            letter-spacing: 1px;
         }
 
         #rfb th,
         #rfb td {
             text-align: left;
             padding: 3px 6px;
-            border-bottom: 1px solid var(--ln)
+            border-bottom: 1px solid var(--ln);
         }
 
         .dgc {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 8px
+            margin-bottom: 8px;
         }
 
         .dgc label {
             display: flex;
             flex-direction: column;
             font-size: 12px;
-            color: var(--mu)
+            color: var(--mu);
         }
 
         .dgs {
@@ -456,7 +458,7 @@
             padding: 6px 8px;
             border: 1px solid var(--g);
             background: #1b1410;
-            border-radius: 4px
+            border-radius: 4px;
         }
 
         .obj td {
@@ -464,12 +466,12 @@
         }
 
         .obj td:last-child {
-            border-left: 3px solid var(--g)
+            border-left: 3px solid var(--g);
         }
 
         .star {
             color: var(--g);
-            font-size: 12px
+            font-size: 12px;
         }
 
         .feat {
@@ -477,17 +479,17 @@
             padding: 5px 8px;
             background: #1b1410;
             border-left: 3px solid var(--g);
-            border-radius: 2px
+            border-radius: 2px;
         }
 
         details>summary {
-            outline: none
+            outline: none;
         }
 
         .qt {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 8px
+            margin-bottom: 8px;
         }
 
         .qt td,
@@ -495,19 +497,19 @@
             border-bottom: 1px solid var(--ln);
             padding: 4px 6px;
             vertical-align: top;
-            text-align: left
+            text-align: left;
         }
 
         .qt td:first-child {
             color: var(--g);
             white-space: nowrap;
-            font-weight: bold
+            font-weight: bold;
         }
 
         .qt th {
             color: var(--mu);
             font-size: 11px;
-            text-transform: uppercase
+            text-transform: uppercase;
         }
 
         #eco,
@@ -523,12 +525,12 @@
             background: var(--p);
             border: 2px solid var(--g);
             border-radius: 4px;
-            box-shadow: 0 6px 24px #000
+            box-shadow: 0 6px 24px #000;
         }
 
         #eco[hidden],
         #car[hidden] {
-            display: none
+            display: none;
         }
 
         #ecoh,
@@ -545,7 +547,7 @@
             font-size: 13px;
             cursor: move;
             touch-action: none;
-            user-select: none
+            user-select: none;
         }
 
         #ecot,
@@ -554,13 +556,13 @@
             flex-wrap: wrap;
             gap: 4px;
             padding: 8px 10px;
-            border-bottom: 1px solid var(--ln)
+            border-bottom: 1px solid var(--ln);
         }
 
         #ecot button,
         #cart button {
             font-size: 12px;
-            padding: 3px 7px
+            padding: 3px 7px;
         }
 
         #ecob,
@@ -569,24 +571,24 @@
             padding: 10px 12px;
             flex: 1;
             min-height: 0;
-            font-size: 13px
+            font-size: 13px;
         }
 
         #ecob h3,
         #carb h3 {
-            margin-top: 4px
+            margin-top: 4px;
         }
 
         .eco td:first-child {
             color: var(--tx);
-            white-space: normal
+            white-space: normal;
         }
 
         .eco .sub td {
             color: var(--g);
             font-variant: small-caps;
             letter-spacing: 1px;
-            background: #1b1410
+            background: #1b1410;
         }
 
         .tg {
@@ -594,48 +596,48 @@
             color: #d77;
             margin-left: 2px;
             font-weight: bold;
-            vertical-align: super
+            vertical-align: super;
         }
 
         .hp {
             color: var(--g);
             font-size: 10px;
-            margin-left: 3px
+            margin-left: 3px;
         }
 
         #ecof {
             width: 100%;
-            margin-bottom: 8px
+            margin-bottom: 8px;
         }
 
         .xp {
             color: #d77;
             white-space: nowrap;
-            font-weight: bold
+            font-weight: bold;
         }
 
         .cr td:nth-child(2) {
-            white-space: nowrap
+            white-space: nowrap;
         }
 
         @media(max-width:900px) {
             main {
-                flex-direction: column
+                flex-direction: column;
             }
 
             #side {
                 width: 100%;
                 height: 55%;
-                border-left: 0
+                border-left: 0;
             }
         }
 
         .hk {
-            margin: 5px 0
+            margin: 5px 0;
         }
 
         .hk .read {
-            margin: 6px 0
+            margin: 6px 0;
         }
     </style>
 </head>
@@ -656,7 +658,7 @@
             <div id="zc"><button id="zi">+</button><button id="zo">&minus;</button><button id="zr">&#8634;</button></div>
         </div>
         <aside id="side">
-            <div id="tabs"><button data-tab="hex">Hex</button><button data-tab="dun">Treasures</button><button data-tab="enc">Encounters</button><button data-tab="rum">Rumours</button><button data-tab="fac">Factions</button><button data-tab="camp">GM Screen</button></div>
+            <div id="tabs"><button data-tab="hex">Hex</button><button data-tab="dun">Treasures</button><button data-tab="enc">Encounters</button><button data-tab="rum">Rumours</button><button data-tab="fac">Factions</button><button data-tab="camp">GM Stuff</button></div>
             <div id="pane"></div>
         </aside>
     </main>
