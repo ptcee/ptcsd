@@ -27,11 +27,11 @@ const ADV = {
     "0107": "", // Rotbark: Mirrorpool Glade
     "0108": "", // Rotbark: Mirrorpool Glade
     "0109": "", // Rotbark: Mirrorpool Glade
-    "0110": "adv/0110.html", // Behemoth's Rift: Behemoth's Rift
+    "0110": "adv/0110.html", // Behemoth's Rift: The Wavestone Monolith
     "0111": "", // Behemoth's Rift: Behemoth's Rift
     "0112": "", // Behemoth's Rift: Behemoth's Rift
-    "0113": "", // Cinder Peaks: The Weeping Gorge
-    "0114": "adv/0114.html", // Cinder Peaks: The Needle Teeth
+    "0113": "adv/0113.html", // Cinder Peaks: Mount Pyreheart
+    "0114": "adv/0114.html", // Cinder Peaks: Fortress of the Burning Brothers
     "0115": "", // Cinder Peaks: The Needle Teeth
     "0116": "", // Cinder Peaks: Sleepers' Rim
     "0117": "", // Cinder Peaks: Sleepers' Rim
@@ -88,7 +88,7 @@ const ADV = {
     "0413": "", // Cinder Peaks: Emberglass Scree
     "0414": "", // Cinder Peaks: Emberglass Scree
     "0415": "", // Cinder Peaks: The Ash Fall
-    "0416": "adv/0416.html", // Cinder Peaks: The Ash Fall
+    "0416": "adv/0416.html", // Cinder Peaks: Sanctum of the Elephant God
     "0417": "", // Cinder Peaks: The Booming Dunes
     "0418": "", // Cinder Peaks: The Booming Dunes
     "0500": "", // Rimewastes: The Dice Field
@@ -118,7 +118,7 @@ const ADV = {
     "0606": "", // Brightscale Basin: The Flower Sea
     "0607": "", // Brightscale Basin: The Flower Sea
     "0608": "", // Brightscale Basin: The Three Sisters
-    "0609": "", // Brightscale Basin: The Bottomless Eye
+    "0609": "adv/0610.html", // Brightscale Basin: House Auxor
     "0610": "", // Brightscale Basin: The Bottomless Eye
     "0611": "", // Brightscale Basin: The Bottomless Eye
     "0612": "", // Blightcreep: The Burning Mire
@@ -140,7 +140,7 @@ const ADV = {
     "0709": "", // Brightscale Basin: The Bottomless Eye
     "0710": "", // Brightscale Basin: The Basalt Organ
     "0711": "", // Brightscale Basin: The Basalt Organ
-    "0712": "adv/0712.html", // Blightcreep: The Burning Mire
+    "0712": "adv/0712.html", // Blightcreep: Chapel of the Plague Priestesses
     "0713": "", // Blightcreep: The Burning Mire
     "0714": "", // Blightcreep: The Burning Mire
     "0715": "", // Blightcreep: The Burning Mire
@@ -170,7 +170,7 @@ const ADV = {
     "0902": "", // Rimewastes: The Dice Field
     "0903": "", // Brightscale Basin: The Meeting of Waters
     "0904": "", // Brightscale Basin: The Meeting of Waters
-    "0905": "adv/0905.html", // Brightscale Basin: The Meeting of Waters
+    "0905": "adv/0905.html", // Brightscale Basin: Eroding Isle of the Executioner
     "0906": "", // Brightscale Basin: The Meeting of Waters
     "0907": "", // Brightscale Basin: Leaping Rapids
     "0908": "", // Emerald Wood: Glowcap Dell
@@ -190,7 +190,7 @@ const ADV = {
     "1004": "", // Brightscale Basin: The Meeting of Waters
     "1005": "", // Brightscale Basin: The Meeting of Waters
     "1006": "", // Brightscale Basin: The Meeting of Waters
-    "1007": "adv/1007.html", // Brightscale Basin: Leaping Rapids
+    "1007": "adv/1007.html", // Brightscale Basin: Grotto of the Golden Swan
     "1008": "", // Emerald Wood: Glowcap Dell
     "1009": "", // Emerald Wood: Glowcap Dell
     "1010": "", // Emerald Wood: Glowcap Dell
@@ -228,7 +228,7 @@ const ADV = {
     "1205": "", // Emerald Wood: The Windfall Scar
     "1206": "", // Emerald Wood: The Windfall Scar
     "1207": "", // Emerald Wood: The Windfall Scar
-    "1208": "adv/1208.html", // Emerald Wood: Glowcap Dell
+    "1208": "adv/1208.html", // Emerald Wood: Fallen Keep of the Emerald Knight
     "1209": "", // Emerald Wood: Glowcap Dell
     "1210": "", // Emerald Wood: Glowcap Dell
     "1211": "", // Emerald Wood: Glowcap Dell
@@ -279,7 +279,7 @@ const ADV = {
     "1500": "", // Rimewastes: The Frozen Fall
     "1501": "", // Rimewastes: The Frozen Fall
     "1502": "", // Rimewastes: The Frozen Fall
-    "1503": "adv/1503.html", // Emerald Wood: The Windfall Scar
+    "1503": "adv/1503.html", // Emerald Wood: The Hidden Leprechaun Hollow
     "1504": "", // Emerald Wood: The Windfall Scar
     "1505": "", // Emerald Wood: The Windfall Scar
     "1506": "", // Emerald Wood: The Windfall Scar
@@ -288,15 +288,15 @@ const ADV = {
     "1509": "", // Emerald Wood: The Silverbark Stand
     "1510": "", // Emerald Wood: The Silverbark Stand
     "1511": "", // Golden Waves: The Spiral Hill
-    "1512": "adv/1512.html", // Golden Waves: The Spiral Hill
+    "1512": "adv/1512.html", // Golden Waves: Burial Mound of Kaghan
     "1513": "", // Golden Waves: Seven Eyes Citadel Ruins
     "1514": "", // Golden Waves: Seven Eyes Citadel Ruins
     "1515": "", // Winter's Edge: The Rime Stair
     "1516": "", // Winter's Edge: The Rime Stair
     "1517": "", // Winter's Edge: The Rime Stair
-    "1518": "adv/1518.html", // Winter's Edge: The Rime Stair
+    "1518": "adv/1518.html", // Winter's Edge: Twisting Cave of the Pale Ones
     "1601": "", // Rimewastes: The Sleeping Bear
-    "1602": "adv/1602.html", // Rimewastes: The Sleeping Bear
+    "1602": "adv/1602.html", // Rimewastes: Forge of the Metallic Sisters
     "1603": "", // Rimewastes: The Sleeping Bear
     "1604": "", // Emerald Wood: The Fog Basin
     "1605": "", // Emerald Wood: The Fog Basin
@@ -307,7 +307,7 @@ const ADV = {
     "1610": "", // Emerald Wood: The Resin Wood
     "1611": "", // Emerald Wood: The Resin Wood
     "1612": "", // Golden Waves: The Spiral Hill
-    "1613": "adv/1613.html", // Golden Waves: The Spiral Hill
+    "1613": "adv/1613.html", // Golden Waves: Kneel Before the Goblin King
     "1614": "", // Golden Waves: Seven Eyes Citadel Ruins
     "1615": "", // Winter's Edge: The Whistling Vents
     "1616": "", // Winter's Edge: The Rime Stair
@@ -328,7 +328,7 @@ const ADV = {
     "1712": "", // Golden Waves: The Beacon Inn
     "1713": "", // Golden Waves: The Antler Thicket
     "1714": "", // Winter's Edge: The Whistling Vents
-    "1715": "adv/1715.html", // Winter's Edge: The Whistling Vents
+    "1715": "adv/1715.html", // Winter's Edge: Tomb of the Dusk Queen
     "1716": "", // Winter's Edge: The Whistling Vents
     "1717": "", // Winter's Edge: The Rime Stair
     "1718": "", // Winter's Edge: The Rime Stair
@@ -363,7 +363,7 @@ const ADV = {
     "1910": "", // Frostholm: Frostholm
     "1911": "", // Frostholm: Frostholm
     "1912": "", // Frostholm: The Antler Thicket
-    "1913": "adv/1913.html", // Frostholm: The Antler Thicket
+    "1913": "adv/1913.html", // Frostholm: House of Rogues
     "1914": "", // Frostholm: The Antler Thicket
     "1915": "", // Winter's Edge: The Whistling Vents
     "1916": "", // Winter's Edge: The Whistling Vents
@@ -374,13 +374,13 @@ const ADV = {
     "2003": "", // Rimewastes: The Sleeping Bear
     "2004": "", // Emerald Wood: The Fog Basin
     "2005": "", // Emerald Wood: The Fog Basin
-    "2006": "adv/2006.html", // Emerald Wood: The Fog Basin
+    "2006": "adv/2006.html", // Emerald Wood: Lost Citadel of the Scarlet Minotaur
     "2007": "", // Emerald Wood: The Fog Basin
     "2008": "", // Emerald Wood: The Resin Wood
     "2009": "", // Emerald Wood: The Resin Wood
-    "2010": "adv/2010.html", // Frostholm: Frostholm
+    "2010": "adv/2010.html", // Frostholm: Bittermold Keep
     "2011": "", // Frostholm: Frostholm
-    "2012": "adv/2012.html", // Frostholm: Frostholm
+    "2012": "adv/2012.html", // Frostholm: Trial of the Slime Lord
     "2013": "", // Frostholm: Frostholm
     "2014": "", // Frostholm: The Antler Thicket
     "2015": "", // Winter's Edge: The Whistling Vents
