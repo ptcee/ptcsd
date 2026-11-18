@@ -120,7 +120,6 @@
             position: relative;
             width: min(100%, 900px);
             /* margin: 0 auto; */
-            background: var(--ink);
             box-shadow: 0 8px 32px var(--panel);
             line-height: 0;
         }
@@ -130,41 +129,6 @@
             width: 100%;
             height: auto;
         }
-
-        /* .hotspot {
-            position: absolute;
-            z-index: 2;
-            border: 1px solid var(--line);
-            background: var(--bg);
-            border-radius: 4px;
-            cursor: pointer;
-            line-height: 1;
-            transition: background .12s, border .12s;
-        }
-
-        .hotspot:hover,
-        .hotspot:focus {
-            background: var(--line);
-            border: 2px solid var(--bolden);
-            outline: none;
-        }
-
-        .hotspot span {
-            position: absolute;
-            left: 3px;
-            top: 3px;
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--ink);
-            background: var(--bg);
-            border: 1px solid var(--ink);
-            border-radius: 50%;
-            width: 21px;
-            height: 21px;
-            display: grid;
-            place-items: center;
-            line-height: 1;
-        } */
 
         .instructions {
             max-width: 900px;
@@ -381,7 +345,7 @@
 
 <body>
     <header>
-        <h1>Bittermold Keep</h1><span class="hint">Interactive room key</span><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">Close all popups</button>
+        <h1>Bittermold Keep</h1><input id="search" placeholder="Find a room or keyword…" aria-label="Search rooms"><button id="reset">Close Pops</button>
     </header>
     <main>
         <div class="top">
@@ -447,32 +411,7 @@
                 </table>
             </div>
             <div class="map-wrap" id="mapWrap">
-                <div class="compasss">
-                    <svg id="compass" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                        <defs>
-                            <style>
-                                .cls-1 {
-                                    fill: #fff;
-                                }
-    
-                                .cls-2 {
-                                    fill: #9e7d66;
-                                }
-                            </style>
-                        </defs>
-                        <path class="cls-2" d="M91.75,151.87c.67-1.16,2.3-1.96,3.33-.79.9,1.02,1.98,8.27,2.42,8.28,1.08-1.5,2.23-8.06,3.61-8.69.83-.38,1.81-.14,2.37.57,1.15,1.46,1.74,6.24,2.71,8.12l2.66-8.16c1.22-1.51,3.31-.8,3.44,1.07l-4.64,15.37c-1.13.9-2.35.5-3-.72-1.13-2.11-1.65-5.76-2.47-8.09-2.01,2.11-2.58,13.77-6.76,7.44l-3.66-13.05v-1.34Z" />
-                        <path class="cls-2" d="M48.75,88.63c.71.51.97.85,1.07,1.73.33,2.69.35,11.27,0,13.92-.19,1.45-1.97,2.3-3.09,1.19l-6.55-8.83v8.16c0,.1-.91.9-1.14,1-1.18.51-2.17-.18-2.55-1.33l.06-14.26c.45-.93,1.05-1.52,2.14-1.33,1.59.28,5.71,7.81,7.36,9.09.24-2.47-.32-5.48.03-7.87.14-.94.51-.85,1.05-1.48h1.6Z" />
-                        <path class="cls-2" d="M146.79,99.23c0,25.11-20.35,45.46-45.46,45.46s-45.46-20.36-45.46-45.46,20.35-45.46,45.46-45.46,45.46,20.36,45.46,45.46ZM143.01,99.23c0-23-18.65-41.65-41.65-41.65s-41.65,18.65-41.65,41.65,18.65,41.65,41.65,41.65,41.65-18.65,41.65-41.65Z" />
-                        <path class="cls-2" d="M99.24,35.77v2.67h7.89c.08,0,1.01.94,1.07,1.08.44.95-.49,2.67-1.34,2.67h-7.62v2.94h8.69c.1,0,.91.92,1.01,1.15.55,1.31-.47,2.45-1.8,2.6-1.64.19-8.98.26-10.38-.06-1.19-.27-1.45-1.69-1.54-2.74-.24-2.76-.3-8.8.01-11.51.16-1.4.77-2.37,2.27-2.55s8.52-.24,9.84.06c2.14.49,1.26,3.69.32,3.69h-8.42Z" />
-                        <path class="cls-2" d="M157.01,88.23c3.04-.22,6.35,2.27,6.48,5.41.08,1.76-.74,3.16-2.62,2.34-1.57-.68-.7-2.81-2.23-3.66-2.53-1.41-5.53,2.66-1.46,4.14,2.47.89,5.54,1.04,6,4.43.65,4.79-2.41,8.79-7.48,7.75-3.03-.62-6.58-6.34-3.39-7.7,2.4-1.03,2.32,1.73,2.9,2.84,1.23,2.34,4.79.97,4.19-1.78-.5-2.3-5.48-1.36-7.22-4.28-2.29-3.85.28-9.16,4.82-9.49Z" />
-                        <path class="cls-1" d="M143.01,99.23c0,23-18.65,41.65-41.65,41.65s-41.65-18.65-41.65-41.65,18.65-41.65,41.65-41.65,41.65,18.65,41.65,41.65ZM110.46,90.2l-7.32-27.3c-.61-1.82-2.93-1.7-3.55.07l-7.62,27.95-26.6,6.29c-1.95.73-2.14,3.18-.09,3.82l27.75,7.81,7.36,26.87c.4,1.27,2.4,1.43,3.2.52l7.77-28.06,25.86-7.03c1.9-.52,2.25-2.93.35-3.69l-27.11-7.25ZM90.32,82.26c-2.83-.62-10.24-8.35-11.07-2.71l5.41,9.32,4.31-.82,1.35-5.79ZM120.77,77.45c-.57.1-8.11,4.36-8.37,4.77l1.22,4.94c.96.15,4.08,1.52,4.68.94l4.63-8.22c.47-1.31-.84-2.66-2.15-2.44ZM114.21,111.16c.07,1.28-1.61,4.2-.88,5.18,2.55.87,9.88,7.82,10.07,1.98l-4.56-8.02c-.72-.67-3.65.58-4.63.86ZM91.14,115.89l-1.17-4-5.31-1.55c-.41.1-4.2,6.22-4.68,7.1-1.14,2.12-1,3.77,1.89,3.5l9.27-5.05Z" />
-                        <path class="cls-2" d="M110.46,90.2l27.11,7.25c1.9.76,1.55,3.17-.35,3.69l-25.86,7.03-7.77,28.06c-.8.91-2.81.75-3.2-.52l-7.36-26.87-27.75-7.81c-2.06-.64-1.86-3.09.09-3.82l26.6-6.29,7.62-27.95c.62-1.77,2.94-1.89,3.55-.07l7.32,27.3Z" />
-                        <path class="cls-2" d="M90.32,82.26l-1.35,5.79-4.31.82-5.41-9.32c.84-5.64,8.24,2.08,11.07,2.71Z" />
-                        <path class="cls-2" d="M91.14,115.89l-9.27,5.05c-2.89.27-3.04-1.38-1.89-3.5.48-.88,4.26-7,4.68-7.1l5.31,1.55,1.17,4Z" />
-                        <path class="cls-2" d="M120.77,77.45c1.31-.23,2.62,1.13,2.15,2.44l-4.63,8.22c-.6.58-3.72-.79-4.68-.94l-1.22-4.94c.25-.41,7.8-4.68,8.37-4.77Z" />
-                        <path class="cls-2" d="M114.21,111.16c.97-.29,3.91-1.53,4.63-.86l4.56,8.02c-.19,5.84-7.51-1.11-10.07-1.98-.73-.98.95-3.9.88-5.18Z" />
-                    </svg>
-                </div>
+                
                 <img src="adv-maps/bittermold-keep.jpg" alt="Bittermold Keep">
     
                 <button class="party-token" id="partyToken" type="button" title="Drag to move the party" aria-label="Party token">PC</button>
@@ -900,7 +839,7 @@
             popupContainer.appendChild(popup);
 
             // Cascade newly opened windows, starting at the top-left.
-            const offset = (popupOffset++ % 8) * 28;
+            const offset = (popupOffset++ % 2) * 28;
             popup.style.left = `${offset}px`;
             popup.style.top = `${offset}px`;
             popup.style.zIndex = ++popupZIndex;
