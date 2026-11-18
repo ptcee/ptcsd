@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>Mount Pyreheart</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #ff7d5c;
+            --line: #4d4c4c;
+            --accent: #f5af6e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Mount Pyreheart</h1><span class="hint">Room Key</span><span id="levelTabs" role="group" style="display:flex;gap:6px;flex-wrap:wrap"></span><input id="search" placeholder="Find a room or keyword..." ><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Darkness, dim glow in rooms with lava.</p>
+                </div>
+                <div class="lvl-panel" data-panel="all">
+                    <h2>Random Encounters</h2>
+                    <table>
+                        <tr>
+                            <th>d6</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Ignisax's snore shakes the cavern. Dust and embers rain down: DC 12 DEX or 1d6 damage</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>A lone <strong>fire elemental</strong> rises from the lava, drawn to the party's light</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>1d6 <strong>Ashbiter kobolds</strong> (small, clever) shadow the party, then spring a rockslide: DC 12 DEX or 2d6 damage (they escort anyone carrying an Ashbiter token instead)</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>2d4 <strong>Emberscale kobolds</strong> (big, brutal) storm up the tunnel, racing for the Ruby Cavern (Area S); they parley with anyone carrying an Emberscale token</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Firechewer</strong> the hell hound (Area 2) lopes by, jaws full of gemstones. Neutral, ignores the party unless provoked</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Lava geyser! <strong>Magma</strong> bursts from a crack nearby: DC 12 DEX or 2d6 fire damage</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/moltenriver.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Entrance</button>
+                <button class="room-chip" data-room="2">Area 2: Fire Beach</button>
+                <button class="room-chip" data-room="3">Area 3: The Cauldron</button>
+                <button class="room-chip" data-room="4">Area 4: Greed Passage</button>
+                <button class="room-chip" data-room="5">Area 5: Pyromancers' Hall</button>
+                <button class="room-chip" data-room="6">Area 6: Pyromancers' Entrance</button>
+                <button class="room-chip" data-room="7">Area 7: The Fire Altar</button>
+                <button class="room-chip" data-room="8">Area 8: Ignisax's Lair</button>
+                <button class="room-chip" data-room="9">Area 9: Giants' Entrance</button>
+                <button class="room-chip" data-room="10">Area 10: Fire Beach</button>
+                <button class="room-chip" data-room="11">Area 11: Iron and Fire</button>
+                <button class="room-chip" data-room="12">Area 12: The Great Forge</button>
+                <button class="room-chip" data-room="S">Area S: Ruby Cavern</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>Greed thrives on rubies and diamonds. Beware when seeking them in the place they call... Molten River.</em></p>
+
+                        <h3>The Cinder Peaks.</h3>
+                        <p>The Cinder Peaks are low, jagged volcanic mountains filled with black glass, sulfur springs, hot rivers, old dwarven ruins, and active kobold worksites. Ignisax the Smoldering, a giant fire dragon, rules from Mount Pyreheart. The Ashbiter and Emberscale kobold clans serve the dragon while competing with one another over engineering, territory, prestige, and survival.</p>
+                        <h3>Mount Pyreheart.</h3>
+                        <p>The volcano is the domain of <strong>Ignisax the Smoldering</strong>, a giant fire dragon. His presence makes the region dangerous, and the kobolds create most of the day-to-day activity around it. The mountains also hold remnants of old dwarven works and routes toward Deephome. Heat and mineral runoff from the peaks feed the Argent Run and Brightscale Basin.</p>
+                        <h3>The Kobold Clans.</h3>
+                        <p>The <strong>Ashbiter</strong> and <strong>Emberscale</strong> kobold clans crawl through these peaks, worshipping the dragon as a god of tectonic wrath and setting brutal rockslide traps for thieves. The Ashbiters are smaller and smarter; the Emberscales are stronger and less clever. They share the Obsidian Warrens and are organized enough to field patrols, workshops, engineers, war outposts, and rival clans. They are not just wandering monsters.</p>
+                        <h3>Heralds of the Dragon.</h3>
+                        <p>Two efreet princes, Malik and Gaspar, hold the <a href="adv/0114.html" style="color:var(--accent)" target="_blank" rel="noopener">Iron Fortress</a> in the hex just south of the mountain. Fire-born themselves, they let the kobolds believe they are the dragon's anointed heralds. Malik sponsors the Ashbiters and Gaspar sponsors the Emberscales, and the clans' rivalry is the brothers' contest for their father's title fought by proxy. The brothers skim the clans' tribute as it passes the fortress and send the gems to the City of Brass. They cannot rob Ignisax openly without breaking the myth the clans believe, so they send outsiders after the hoard.</p>
+                        <h3>The Road In.</h3>
+                        <p>On the heralds' advice, the clans sealed every surface way into the mountain with rockslides to protect their god from thieves. The only open ways in lead through the <a href="adv/0114.html" style="color:var(--accent)" target="_blank" rel="noopener">Iron Fortress</a>. The <strong>Magma Road</strong> is an old dwarven tunnel that runs from the fortress's rear gate (<a href="adv/0114.html" style="color:var(--accent)" target="_blank" rel="noopener">Iron Fortress, Area 12</a>) to Area 1 here. A <strong>smuggler's route</strong> runs up the magma river in Thorgol's rowboat from the fortress's mines (<a href="adv/0114.html" style="color:var(--accent)" target="_blank" rel="noopener">Iron Fortress, Area 35</a>) to the Fire Beach at Area 10. A <strong>passage token</strong> (Emberscale iron from Gaspar, Ashbiter brass from Malik) lets the bearer past the rockslide traps and patrols of the issuing clan. The rival clan's patrols turn hostile.</p>
+                        <h3>Dragon Blood Gems.</h3>
+                        <p>The rubies and diamonds scattered through the volcano are crystallized flakes of Ignisax's blood. The Emberscales want them smashed and burned as holy offerings. The Ashbiters want them cut and sold.</p>
+                        <h3>Ignisax the Smoldering.</h3>
+                        <p>Blood-red scales cover the hide of this mighty, volcanic wyrm. Leaping flames glow at the back of its throat.</p>
+                        <div class="stats">AC 19, HP 120, ATK 4 rend +12 (2d12) or 1 fire breath, MV double near (fly), S +6, D +5, C +4, I +4, W +4, Ch +5, AL C, LV 18.
+Fireblood. Fire immune.
+Magma Blood. Regains 2d8 HP each round while touching lava. Water or cold stops it for 1d4 rounds.
+Smolder. While awake, each round all in near DC 12 CON or 1d4 fire damage (DISADV on the save in metal armor).
+Tectonic Roar. Once per fight, a roar shakes the cavern: all in near DC 12 DEX or 2d6 damage from falling rock, and a rockslide blocks one tunnel.
+Fire Breath. Fills a double near-sized cube extending from dragon. DC 15 DEX or 6d10 damage.
+Greed Sense. Knows when any gem or treasure leaves his domain.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "1f",
+                "label": "The Volcano",
+                "img": "adv-maps/moltenriver.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "1f",
+                "name": "Entrance",
+                "description": "At the mouth of the dungeon lies a small, improvised camp, clearly left behind by other crawlers.",
+                "bullets": [
+                    "**Tent.** A hidden bear trap guards the entrance (2d4 damage). Inside the tent, you find (2) rations, (1) torch, and (15 m) of rope neatly stashed away.",
+                    "**Rockslide Trap.** The kobold clans rig brutal rockslide traps for thieves. A tripwire just past the camp drops rocks on the party: DC 12 DEX or 2d6 damage. A character carrying a kobold passage token (see Other Info) knows which tripwire to step over.",
+                    "**Magma Road.** The tunnel behind the camp runs south to the Iron Fortress, [Iron Fortress, Area 12](fortress). Every other approach to the mountain was sealed by kobold rockslides."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "1f",
+                "name": "Fire Beach",
+                "description": "A stretch of black sand and molten rock, where four small **rubies** (worth 100 GP each) gleam amid the heat. A wounded **Fire Elemental** clashes violently with a **Hell Hound** upon the burning shore.",
+                "bullets": [
+                    "**Firechewer** (neutral) is the loyal hound of the Fire Giants from Area 11. Once the battle ends, he crosses the lava river toward Area 10, his jaws filled with gemstones and raw minerals.",
+                    "If the PCs aid the hound in battle, he becomes friendly. If they don't, he slays the Fire Elemental and disappears across the lava flow."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "1f",
+                "name": "The Cauldron",
+                "description": "A bubbling pool of molten lava fills the chamber. A rope with **metal hooks** is anchored to the ceiling, stretching across the lava flow, a precarious path left behind by previous crawlers.",
+                "bullets": [
+                    "**Crossing.** Requires a DC 15 Strength check and a DC 15 Constitution check to endure the heat."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "1f",
+                "name": "Greed Passage",
+                "description": "A band of rival crawlers is making a daring attempt to cross the vast lava river by moving along the ceiling, hoping to reach **Room S** before anyone else.",
+                "bullets": [],
+                "stats": ""
+            },
+            "5": {
+                "level": "1f",
+                "name": "Pyromancers' Hall",
+                "description": "2d4 **pyromancers** are gathered here, studying ancient inscriptions etched into the cavern walls: fiery runes detailing long-forgotten flame magic.",
+                "bullets": [
+                    "**Treasure.** The pyromancers carry a Potion of Healing (restores 3d6 HP, worth 150 GP) and a Wand of Misty Step.",
+                    "**Scriptures.** A wizard who spends time examining the runes may attempt a DC 15 Intelligence check to decipher and learn the Fireball spell."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "1f",
+                "name": "Pyromancers' Entrance",
+                "description": "The walls are adorned with inscriptions and sculptures of fire-breathing **dragons**. Faded red **banners**, trimmed with gold thread (worth 100 GP), hang as tattered remnants of a bygone cult.",
+                "bullets": [
+                    "**Trap.** Hidden pressure levers lie beneath the floor. When triggered, the dragon statues unleash jets of flame, dealing 3d6 fire damage to anyone caught in the blast."
+                ],
+                "stats": ""
+            },
+            "7": {
+                "level": "1f",
+                "name": "The Fire Altar",
+                "description": "An **altar** devoted to the worship of fire dragons stands here. A grand slab of volcanic black marble serves as the offering table to the mighty dragon Ignisax the Smoldering.",
+                "bullets": [
+                    "**Tribute.** The statues and coins are tribute left by the kobold clans, who worship Ignisax as a god of tectonic wrath. The brothers at the [Iron Fortress](fortress) skim the best of the tribute on its way up the road, so only the leavings reach the altar. Both clans return regularly to replace the offerings, and they hunt anyone who steals them.",
+                    "**Treasure.** Three dragon statues (worth 120 GP each), 100 GP in loose coins, and a Bag of Holding.",
+                    "▶ **Virtue.** When activated, one random ability score becomes 18 (+4).",
+                    "▶ **Flaw.** The item requires a daily offering of 10 GP to remain active. If deactivated or unpaid, all contents within are lost forever."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "1f",
+                "name": "Ignisax's Lair",
+                "description": "Deep within the volcano's heart slumbers **Ignisax the Smoldering**, a giant fire dragon who has slept undisturbed for centuries.",
+                "bullets": [
+                    "**Ignisax.** Stat block in Other Info.",
+                    "**Offering.** If the heroes offer all the treasures from the altar in Area 7, Ignisax stirs slightly. Fiery smoke billows from his nostrils toward the one who made the offering, bestowing a blessing before the dragon returns to slumber.",
+                    "**Theft.** However, should any PC dare to steal from his hoard, Ignisax awakens in a blazing fury, attacking all intruders. The volcano begins to erupt within 2d4 rounds.",
+                    "**Treasure.** Ignisax sleeps atop a glittering hoard of 1,700 GP and several priceless relics:",
+                    "▶ +2 Mithral Armor.",
+                    "▶ +2 Flaming Sword.",
+                    "▶ Diamond (360 GP).",
+                    "▶ Ring of Feather Fall."
+                ],
+                "stats": ""
+            },
+            "9": {
+                "level": "1f",
+                "name": "Giants' Entrance",
+                "description": "A vast, ancient corridor lies here, long abandoned and shrouded in dust. It's clear that no one has walked this way in ages, yet the ground still bears the deep impressions of massive footprints.",
+                "bullets": [
+                    "**Old Works.** The corridor is a remnant of old dwarven works, an abandoned route toward Deephome."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "1f",
+                "name": "Fire Beach",
+                "description": "Another stretch of black sand scorched by molten heat. Two **Fire Elementals** rise where the lava meets the shore, their blazing forms illuminating six small **rubies** (worth 100 GP each) and a single **diamond** (250 GP) glimmering nearby.",
+                "bullets": [
+                    "**River Landing.** Thorgol's rowboat from the mines of the [Iron Fortress, Area 35](fortress) lands here, bypassing the Magma Road and its toll post. Kobold patrols beyond the landing are hostile to anyone without a passage token."
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "1f",
+                "name": "Iron and Fire",
+                "description": "Iron and Fire is the grand forge of **Zortak**, a mighty Fire Giant with golden teeth and a temper as volatile as molten rock. Zortak offers to enhance weapons and armor, but accepts only rubies and diamonds as payment.",
+                "bullets": [
+                    "**Upgrades.** Zortak can imbue any item with fiery craftsmanship, transforming it into a +1 item (cost: 2 rubies) or a +2 item (cost: 1 diamond). The enhancement grants fire damage to weapons or fire resistance to armor.",
+                    "**Firechewer.** If the PCs aided the hell hound earlier, Zortak shows his gratitude by upgrading one item to +1 for free.",
+                    "▶ However, if the PCs slew Firechewer and Zortak learns of it, his fury is boundless: he attacks immediately and will not rest until every intruder lies dead."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "1f",
+                "name": "The Great Forge",
+                "description": "This vast forge echoes with the thunderous strikes of **Urok** and **Urak**, twin Fire Giants tirelessly hammering an enormous suit of armor, massive even by their own towering standards.",
+                "bullets": [
+                    "The brothers take one hour to complete each item upgrade, their work fueled by molten steel and unbridled fury."
+                ],
+                "stats": ""
+            },
+            "S": {
+                "level": "1f",
+                "name": "Ruby Cavern",
+                "description": "This newly formed cavern was torn open during the last eruption. Within, six **rubies** (worth 100 GP each) and two **diamonds** (worth 250 GP each) glimmer amid the molten glow.",
+                "bullets": [
+                    "**Lava River.** No safe path leads into the cave. The lava river that guards it radiates blistering heat, dealing 2d6 fire damage per round to anyone who ventures too close or tries to cross above it.",
+                    "**Dragon Blood.** The gems are crystallized flakes of Ignisax's blood, and both kobold clans raid the cavern for them (see Other Info)."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold and [text](key) into a link to the connected dungeon
+        const DUNGEON_LINKS = { fortress: 'adv/0114.html', pyreheart: 'adv/0113.html' };
+        function fmt(el, text) {
+            text.split(/(\*\*.+?\*\*|\[[^\]]+\]\(\w+\))/).forEach(part => {
+                if (!part) return;
+                let m;
+                if ((m = part.match(/^\*\*(.+)\*\*$/))) {
+                    const b = document.createElement('strong');
+                    b.textContent = m[1];
+                    el.appendChild(b);
+                } else if ((m = part.match(/^\[([^\]]+)\]\((\w+)\)$/)) && DUNGEON_LINKS[m[2]]) {
+                    const a = document.createElement('a');
+                    a.href = DUNGEON_LINKS[m[2]];
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                    a.style.color = 'var(--accent)';
+                    a.textContent = m[1];
+                    el.appendChild(a);
+                } else {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'molten-river-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
