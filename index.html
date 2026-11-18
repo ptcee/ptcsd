@@ -513,7 +513,8 @@
         }
 
         #eco,
-        #car {
+        #car,
+        #dun {
             position: fixed;
             top: 70px;
             left: 120px;
@@ -529,12 +530,14 @@
         }
 
         #eco[hidden],
-        #car[hidden] {
+        #car[hidden],
+        #dun[hidden] {
             display: none;
         }
 
         #ecoh,
-        #carh {
+        #carh,
+        #dunh {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -572,6 +575,33 @@
             flex: 1;
             min-height: 0;
             font-size: 13px;
+        }
+
+        #dunb {
+            overflow: auto;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 5px;
+            font-size: 13px;
+        }
+
+        .dungeon-link {
+            display: block;
+            padding: 7px 9px;
+            color: var(--tx);
+            text-decoration: none;
+            background: var(--p2);
+            border: 1px solid var(--ln);
+            border-radius: 3px;
+            min-width: 370px;
+        }
+
+        .dungeon-link:hover {
+            border-color: var(--g);
+            color: var(--tx);
+            background: #302e2d;
         }
 
         #ecob h3,
