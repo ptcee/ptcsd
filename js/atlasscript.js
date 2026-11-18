@@ -1,396 +1,396 @@
 const ADV = {
-    "0001": "", // Rimewastes: The Whale Ribs
-    "0002": "", // Rimewastes: The Whale Ribs
-    "0003": "", // Rimewastes: The Whale Ribs
-    "0004": "", // Rotbark: The Hollow Banks
-    "0005": "", // Rotbark: The Hollow Banks
-    "0006": "", // Rotbark: The Grey Ring
-    "0007": "", // Rotbark: Mirrorpool Glade
-    "0008": "", // Rotbark: Mirrorpool Glade
-    "0009": "", // Rotbark: Mirrorpool Glade
-    "0010": "", // Behemoth's Rift: Behemoth's Rift
-    "0011": "", // Behemoth's Rift: Behemoth's Rift
-    "0012": "", // Behemoth's Rift: Behemoth's Rift
-    "0013": "", // Cinder Peaks: The Weeping Gorge
-    "0014": "", // Cinder Peaks: The Weeping Gorge
-    "0015": "", // Cinder Peaks: The Needle Teeth
-    "0016": "", // Cinder Peaks: The Needle Teeth
-    "0017": "", // Cinder Peaks: Sleepers' Rim
-    "0018": "", // Cinder Peaks: Sleepers' Rim
-    "0100": "", // Rimewastes: The Singing Ice
-    "0101": "", // Rimewastes: The Singing Ice
-    "0102": "", // Rimewastes: The Singing Ice
-    "0103": "", // Rotbark: The Grey Ring
-    "0104": "", // Rotbark: The Grey Ring
-    "0105": "", // Rotbark: The Grey Ring
-    "0106": "", // Rotbark: The Grey Ring
-    "0107": "", // Rotbark: Mirrorpool Glade
-    "0108": "", // Rotbark: Mirrorpool Glade
-    "0109": "", // Rotbark: Mirrorpool Glade
-    "0110": "adv/0110.html", // Behemoth's Rift: The Wavestone Monolith
-    "0111": "", // Behemoth's Rift: Behemoth's Rift
-    "0112": "", // Behemoth's Rift: Behemoth's Rift
-    "0113": "adv/0113.html", // Cinder Peaks: Mount Pyreheart
-    "0114": "adv/0114.html", // Cinder Peaks: Fortress of the Burning Brothers
-    "0115": "", // Cinder Peaks: The Needle Teeth
-    "0116": "", // Cinder Peaks: Sleepers' Rim
-    "0117": "", // Cinder Peaks: Sleepers' Rim
-    "0118": "", // Cinder Peaks: Sleepers' Rim
-    "0201": "", // Rimewastes: The Singing Ice
-    "0202": "", // Rimewastes: The Singing Ice
-    "0203": "", // Rimewastes: The Singing Ice
-    "0204": "", // Rotbark: The Grey Ring
-    "0205": "", // Rotbark: The Grey Ring
-    "0206": "", // Rotbark: The Grey Ring
-    "0207": "", // Rotbark: Red Moss Hollow
-    "0208": "", // Rotbark: The Twin Gate
-    "0209": "", // Rotbark: The Twin Gate
-    "0210": "", // Behemoth's Rift: Thunder Shelf
-    "0211": "", // Behemoth's Rift: Behemoth's Rift
-    "0212": "", // Behemoth's Rift: Behemoth's Rift
-    "0213": "", // Cinder Peaks: Emberglass Scree
-    "0214": "", // Cinder Peaks: The Ash Fall
-    "0215": "", // Cinder Peaks: The Ash Fall
-    "0216": "", // Cinder Peaks: The Ash Fall
-    "0217": "", // Cinder Peaks: Sleepers' Rim
-    "0218": "", // Cinder Peaks: Sleepers' Rim
-    "0300": "", // Rimewastes: The Singing Ice
-    "0301": "", // Rimewastes: The Singing Ice
-    "0302": "", // Rimewastes: The Singing Ice
-    "0303": "", // Rotbark: The Grey Ring
-    "0304": "", // Rotbark: The Grey Ring
-    "0305": "", // Rotbark: The Grey Ring
-    "0306": "", // Rotbark: Red Moss Hollow
-    "0307": "", // Rotbark: The Twin Gate
-    "0308": "", // Rotbark: The Twin Gate
-    "0309": "", // Rotbark: The Twin Gate
-    "0310": "", // Behemoth's Rift: Behemoth's Rift
-    "0311": "", // Behemoth's Rift: Behemoth's Rift
-    "0312": "", // Behemoth's Rift: Behemoth's Rift
-    "0313": "", // Cinder Peaks: Emberglass Scree
-    "0314": "", // Cinder Peaks: The Ash Fall
-    "0315": "", // Cinder Peaks: The Ash Fall
-    "0316": "", // Cinder Peaks: The Ash Fall
-    "0317": "", // Cinder Peaks: The Booming Dunes
-    "0318": "", // Cinder Peaks: The Booming Dunes
-    "0401": "", // Rimewastes: The Blue Rift
-    "0402": "", // Rimewastes: The Blue Rift
-    "0403": "", // Rimewastes: The Blue Rift
-    "0404": "", // Rotbark: The Grey Ring
-    "0405": "", // Rotbark: Red Moss Hollow
-    "0406": "", // Rotbark: Red Moss Hollow
-    "0407": "", // Rotbark: Red Moss Hollow
-    "0408": "", // Rotbark: The Twin Gate
-    "0409": "", // Rotbark: The Twin Gate
-    "0410": "", // Brightscale Basin: The Serpent Bend
-    "0411": "", // Brightscale Basin: The Serpent Bend
-    "0412": "", // Brightscale Basin: The Serpent Bend
-    "0413": "", // Cinder Peaks: Emberglass Scree
-    "0414": "", // Cinder Peaks: Emberglass Scree
-    "0415": "", // Cinder Peaks: The Ash Fall
-    "0416": "adv/0416.html", // Cinder Peaks: Sanctum of the Elephant God
-    "0417": "", // Cinder Peaks: The Booming Dunes
-    "0418": "", // Cinder Peaks: The Booming Dunes
-    "0500": "", // Rimewastes: The Dice Field
-    "0501": "", // Rimewastes: The Blue Rift
-    "0502": "", // Rimewastes: The Blue Rift
-    "0503": "", // Rotbark: Red Moss Hollow
-    "0504": "", // Brightscale Basin: The Flower Sea
-    "0505": "", // Brightscale Basin: The Flower Sea
-    "0506": "", // Brightscale Basin: The Flower Sea
-    "0507": "", // Rotbark: The Twin Gate
-    "0508": "", // Rotbark: The Twin Gate
-    "0509": "", // Brightscale Basin: The Bottomless Eye
-    "0510": "", // Brightscale Basin: The Serpent Bend
-    "0511": "", // Brightscale Basin: The Serpent Bend
-    "0512": "", // Brightscale Basin: The Lone Titan
-    "0513": "", // Cinder Peaks: Emberglass Scree
-    "0514": "", // Cinder Peaks: The Cloven Boulder
-    "0515": "", // Cinder Peaks: The Cloven Boulder
-    "0516": "", // Cinder Peaks: The Booming Dunes
-    "0517": "", // Cinder Peaks: The Booming Dunes
-    "0518": "", // Cinder Peaks: The Booming Dunes
-    "0601": "", // Rimewastes: The Dice Field
-    "0602": "", // Rimewastes: The Blue Rift
-    "0603": "", // Rimewastes: The Blue Rift
-    "0604": "", // Brightscale Basin: The Flower Sea
-    "0605": "", // Brightscale Basin: The Flower Sea
-    "0606": "", // Brightscale Basin: The Flower Sea
-    "0607": "", // Brightscale Basin: The Flower Sea
-    "0608": "", // Brightscale Basin: The Three Sisters
-    "0609": "adv/0610.html", // Brightscale Basin: House Auxor
-    "0610": "", // Brightscale Basin: The Bottomless Eye
-    "0611": "", // Brightscale Basin: The Bottomless Eye
-    "0612": "", // Blightcreep: The Burning Mire
-    "0613": "", // Cinder Peaks: Emberglass Scree
-    "0614": "", // Cinder Peaks: The Cloven Boulder
-    "0615": "", // Blightcreep: The Burning Mire
-    "0616": "", // Blightcreep: The Rootwalks
-    "0617": "", // Blightcreep: The Rootwalks
-    "0618": "", // Blightcreep: The Rootwalks
-    "0700": "", // Rimewastes: The Dice Field
-    "0701": "", // Rimewastes: The Dice Field
-    "0702": "", // Rimewastes: The Dice Field
-    "0703": "", // Brightscale Basin: The Flower Sea
-    "0704": "", // Brightscale Basin: The Flower Sea
-    "0705": "", // Brightscale Basin: The Flower Sea
-    "0706": "", // Brightscale Basin: The Flower Sea
-    "0707": "", // Brightscale Basin: The Flower Sea
-    "0708": "", // Brightscale Basin: Leaping Rapids
-    "0709": "", // Brightscale Basin: The Bottomless Eye
-    "0710": "", // Brightscale Basin: The Basalt Organ
-    "0711": "", // Brightscale Basin: The Basalt Organ
-    "0712": "adv/0712.html", // Blightcreep: Chapel of the Plague Priestesses
-    "0713": "", // Blightcreep: The Burning Mire
-    "0714": "", // Blightcreep: The Burning Mire
-    "0715": "", // Blightcreep: The Burning Mire
-    "0716": "", // Blightcreep: The Rootwalks
-    "0717": "", // Blightcreep: The Rootwalks
-    "0718": "", // Blightcreep: The Rootwalks
-    "0801": "", // Rimewastes: The Dice Field
-    "0802": "", // Rimewastes: The Dice Field
-    "0803": "", // Rimewastes: The Dice Field
-    "0804": "", // Brightscale Basin: The Meeting of Waters
-    "0805": "", // Brightscale Basin: The Meeting of Waters
-    "0806": "", // Brightscale Basin: The Meeting of Waters
-    "0807": "", // Brightscale Basin: The Meeting of Waters
-    "0808": "", // Brightscale Basin: Leaping Rapids
-    "0809": "", // Brightscale Basin: Leaping Rapids
-    "0810": "", // Brightscale Basin: The Basalt Organ
-    "0811": "", // Brightscale Basin: The Basalt Organ
-    "0812": "", // Brightscale Basin: The Basalt Organ
-    "0813": "", // Blightcreep: The Burning Mire
-    "0814": "", // Blightcreep: The Burning Mire
-    "0815": "", // Blightcreep: The Burning Mire
-    "0816": "", // Blightcreep: The Burning Mire
-    "0817": "", // Blightcreep: The Rootwalks
-    "0818": "", // Blightcreep: The Rootwalks
-    "0900": "", // Rimewastes: The Dice Field
-    "0901": "", // Rimewastes: The Dice Field
-    "0902": "", // Rimewastes: The Dice Field
-    "0903": "", // Brightscale Basin: The Meeting of Waters
-    "0904": "", // Brightscale Basin: The Meeting of Waters
-    "0905": "adv/0905.html", // Brightscale Basin: Eroding Isle of the Executioner
-    "0906": "", // Brightscale Basin: The Meeting of Waters
-    "0907": "", // Brightscale Basin: Leaping Rapids
-    "0908": "", // Emerald Wood: Glowcap Dell
-    "0909": "", // Emerald Wood: Glowcap Dell
-    "0910": "", // Emerald Wood: Glowcap Dell
-    "0911": "", // Emerald Wood: Glowcap Dell
-    "0912": "", // Blightcreep: The Black Sap Grove
-    "0913": "", // Blightcreep: The Black Sap Grove
-    "0914": "", // Blightcreep: The Burning Mire
-    "0915": "", // Blightcreep: The Burning Mire
-    "0916": "", // Blightcreep: The Moss Cathedral
-    "0917": "", // Blightcreep: The Moss Cathedral
-    "0918": "", // Blightcreep: The Rootwalks
-    "1001": "", // Rimewastes: The Dice Field
-    "1002": "", // Rimewastes: The Dice Field
-    "1003": "", // Rimewastes: The Frozen Parade
-    "1004": "", // Brightscale Basin: The Meeting of Waters
-    "1005": "", // Brightscale Basin: The Meeting of Waters
-    "1006": "", // Brightscale Basin: The Meeting of Waters
-    "1007": "adv/1007.html", // Brightscale Basin: Grotto of the Golden Swan
-    "1008": "", // Emerald Wood: Glowcap Dell
-    "1009": "", // Emerald Wood: Glowcap Dell
-    "1010": "", // Emerald Wood: Glowcap Dell
-    "1011": "", // Emerald Wood: Glowcap Dell
-    "1012": "", // Emerald Wood: Glowcap Dell
-    "1013": "", // Blightcreep: The Black Sap Grove
-    "1014": "", // Blightcreep: The Black Sap Grove
-    "1015": "", // Blightcreep: The Black Sap Grove
-    "1016": "", // Blightcreep: The Moss Cathedral
-    "1017": "", // Blightcreep: The Moss Cathedral
-    "1018": "", // Blightcreep: The Moss Cathedral
-    "1100": "", // Rimewastes: The Dice Field
-    "1101": "", // Rimewastes: The Frozen Parade
-    "1102": "", // Rimewastes: The Frozen Parade
-    "1103": "", // Emerald Wood: The Windfall Scar
-    "1104": "", // Emerald Wood: The Windfall Scar
-    "1105": "", // Emerald Wood: The Windfall Scar
-    "1106": "", // Emerald Wood: The Windfall Scar
-    "1107": "", // Emerald Wood: Glowcap Dell
-    "1108": "", // Emerald Wood: Glowcap Dell
-    "1109": "", // Emerald Wood: Glowcap Dell
-    "1110": "", // Emerald Wood: Glowcap Dell
-    "1111": "", // Emerald Wood: Glowcap Dell
-    "1112": "", // Golden Waves: The Green Throat
-    "1113": "", // Golden Waves: The Green Throat
-    "1114": "", // Blightcreep: The Black Sap Grove
-    "1115": "", // Blightcreep: The Black Sap Grove
-    "1116": "", // Blightcreep: The Moss Cathedral
-    "1117": "", // Blightcreep: The Moss Cathedral
-    "1118": "", // Blightcreep: The Breathing Bog
-    "1201": "", // Rimewastes: The Frozen Parade
-    "1202": "", // Rimewastes: The Frozen Parade
-    "1203": "", // Rimewastes: The Frozen Parade
-    "1204": "", // Emerald Wood: The Windfall Scar
-    "1205": "", // Emerald Wood: The Windfall Scar
-    "1206": "", // Emerald Wood: The Windfall Scar
-    "1207": "", // Emerald Wood: The Windfall Scar
-    "1208": "adv/1208.html", // Emerald Wood: Fallen Keep of the Emerald Knight
-    "1209": "", // Emerald Wood: Glowcap Dell
-    "1210": "", // Emerald Wood: Glowcap Dell
-    "1211": "", // Emerald Wood: Glowcap Dell
-    "1212": "", // Emerald Wood: Glowcap Dell
-    "1213": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1214": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1215": "", // Blightcreep: The Black Sap Grove
-    "1216": "", // Blightcreep: The Black Sap Grove
-    "1217": "", // Blightcreep: The Breathing Bog
-    "1218": "", // Blightcreep: The Breathing Bog
-    "1300": "", // Rimewastes: The Frozen Fall
-    "1301": "", // Rimewastes: The Frozen Fall
-    "1302": "", // Rimewastes: The Frozen Fall
-    "1303": "", // Emerald Wood: The Windfall Scar
-    "1304": "", // Emerald Wood: The Windfall Scar
-    "1305": "", // Emerald Wood: The Windfall Scar
-    "1306": "", // Emerald Wood: The Windfall Scar
-    "1307": "", // Emerald Wood: The Silverbark Stand
-    "1308": "", // Emerald Wood: Glowcap Dell
-    "1309": "", // Emerald Wood: Glowcap Dell
-    "1310": "", // Emerald Wood: Glowcap Dell
-    "1311": "", // Emerald Wood: Glowcap Dell
-    "1312": "", // Golden Waves: The Spiral Hill
-    "1313": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1314": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1315": "", // Blightcreep: The Drowned Wood
-    "1316": "", // Blightcreep: The Breathing Bog
-    "1317": "", // Blightcreep: The Breathing Bog
-    "1318": "", // Blightcreep: The Breathing Bog
-    "1401": "", // Rimewastes: The Frozen Fall
-    "1402": "", // Rimewastes: The Frozen Fall
-    "1403": "", // Rimewastes: The Frozen Fall
-    "1404": "", // Emerald Wood: The Windfall Scar
-    "1405": "", // Emerald Wood: The Windfall Scar
-    "1406": "", // Emerald Wood: The Windfall Scar
-    "1407": "", // Emerald Wood: The Silverbark Stand
-    "1408": "", // Emerald Wood: The Silverbark Stand
-    "1409": "", // Emerald Wood: The Silverbark Stand
-    "1410": "", // Emerald Wood: The Silverbark Stand
-    "1411": "", // Emerald Wood: The Silverbark Stand
-    "1412": "", // Golden Waves: The Spiral Hill
-    "1413": "", // Golden Waves: The Spiral Hill
-    "1414": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1415": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1416": "", // Blightcreep: The Drowned Wood
-    "1417": "", // Blightcreep: The Breathing Bog
-    "1418": "", // Blightcreep: The Breathing Bog
-    "1500": "", // Rimewastes: The Frozen Fall
-    "1501": "", // Rimewastes: The Frozen Fall
-    "1502": "", // Rimewastes: The Frozen Fall
-    "1503": "adv/1503.html", // Emerald Wood: The Hidden Leprechaun Hollow
-    "1504": "", // Emerald Wood: The Windfall Scar
-    "1505": "", // Emerald Wood: The Windfall Scar
-    "1506": "", // Emerald Wood: The Windfall Scar
-    "1507": "", // Emerald Wood: The Silverbark Stand
-    "1508": "", // Emerald Wood: The Silverbark Stand
-    "1509": "", // Emerald Wood: The Silverbark Stand
-    "1510": "", // Emerald Wood: The Silverbark Stand
-    "1511": "", // Golden Waves: The Spiral Hill
-    "1512": "adv/1512.html", // Golden Waves: Burial Mound of Kaghan
-    "1513": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1514": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1515": "", // Winter's Edge: The Rime Stair
-    "1516": "", // Winter's Edge: The Rime Stair
-    "1517": "", // Winter's Edge: The Rime Stair
-    "1518": "adv/1518.html", // Winter's Edge: Twisting Cave of the Pale Ones
-    "1601": "", // Rimewastes: The Sleeping Bear
-    "1602": "adv/1602.html", // Rimewastes: Forge of the Metallic Sisters
-    "1603": "", // Rimewastes: The Sleeping Bear
-    "1604": "", // Emerald Wood: The Fog Basin
-    "1605": "", // Emerald Wood: The Fog Basin
-    "1606": "", // Emerald Wood: The Fog Basin
-    "1607": "", // Emerald Wood: The Fog Basin
-    "1608": "", // Emerald Wood: The Silverbark Stand
-    "1609": "", // Emerald Wood: The Resin Wood
-    "1610": "", // Emerald Wood: The Resin Wood
-    "1611": "", // Emerald Wood: The Resin Wood
-    "1612": "", // Golden Waves: The Spiral Hill
-    "1613": "adv/1613.html", // Golden Waves: Kneel Before the Goblin King
-    "1614": "", // Golden Waves: Seven Eyes Citadel Ruins
-    "1615": "", // Winter's Edge: The Whistling Vents
-    "1616": "", // Winter's Edge: The Rime Stair
-    "1617": "", // Winter's Edge: The Rime Stair
-    "1618": "", // Winter's Edge: The Rime Stair
-    "1700": "", // Rimewastes: The Sleeping Bear
-    "1701": "", // Rimewastes: The Sleeping Bear
-    "1702": "", // Rimewastes: The Sleeping Bear
-    "1703": "", // Emerald Wood: The Fog Basin
-    "1704": "", // Emerald Wood: The Fog Basin
-    "1705": "", // Emerald Wood: The Fog Basin
-    "1706": "", // Emerald Wood: The Fog Basin
-    "1707": "", // Emerald Wood: The Resin Wood
-    "1708": "", // Emerald Wood: The Resin Wood
-    "1709": "", // Emerald Wood: The Resin Wood
-    "1710": "", // Emerald Wood: The Resin Wood
-    "1711": "", // Golden Waves: The Stone River
-    "1712": "", // Golden Waves: The Beacon Inn
-    "1713": "", // Golden Waves: The Antler Thicket
-    "1714": "", // Winter's Edge: The Whistling Vents
-    "1715": "adv/1715.html", // Winter's Edge: Tomb of the Dusk Queen
-    "1716": "", // Winter's Edge: The Whistling Vents
-    "1717": "", // Winter's Edge: The Rime Stair
-    "1718": "", // Winter's Edge: The Rime Stair
-    "1801": "", // Rimewastes: The Sleeping Bear
-    "1802": "", // Rimewastes: The Sleeping Bear
-    "1803": "", // Rimewastes: The Sleeping Bear
-    "1804": "", // Emerald Wood: The Fog Basin
-    "1805": "", // Emerald Wood: The Fog Basin
-    "1806": "", // Emerald Wood: The Fog Basin
-    "1807": "", // Emerald Wood: The Fog Basin
-    "1808": "", // Emerald Wood: The Resin Wood
-    "1809": "", // Emerald Wood: The Resin Wood
-    "1810": "", // Emerald Wood: The Resin Wood
-    "1811": "", // Frostholm: The Beacon Inn
-    "1812": "", // Frostholm: The Beacon Inn
-    "1813": "", // Frostholm: The Antler Thicket
-    "1814": "", // Frostholm: The Antler Thicket
-    "1815": "", // Winter's Edge: The Whistling Vents
-    "1816": "", // Winter's Edge: The Whistling Vents
-    "1817": "", // Winter's Edge: The Whistling Vents
-    "1818": "", // Winter's Edge: The Rime Stair
-    "1900": "", // Rimewastes: The Sleeping Bear
-    "1901": "", // Rimewastes: The Sleeping Bear
-    "1902": "", // Rimewastes: The Sleeping Bear
-    "1903": "", // Emerald Wood: The Fog Basin
-    "1904": "", // Emerald Wood: The Fog Basin
-    "1905": "", // Emerald Wood: The Fog Basin
-    "1906": "", // Emerald Wood: The Fog Basin
-    "1907": "", // Emerald Wood: The Resin Wood
-    "1908": "", // Emerald Wood: The Resin Wood
-    "1909": "", // Emerald Wood: The Resin Wood
-    "1910": "", // Frostholm: Frostholm
-    "1911": "", // Frostholm: Frostholm
-    "1912": "", // Frostholm: The Antler Thicket
-    "1913": "adv/1913.html", // Frostholm: House of Rogues
-    "1914": "", // Frostholm: The Antler Thicket
-    "1915": "", // Winter's Edge: The Whistling Vents
-    "1916": "", // Winter's Edge: The Whistling Vents
-    "1917": "", // Winter's Edge: The Grinding Ice
-    "1918": "", // Winter's Edge: The Grinding Ice
-    "2001": "", // Rimewastes: The Sleeping Bear
-    "2002": "", // Rimewastes: The Sleeping Bear
-    "2003": "", // Rimewastes: The Sleeping Bear
-    "2004": "", // Emerald Wood: The Fog Basin
-    "2005": "", // Emerald Wood: The Fog Basin
-    "2006": "adv/2006.html", // Emerald Wood: Lost Citadel of the Scarlet Minotaur
-    "2007": "", // Emerald Wood: The Fog Basin
-    "2008": "", // Emerald Wood: The Resin Wood
-    "2009": "", // Emerald Wood: The Resin Wood
-    "2010": "adv/2010.html", // Frostholm: Bittermold Keep
-    "2011": "", // Frostholm: Frostholm
-    "2012": "adv/2012.html", // Frostholm: Trial of the Slime Lord
-    "2013": "", // Frostholm: Frostholm
-    "2014": "", // Frostholm: The Antler Thicket
-    "2015": "", // Winter's Edge: The Whistling Vents
-    "2016": "", // Winter's Edge: The Whistling Vents
-    "2017": "", // Winter's Edge: The Grinding Ice
-    "2018": "", // Winter's Edge: The Grinding Ice
+    "0001": { url: '', name: 'Rimewastes: The Whale Ribs' },
+    "0002": { url: '', name: 'Rimewastes: The Whale Ribs' },
+    "0003": { url: '', name: 'Rimewastes: The Whale Ribs' },
+    "0004": { url: '', name: 'Rotbark: The Hollow Banks' },
+    "0005": { url: '', name: 'Rotbark: The Hollow Banks' },
+    "0006": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0007": { url: '', name: 'Rotbark: Mirrorpool Glade' },
+    "0008": { url: '', name: 'Rotbark: Mirrorpool Glade' },
+    "0009": { url: '', name: 'Rotbark: Mirrorpool Glade' },
+    "0010": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0011": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0012": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0013": { url: '', name: 'Cinder Peaks: The Weeping Gorge' },
+    "0014": { url: '', name: 'Cinder Peaks: The Weeping Gorge' },
+    "0015": { url: '', name: 'Cinder Peaks: The Needle Teeth' },
+    "0016": { url: '', name: 'Cinder Peaks: The Needle Teeth' },
+    "0017": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0018": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0100": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0101": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0102": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0103": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0104": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0105": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0106": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0107": { url: '', name: 'Rotbark: Mirrorpool Glade' },
+    "0108": { url: '', name: 'Rotbark: Mirrorpool Glade' },
+    "0109": { url: '', name: 'Rotbark: Mirrorpool Glade' },
+    "0110": { url: 'adv/0110.html', name: "Behemoth's Rift: The Wavestone Monolith" },
+    "0111": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0112": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0113": { url: 'adv/0113.html', name: 'Cinder Peaks: Mount Pyreheart' },
+    "0114": { url: 'adv/0114.html', name: 'Cinder Peaks: Fortress of the Burning Brothers' },
+    "0115": { url: '', name: 'Cinder Peaks: The Needle Teeth' },
+    "0116": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0117": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0118": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0201": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0202": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0203": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0204": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0205": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0206": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0207": { url: '', name: 'Rotbark: Red Moss Hollow' },
+    "0208": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0209": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0210": { url: '', name: "Behemoth's Rift: Thunder Shelf" },
+    "0211": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0212": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0213": { url: '', name: 'Cinder Peaks: Emberglass Scree' },
+    "0214": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0215": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0216": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0217": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0218": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
+    "0300": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0301": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0302": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0303": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0304": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0305": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0306": { url: '', name: 'Rotbark: Red Moss Hollow' },
+    "0307": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0308": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0309": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0310": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0311": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0312": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
+    "0313": { url: '', name: 'Cinder Peaks: Emberglass Scree' },
+    "0314": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0315": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0316": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0317": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0318": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0401": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0402": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0403": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0404": { url: '', name: 'Rotbark: The Grey Ring' },
+    "0405": { url: '', name: 'Rotbark: Red Moss Hollow' },
+    "0406": { url: '', name: 'Rotbark: Red Moss Hollow' },
+    "0407": { url: '', name: 'Rotbark: Red Moss Hollow' },
+    "0408": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0409": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0410": { url: '', name: 'Brightscale Basin: The Serpent Bend' },
+    "0411": { url: '', name: 'Brightscale Basin: The Serpent Bend' },
+    "0412": { url: '', name: 'Brightscale Basin: The Serpent Bend' },
+    "0413": { url: '', name: 'Cinder Peaks: Emberglass Scree' },
+    "0414": { url: '', name: 'Cinder Peaks: Emberglass Scree' },
+    "0415": { url: '', name: 'Cinder Peaks: The Ash Fall' },
+    "0416": { url: 'adv/0416.html', name: 'Cinder Peaks: Sanctum of the Elephant God' },
+    "0417": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0418": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0500": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0501": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0502": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0503": { url: '', name: 'Rotbark: Red Moss Hollow' },
+    "0504": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0505": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0506": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0507": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0508": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0509": { url: '', name: 'Brightscale Basin: The Bottomless Eye' },
+    "0510": { url: '', name: 'Brightscale Basin: The Serpent Bend' },
+    "0511": { url: '', name: 'Brightscale Basin: The Serpent Bend' },
+    "0512": { url: '', name: 'Brightscale Basin: The Lone Titan' },
+    "0513": { url: '', name: 'Cinder Peaks: Emberglass Scree' },
+    "0514": { url: '', name: 'Cinder Peaks: The Cloven Boulder' },
+    "0515": { url: '', name: 'Cinder Peaks: The Cloven Boulder' },
+    "0516": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0517": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0518": { url: '', name: 'Cinder Peaks: The Booming Dunes' },
+    "0601": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0602": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0603": { url: '', name: 'Rimewastes: The Blue Rift' },
+    "0604": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0605": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0606": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0607": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0608": { url: '', name: 'Brightscale Basin: The Three Sisters' },
+    "0609": { url: 'adv/0610.html', name: 'Brightscale Basin: House Auxor' },
+    "0610": { url: '', name: 'Brightscale Basin: The Bottomless Eye' },
+    "0611": { url: '', name: 'Brightscale Basin: The Bottomless Eye' },
+    "0612": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0613": { url: '', name: 'Cinder Peaks: Emberglass Scree' },
+    "0614": { url: '', name: 'Cinder Peaks: The Cloven Boulder' },
+    "0615": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0616": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0617": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0618": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0700": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0701": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0702": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0703": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0704": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0705": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0706": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0707": { url: '', name: 'Brightscale Basin: The Flower Sea' },
+    "0708": { url: '', name: 'Brightscale Basin: Leaping Rapids' },
+    "0709": { url: '', name: 'Brightscale Basin: The Bottomless Eye' },
+    "0710": { url: '', name: 'Brightscale Basin: The Basalt Organ' },
+    "0711": { url: '', name: 'Brightscale Basin: The Basalt Organ' },
+    "0712": { url: 'adv/0712.html', name: 'Blightcreep: Chapel of the Plague Priestesses' },
+    "0713": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0714": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0715": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0716": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0717": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0718": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0801": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0802": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0803": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0804": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0805": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0806": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0807": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0808": { url: '', name: 'Brightscale Basin: Leaping Rapids' },
+    "0809": { url: '', name: 'Brightscale Basin: Leaping Rapids' },
+    "0810": { url: '', name: 'Brightscale Basin: The Basalt Organ' },
+    "0811": { url: '', name: 'Brightscale Basin: The Basalt Organ' },
+    "0812": { url: '', name: 'Brightscale Basin: The Basalt Organ' },
+    "0813": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0814": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0815": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0816": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0817": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0818": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "0900": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0901": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0902": { url: '', name: 'Rimewastes: The Dice Field' },
+    "0903": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0904": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0905": { url: 'adv/0905.html', name: 'Brightscale Basin: Eroding Isle of the Executioner' },
+    "0906": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "0907": { url: '', name: 'Brightscale Basin: Leaping Rapids' },
+    "0908": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "0909": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "0910": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "0911": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "0912": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "0913": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "0914": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0915": { url: '', name: 'Blightcreep: The Burning Mire' },
+    "0916": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "0917": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "0918": { url: '', name: 'Blightcreep: The Rootwalks' },
+    "1001": { url: '', name: 'Rimewastes: The Dice Field' },
+    "1002": { url: '', name: 'Rimewastes: The Dice Field' },
+    "1003": { url: '', name: 'Rimewastes: The Frozen Parade' },
+    "1004": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "1005": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "1006": { url: '', name: 'Brightscale Basin: The Meeting of Waters' },
+    "1007": { url: 'adv/1007.html', name: 'Brightscale Basin: Grotto of the Golden Swan' },
+    "1008": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1009": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1010": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1011": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1012": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1013": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1014": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1015": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1016": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "1017": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "1018": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "1100": { url: '', name: 'Rimewastes: The Dice Field' },
+    "1101": { url: '', name: 'Rimewastes: The Frozen Parade' },
+    "1102": { url: '', name: 'Rimewastes: The Frozen Parade' },
+    "1103": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1104": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1105": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1106": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1107": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1108": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1109": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1110": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1111": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1112": { url: '', name: 'Golden Waves: The Green Throat' },
+    "1113": { url: '', name: 'Golden Waves: The Green Throat' },
+    "1114": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1115": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1116": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "1117": { url: '', name: 'Blightcreep: The Moss Cathedral' },
+    "1118": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1201": { url: '', name: 'Rimewastes: The Frozen Parade' },
+    "1202": { url: '', name: 'Rimewastes: The Frozen Parade' },
+    "1203": { url: '', name: 'Rimewastes: The Frozen Parade' },
+    "1204": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1205": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1206": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1207": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1208": { url: 'adv/1208.html', name: 'Emerald Wood: Fallen Keep of the Emerald Knight' },
+    "1209": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1210": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1211": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1212": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1213": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1214": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1215": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1216": { url: '', name: 'Blightcreep: The Black Sap Grove' },
+    "1217": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1218": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1300": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1301": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1302": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1303": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1304": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1305": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1306": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1307": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1308": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1309": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1310": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1311": { url: '', name: 'Emerald Wood: Glowcap Dell' },
+    "1312": { url: '', name: 'Golden Waves: The Spiral Hill' },
+    "1313": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1314": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1315": { url: '', name: 'Blightcreep: The Drowned Wood' },
+    "1316": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1317": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1318": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1401": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1402": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1403": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1404": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1405": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1406": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1407": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1408": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1409": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1410": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1411": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1412": { url: '', name: 'Golden Waves: The Spiral Hill' },
+    "1413": { url: '', name: 'Golden Waves: The Spiral Hill' },
+    "1414": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1415": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1416": { url: '', name: 'Blightcreep: The Drowned Wood' },
+    "1417": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1418": { url: '', name: 'Blightcreep: The Breathing Bog' },
+    "1500": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1501": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1502": { url: '', name: 'Rimewastes: The Frozen Fall' },
+    "1503": { url: 'adv/1503.html', name: 'Emerald Wood: The Hidden Leprechaun Hollow' },
+    "1504": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1505": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1506": { url: '', name: 'Emerald Wood: The Windfall Scar' },
+    "1507": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1508": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1509": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1510": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1511": { url: '', name: 'Golden Waves: The Spiral Hill' },
+    "1512": { url: 'adv/1512.html', name: 'Golden Waves: Burial Mound of Kaghan' },
+    "1513": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1514": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1515": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1516": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1517": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1518": { url: 'adv/1518.html', name: "Winter's Edge: Twisting Cave of the Pale Ones" },
+    "1601": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1602": { url: 'adv/1602.html', name: 'Rimewastes: Forge of the Metallic Sisters' },
+    "1603": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1604": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1605": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1606": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1607": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1608": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1609": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1610": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1611": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1612": { url: '', name: 'Golden Waves: The Spiral Hill' },
+    "1613": { url: 'adv/1613.html', name: 'Golden Waves: Kneel Before the Goblin King' },
+    "1614": { url: '', name: 'Golden Waves: Seven Eyes Citadel Ruins' },
+    "1615": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1616": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1617": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1618": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1700": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1701": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1702": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1703": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1704": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1705": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1706": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1707": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1708": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1709": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1710": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1711": { url: '', name: 'Golden Waves: The Stone River' },
+    "1712": { url: '', name: 'Golden Waves: The Beacon Inn' },
+    "1713": { url: '', name: 'Golden Waves: The Antler Thicket' },
+    "1714": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1715": { url: 'adv/1715.html', name: "Winter's Edge: Tomb of the Dusk Queen" },
+    "1716": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1717": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1718": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1801": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1802": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1803": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1804": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1805": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1806": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1807": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1808": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1809": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1810": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1811": { url: '', name: 'Frostholm: The Beacon Inn' },
+    "1812": { url: '', name: 'Frostholm: The Beacon Inn' },
+    "1813": { url: '', name: 'Frostholm: The Antler Thicket' },
+    "1814": { url: '', name: 'Frostholm: The Antler Thicket' },
+    "1815": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1816": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1817": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1818": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1900": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1901": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1902": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "1903": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1904": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1905": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1906": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "1907": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1908": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1909": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "1910": { url: '', name: 'Frostholm: Frostholm' },
+    "1911": { url: '', name: 'Frostholm: Frostholm' },
+    "1912": { url: '', name: 'Frostholm: The Antler Thicket' },
+    "1913": { url: 'adv/1913.html', name: 'Frostholm: House of Rogues' },
+    "1914": { url: '', name: 'Frostholm: The Antler Thicket' },
+    "1915": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1916": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "1917": { url: '', name: "Winter's Edge: The Grinding Ice" },
+    "1918": { url: '', name: "Winter's Edge: The Grinding Ice" },
+    "2001": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "2002": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "2003": { url: '', name: 'Rimewastes: The Sleeping Bear' },
+    "2004": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "2005": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "2006": { url: 'adv/2006.html', name: 'Emerald Wood: Lost Citadel of the Scarlet Minotaur' },
+    "2007": { url: '', name: 'Emerald Wood: The Fog Basin' },
+    "2008": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "2009": { url: '', name: 'Emerald Wood: The Resin Wood' },
+    "2010": { url: 'adv/2010.html', name: 'Frostholm: Bittermold Keep' },
+    "2011": { url: '', name: 'Frostholm: Frostholm' },
+    "2012": { url: 'adv/2012.html', name: 'Frostholm: Trial of the Slime Lord' },
+    "2013": { url: '', name: 'Frostholm: Frostholm' },
+    "2014": { url: '', name: 'Frostholm: The Antler Thicket' },
+    "2015": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "2016": { url: '', name: "Winter's Edge: The Whistling Vents" },
+    "2017": { url: '', name: "Winter's Edge: The Grinding Ice" },
+    "2018": { url: '', name: "Winter's Edge: The Grinding Ice" },
 };
 
 const advBtn = h => {
-    const u = (ADV[h.id] || '').trim();
+    const u = (ADV[h.id]?.url || '').trim();
     return `<div style="margin:8px 0">${u
         ? `<button class="advbtn" data-u="${e(u)}" onclick="window.open(this.dataset.u,'_blank','noopener')">Dungeon</button>`
         : `<button class="advbtn" disabled style="opacity:.45;cursor:not-allowed" title="No adventure link set for this hex yet">Adventure</button>`}</div>`
@@ -420,7 +420,7 @@ $('#zi').onclick = () => zb(1.3); $('#zo').onclick = () => zb(1 / 1.3); $('#zr')
 function paint() {
     const fog = $('#fog').checked, rg = $('#rgn').checked, ft = $('#ft').checked;
     D.hexes.forEach(h => { P[h.id].style.fill = fog && !S.ex[h.id] ? 'rgba(6,4,3,.72)' : rg ? RC[h.region] + '3a' : 'transparent'; P[h.id].classList.toggle('sel', h.id == cur); P[h.id].classList.toggle('party', h.id == S.party) }); if (S.party && P[S.party]) hx.append(P[S.party]);
-    mk.innerHTML = ''; D.hexes.forEach(h => { const [x, y] = ctr(h); if (S.notes[h.id]) mk.append(el('circle', { cx: x + 30, cy: y - 26, r: 6, class: 'dot' })); if (ft) [['ruin', '#d9b27a', -14], ['land', '#7fc97f', 0], ['lair', '#e05a5a', 14]].forEach(([k, c, dx]) => { if (h[k]) mk.append(el('circle', { cx: x + dx, cy: y + 31, r: 5, fill: c, stroke: '#000', 'stroke-width': 1.5, 'pointer-events': 'none' })) }); if (ft && (ADV[h.id] || '').trim()) mk.append(el('circle', { cx: x + 20, cy: y + 20, r: 5, fill: '#e355ff', stroke: '#ffffff', 'stroke-width': 1.25, 'pointer-events': 'none' })) })
+    mk.innerHTML = ''; D.hexes.forEach(h => { const [x, y] = ctr(h); if (S.notes[h.id]) mk.append(el('circle', { cx: x + 30, cy: y - 26, r: 6, class: 'dot' })); if (ft) [['ruin', '#d9b27a', -14], ['land', '#7fc97f', 0], ['lair', '#e05a5a', 14]].forEach(([k, c, dx]) => { if (h[k]) mk.append(el('circle', { cx: x + dx, cy: y + 31, r: 5, fill: c, stroke: '#000', 'stroke-width': 1.5, 'pointer-events': 'none' })) }); if (ft && (ADV[h.id]?.url || '').trim()) mk.append(el('circle', { cx: x + 20, cy: y + 20, r: 5, fill: '#e355ff', stroke: '#ffffff', 'stroke-width': 1.25, 'pointer-events': 'none' })) })
 }
 function goHex(id, fit = 1, push = 1) { if (push && cur && cur != id) hist.push(cur); cur = id; edD = null; rumH = H[id].area; tab = 'hex'; hx.append(P[id]); if (fit) focus(id); paint(); render() }
 const inl = s => e(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -470,7 +470,7 @@ function pFac() {
     <h3>${e(f.name)}</h3>${md(f.web)}<p>${f.hexes.map(id => `<a class="lk" data-go="${A[id].rep}">${id} ${e(A[id].name)}</a>`).join('')}</p>${f.conf.map(c => `<details open><summary>${e(c.h)}</summary>${md(c.b)}</details>`).join('')}`
 }
 function pCamp() {
-    const n = D.hexes.filter(h => S.notes[h.id]); return `<h2>GM Screen</h2><div style="margin-bottom:8px"><button data-eco="1">Economy</button> <button data-car="1">Carousing</button></div>${qrBlk()}<h2 style="margin-top:22px">Campaign</h2><input type="text" id="ct" value="${e(S.title)}" placeholder="Campaign title"><h3>Campaign notes</h3><textarea id="cn">${e(S.camp)}</textarea>
+    const n = D.hexes.filter(h => S.notes[h.id]); return `<h2>GM Screen</h2><div style="margin-bottom:8px"><button data-eco="1">Economy</button> <button data-car="1">Carousing</button> <button data-dungeons="1">Dungeons</button></div>${qrBlk()}<h2 style="margin-top:22px">Campaign</h2><input type="text" id="ct" value="${e(S.title)}" placeholder="Campaign title"><h3>Campaign notes</h3><textarea id="cn">${e(S.camp)}</textarea>
      <h3>Hexes with GM notes (${n.length})</h3>${n.map(h => `<div class="res" data-go="${h.id}"><b>${h.id}</b> <i class="mu">${e(h.region)}</i><br>${e(S.notes[h.id].slice(0, 120))}</div>`).join('') || '<p class="mu">None yet.</p>'}
     <h3>Fog of war</h3><button data-fogall="1">Mark all explored</button> <button data-fogall="0">Clear explored</button> <button data-reset="1">Reset everything</button>
     <p class="mu">Notes autosave in this browser (localStorage). Export JSON to back up or move your campaign.</p>`}
@@ -480,8 +480,8 @@ function render() {
 }
 function roll(sel) { const rows = [...pane.querySelectorAll(sel + ' [data-i]')], r = rnd(rows.length); rows.forEach(x => x.classList.remove('hit')); rows[r].classList.add('hit'); rows[r].scrollIntoView({ block: 'nearest' }); $('#ro').textContent = 'Rolled ' + (r + 1) + ' on d' + rows.length }
 pane.onclick = ev => {
-    const t = ev.target.closest('[data-go],[data-roll],[data-hkr],[data-hk],[data-fac],[data-enc],[data-back],[data-fogall],[data-reset],[data-rng],[data-ref],[data-dg],[data-tr],[data-edd],[data-sd],[data-cd],[data-rsd],[data-eco],[data-car]'); if (!t) return; const d = t.dataset;
-    if (d.eco != null) { eco.hidden = !eco.hidden; if (!eco.hidden) { zt++; eco.style.zIndex = zt; ecoRender() } } else if (d.car != null) { car.hidden = !car.hidden; if (!car.hidden) { zt++; car.style.zIndex = zt; carRender() } } else if (d.edd != null) { edD = cur; render(); const t = $('#dd'); if (t) t.focus() } else if (d.sd != null) { const v = $('#dd').value.trim(); v ? S.desc[cur] = v : delete S.desc[cur]; save(); edD = null; render() } else if (d.cd != null) { edD = null; render() } else if (d.rsd != null) { delete S.desc[cur]; save(); render() } else if (d.tr != null) trRoll(); else if (d.dg != null) dgRoll(); else if (d.rng != null) rngRoll(); else if (d.ref != null) rf.hidden = !rf.hidden;
+    const t = ev.target.closest('[data-go],[data-roll],[data-hkr],[data-hk],[data-fac],[data-enc],[data-back],[data-fogall],[data-reset],[data-rng],[data-ref],[data-dg],[data-tr],[data-edd],[data-sd],[data-cd],[data-rsd],[data-eco],[data-car],[data-dungeons]'); if (!t) return; const d = t.dataset;
+    if (d.eco != null) { eco.hidden = !eco.hidden; if (!eco.hidden) { zt++; eco.style.zIndex = zt; ecoRender() } } else if (d.dungeons != null) { dun.hidden = !dun.hidden; if (!dun.hidden) { zt++; dun.style.zIndex = zt; dunRender() } } else if (d.car != null) { car.hidden = !car.hidden; if (!car.hidden) { zt++; car.style.zIndex = zt; carRender() } } else if (d.edd != null) { edD = cur; render(); const t = $('#dd'); if (t) t.focus() } else if (d.sd != null) { const v = $('#dd').value.trim(); v ? S.desc[cur] = v : delete S.desc[cur]; save(); edD = null; render() } else if (d.cd != null) { edD = null; render() } else if (d.rsd != null) { delete S.desc[cur]; save(); render() } else if (d.tr != null) trRoll(); else if (d.dg != null) dgRoll(); else if (d.rng != null) rngRoll(); else if (d.ref != null) rf.hidden = !rf.hidden;
     else if (d.go) goHex(d.go);
     else if (d.roll) roll(d.roll);
     else if (d.hkr != null) { const l = hkList(), k = l[rnd(l.length)]; if (k) { hkOpen.add(k.n); render(); const x = document.getElementById('hk' + k.n); if (x) x.scrollIntoView({ block: 'center' }) } }
@@ -563,6 +563,20 @@ const QR = [["Difficulty Class", ["Difficulty", "DC", "Examples"], [["Easy", "9"
 let qrOpen = true, zt = 30, ecoTab = 0;
 const qrBlk = () => `<details id="qr" ${qrOpen ? 'open' : ''}><summary>Quick Reference</summary>${QR.map(([t, h, r]) => `<h4>${t}</h4><table class="qt"><tr>${h.map(x => `<th>${x}</th>`).join('')}</tr>${r.map(x => `<tr>${x.map(c => `<td>${e(c)}</td>`).join('')}</tr>`).join('')}</table>`).join('')}</details>`;
 const ECO = [{ "n": "Basics", "sub": "", "cols": ["Topic", "Rule"], "note": "Unmarked = Core Rules · {PC} Player Companion · {RS} Cursed Scroll 2 (Red Sands) · {MS} Cursed Scroll 3 (Midnight Sun) · {BZ} Battlezoo Bestiary · ◆ GM house price. Weapons: Player Companion damage used where higher. *First backpack carried free. Crawling kit: 7 gp, 7 slots (backpack, flint & steel, 2 torches, 3 rations, 10 iron spikes, grappling hook, 60' rope). Prices for the World of Greyhawk · Shadowdark RPG © The Arcane Library", "rows": [["Coins", "1 gp = 10 sp = 100 cp. Greyhawk: gold orb · silver noble · copper common"], ["Carrying", "100 coins = 1 gear slot (first 100 carried free)"], ["Starting gold", "2d6 × 5 gp (avg 35)"], ["Gear slots", "STR or 10, whichever is higher"], ["Selling ◆", "Merchants pay ½ listed price for gear; gems & art full value to a jeweler; magic only via a buyer the GM provides."], ["Where you are ◆", "Village ×1 basics, may lack items · Frontier/siege ×1.5-2 · Black market ×2, no questions."], ["Treasure per find", "≈ 10 gp × avg party level (20 gp lvl 0-3 · 50 gp lvl 4-6 · 80 gp lvl 7-9)."]] }, { "n": "Weapons", "sub": "", "cols": ["WEAPON", "COST", "TYPE·RNG", "DMG", "PROPS"], "rows": [["Bastard sword", "10 gp", "M·C", "1d8/1d10", "V, 2 slots"], ["Club", "5 cp", "M·C", "1d4", "-"], ["Crossbow", "8 gp", "R·F", "1d6", "2H, L"], ["Dagger", "1 gp", "M/R·C/N", "1d4", "F, Th"], ["Greataxe", "10 gp", "M·C", "1d8/1d10", "V, 2 slots"], ["Greatsword", "12 gp", "M·C", "1d12", "2H, 2 slots"], ["Javelin {PC}", "2 gp", "M/R·C/F", "1d4/1d6", "Th (1d4)"], ["Longbow", "8 gp", "R·F", "1d8", "2H"], ["Longsword", "9 gp", "M·C", "1d8", "-"], ["Mace", "5 gp", "M·C", "1d6", "-"], ["Shortbow", "6 gp", "R·F", "1d4", "2H"], ["Shortsword", "7 gp", "M·C", "1d6", "-"], ["Spear {PC}", "5 sp", "M/R·C/N", "1d6/1d8", "Th (1d6)"], ["Quarterstaff {PC}", "5 sp", "M·C", "1d6", "2H, F, +2 AC"], ["Warhammer", "10 gp", "M·C", "1d10", "2H"], { "s": "Supplements" }, ["Bearded axe {PC}", "7 gp", "M/R·C/N", "1d6/1d8", "Th (1d6)"], ["Blowgun {RS}", "5 gp", "R·N", "1", "hidden shot"], ["Bō {BZ}", "10 gp", "M·C", "1d6", "2H, +1 AC"], ["Bolas {RS}", "2 gp", "R·N", "-", "slows target"], ["Caneblade {BZ}", "11 gp", "M·C", "1d6", "concealed"], ["Cleaver {BZ}", "9 gp", "M·C", "1d6", "cleave"], ["Flail {PC}", "8 gp", "M·C", "1d6", "crit tangles"], ["Hand crossbow {BZ}", "12 gp", "R·N", "1d6", "L"], ["Handaxe {MS}", "2 gp", "M/R·C/N", "1d6", "F, Th"], ["Hatchet {BZ}", "4 gp", "M/R·C/N", "1d4", "F, Th"], ["Meat mallet {BZ}", "5 gp", "M·C", "1d6", "tenderize"], ["Monster cudgel {BZ}", "15 gp", "M·C", "1d6/1d8", "V, fine- tuned"], ["Morningstar {PC}", "10 gp", "M·C", "1d8", "crit sticks"], ["Pike {RS}", "10 gp", "M·2×C", "1d10", "2H, 2 slots"], ["Polearm {PC}", "21 gp", "M·N", "2d6", "2H, 2 slots"], ["Rapier {PC}", "10 gp", "M·C", "1d4", "F, parry"], ["Razor chain {RS}", "12 gp", "M/R·C/N", "1d6", "F, Lash"], ["Sap {PC}", "1 gp", "M·C", "1d4", "knockout"], ["Scimitar {PC}", "12 gp", "M·C", "1d8", "Adv mounted"], ["Shuriken {RS}", "1 gp", "R·N", "1d4", "caltrop"], ["Sinew bow {BZ}", "10 gp", "R·F", "1d6", "fine-tuned"], ["Sling {RS}", "5 sp", "R·F", "1d4", "-"], ["Stave {MS}", "2 gp", "M·C", "1d6", "2H, sunder"], ["Trident {PC}", "2 gp", "M·C", "1d6/1d8", "V, disarm"], ["Whip {RS}", "10 gp", "M/R·C/N", "1d4", "F, Lash"]], "note": "M melee · R ranged · C/N/F close/near/far · F finesse · Th thrown · V versatile · L loading · 2H two-handed" }, { "n": "Armor", "sub": "", "cols": ["ARMOR", "COST", "SL.", "AC", "NOTES"], "rows": [["Leather", "10 gp", "1", "11+DEX", "-"], ["Chainmail", "60 gp", "2", "13+DEX", "DisAdv stl/swim"], ["Plate mail", "130 gp", "3", "15", "No swim, DisAdv stl"], ["Shield", "10 gp", "1", "+2", "one hand"], { "s": "Supplements" }, ["Padded/linen {PC}", "4 gp", "1", "11+DEX", "No swim"], ["Hide {PC}", "8 gp", "1", "11+DEX", "−1 CHA mod"], ["Studded lthr. {PC}", "25 gp", "1", "12+DEX", "-"], ["Ringmail {PC}", "30 gp", "2", "12+DEX", "No swim, DisAdv stl"], ["Scale mail {PC}", "45 gp", "2", "12+DEX", "DisAdv stealth"], ["Hauberk {PC}", "50 gp", "1", "12+DEX", "DisAdv swim/stl"], ["Brigandine {PC}", "60 gp", "1", "12+DEX", "DisAdv swim"], ["Banded {PC}", "80 gp", "2", "13+DEX", "No swim"], ["Monster hide {BZ}", "80 gp", "2", "13+DEX", "smells of monster"], ["Plate, field {PC}", "100 gp", "3", "15", "No swim; doff 2 rds"], ["Lamellar {PC}", "115 gp", "3", "13+DEX", "-"], ["Helmet {PC}", "3 gp", "1", "+0", "Adv vs. blasts/falls"], ["Skull helm {BZ}", "15 gp", "1", "+1", ""], ["Buckler {PC}", "3 gp", "1", "+1", "one hand"], ["Round shield {MS}", "15 gp", "1", "+2", "sundering"], ["Kite shield {PC}", "15 gp", "2", "+3", "+1 AC mounted"], { "s": "Materials (metal armor)" }, ["Mithral", "×4", "−1", "-", "no stl/swim penalty"], ["Adamantine {PC}", "×8", "+1", "+2", "No swim"], ["Bronze, plate {PC}", "×½", "+0", "−1", "+1 CHA mod"]], "note": "" }, { "n": "Adventuring Gear", "sub": "", "cols": ["ITEM", "COST", "SLOT"], "rows": [["Acid, vial {PC}", "1 gp", "1"], ["Air bladder {PC}", "5 sp", "-"], ["Alcohol, bottle {PC}", "1 sp", "1"], ["Apron, heavy {PC}", "5 cp", "-"], ["Aspergillum {PC}", "8 gp", "1"], ["Astrolabe {PC}", "400 gp", "1"], ["Arrows (20)", "1 gp", "1"], ["Backpack", "2 gp", "free*"], ["Bandages {PC}", "6 sp", "1"], ["Basket {PC}", "1 sp", "-"], ["Bedroll {PC}", "3 sp", "1"], ["Bell, small ◆", "1 sp", "-"], ["Belt pouch (100c) {PC}", "2 gp", "-"], ["Birdcage {PC}", "4 gp", "1"], ["Blanket, wool ◆", "5 sp", "1"], ["Blindfold {PC}", "3 sp", "-"], ["Block & tackle {PC}", "12 gp", "1"], ["Body paint {PC}", "8 sp", "-"], ["Box, large {PC}", "7 sp", "-"], ["Box, small {PC}", "2 sp", "-"], ["Brand (sigil iron) {PC}", "3 gp", "1"], ["Caltrops (bag)", "5 sp", "1"], ["Campfire bundle {PC}", "5 sp", "1"], ["Candles (5) {PC}", "5 cp", "1"], ["Chain, 60' {PC}", "5 gp", "2"], ["Chalk (10) / powder {PC}", "5 cp", "-"], ["Chest, standard {PC}", "10 gp", "3"], ["Chest, potion {PC}", "18 gp", "3"], ["Chest, ironbound {PC}", "20 gp", "4"], ["Chisel {PC}", "1 gp", "-"], ["Clay jug {PC}", "5 sp", "1"], ["Cloak {PC}", "7 sp", "-"], ["Crampons {PC}", "4 gp", "1"], ["Crossbow bolts (20)", "1 gp", "1"], ["Crowbar", "5 sp", "1"], ["Disguise kit {PC}", "8 gp", "1"], ["Ear plugs {PC}", "5 cp", "-"], ["Fishing net {PC}", "4 sp", "2"], ["Fishing rod & hook {PC}", "8 sp", "1"], ["Flask or bottle", "3 sp", "1"], ["Flint and steel", "5 sp", "1"], ["Grappling hook", "1 gp", "1"], ["Hammer {PC}", "2 sp", "1"], ["Handsaw {PC}", "4 sp", "1"], ["Holy symbol, wood ◆", "5 sp", "-"], ["Holy symbol, silver ◆", "10 gp", "-"], ["Holy water {PC}", "5 gp", "1"], ["Hourglass {PC}", "90 gp", "1"], ["Iron pot {PC}", "5 sp", "1"], ["Iron spikes (10)", "1 gp", "1"], ["Ladder, 10' {PC}", "3 sp", "5"], ["Lantern", "5 gp", "1"], ["Lantern, beacon {PC}", "12 gp", "1"], ["Lanyard {PC}", "3 sp", "-"], ["Leather gloves {PC}", "1 gp", "-"], ["Lock, basic {PC}", "2 gp", "-"], ["Lock, exceptional {PC}", "14 gp", "-"], ["Lockpicks {PC}", "5 gp", "-"], ["Lodestone {PC}", "1 gp", "-"], ["Manacles {PC}", "3 gp", "1"], ["Mess kit ◆", "2 sp", "-"], ["Mirror", "10 gp", "1"], ["Mortar & pestle {PC}", "5 sp", "-"], ["Musical instrument {PC}", "24 gp", "1"], ["Oil, flask", "5 sp", "1"], ["Oil, jellied {PC}", "2 gp", "1"], ["Paper / parchment {PC}", "1 gp", "-"], ["Perfume {PC}", "16 gp", "-"], ["Pickaxe {PC}", "4 gp", "1"], ["Pipe {PC}", "8 sp", "-"], ["Pipeweed, pouch ◆", "1 sp", "-"], ["Playing cards / dice {PC}", "2 sp", "-"], ["Pole, 10'", "5 sp", "1"], ["Quill pen {PC}", "7 sp", "-"], ["Rations (3)", "5 sp", "1"], ["Reed, hollow {PC}", "5 cp", "-"], ["Rockworms {PC}", "18 gp", "2"], ["Rope, 60'", "1 gp", "1"], ["Sachet {PC}", "8 gp", "-"], ["Sack, large {PC}", "2 sp", "1"], ["Sack, small {PC}", "5 cp", "-"], ["Scroll case {PC}", "1 gp", "1"], ["Sewing kit {PC}", "4 sp", "-"], ["Shovel {PC}", "7 sp", "1"], ["Signet ring {PC}", "4 gp", "-"], ["Silver arrows (5) ◆", "10 gp", "1"], ["Silvering a dagger ◆", "+9 gp", "-"], ["Silvering a weapon ◆", "+25 gp", "-"], ["Sledge {PC}", "8 sp", "1"], ["Sling bullets (20) {PC}", "5 sp", "1"], ["Smelling salts {PC}", "3 gp", "-"], ["Snare trap {PC}", "2 gp", "1"], ["Snowshoes {PC}", "3 sp", "1"], ["Soap, cake ◆", "1 cp", "-"], ["Songbird (caged) {PC}", "3 sp", "-"], ["Spyglass {PC}", "800 gp", "0"], ["Tent, small (2) {PC}", "1 gp", "1"], ["Tent, large (6) {PC}", "6 gp", "2"], ["Tongs {PC}", "8 sp", "1"], ["Torch", "5 sp", "1"], ["Twine, 50' ◆", "1 cp", "-"], ["Two-man saw {PC}", "1 gp", "3"], ["Waterskin {PC}", "5 cp", "-"], ["Wax (3 lb) {PC}", "5 cp", "-"], ["Whetstone {PC}", "1 gp", "-"], ["Whistle {PC}", "5 sp", "-"], ["Wooden stakes (3) {PC}", "5 cp", "1"], ["Writing ink {PC}", "2 gp", "-"]], "note": "" }, { "n": "Traps", "sub": "READY-MADE", "cols": ["TRAP", "COST", "EFFECT"], "rows": [["Snare {PC}", "2 gp", "Capture"], ["Sticky {PC}", "18 gp", "Hinder"], ["Noxious gas {PC}", "24 gp", "Debilitate"], ["Oil spray {PC}", "28 gp", "Burn"], ["Flashing {PC}", "30 gp", "Blind"], ["Poison dart {PC}", "34 gp", "Poison"]], "note": "" }, { "n": "Herbs, Drugs & Poisons", "sub": "", "cols": ["SUBSTANCE", "COST", "USE"], "rows": [["Razorweed {PC}", "5 gp", "relaxing drug"], ["Birthwort {PC}", "6 gp", "reduces poison"], ["Marigold {PC}", "10 gp", "attracts animals"], ["Goldenrod {PC}", "12 gp", "magic resistance"], ["Castor beans {PC}", "12 gp", "doubles intervals"], ["Ginkgo seeds {PC}", "15 gp", "INT poison"], ["Tamarind {PC}", "15 gp", "magnifies senses"], ["Blue cap mushroom {PC}", "16 gp", "prevents surprise"], ["Muskhorn {PC}", "20 gp", "CHA poison"], ["Feverfew {PC}", "22 gp", "WIS poison"], ["Catnip {PC}", "24 gp", "relaxing drug"], ["Horace root {PC}", "25 gp", "damage poison"], ["Blightshade {PC}", "28 gp", "damage poison"], ["Cobra venom {PC}", "30 gp", "damage poison"], ["Arsenic {PC}", "32 gp", "INT poison"], ["Red cap mushroom {PC}", "35 gp", "hallucinogen"], ["Black widow venom {PC}", "36 gp", "DEX poison"], ["Belladonna {PC}", "40 gp", "CON poison"], ["Snarlroot {PC}", "50 gp", "enrages user"], ["Wolfsbane {PC}", "80 gp", "hurts lycanthropes"]], "note": "All 1 slot. Apothecary or black market only." }, { "n": "Lodging", "sub": "PER NIGHT", "cols": ["ACCOMMODATION", "COST"], "rows": [{ "s": "Poor" }, ["Hayloft / stable corner ◆", "2 cp"], ["Common-room floor by the fire ◆", "5 cp"], ["Flophouse cot (lice included) ◆", "1 sp"], { "s": "Standard" }, ["Shared room, own bed ◆", "4 sp"], ["Private room, locking door ◆", "1 gp"], { "s": "Wealthy" }, ["Fine room, hearth & bath ◆", "3 gp"], ["Suite with servant ◆", "8 gp"], { "s": "Extras" }, ["Hot bath (perfumed: 1 gp) ◆", "2 sp"], ["Laundry / mending ◆", "5 cp"], ["Stabling + fodder, per mount ◆", "3 sp"], ["Inn strongbox, per night ◆", "1 sp"], ["Long-term rent, room / month ◆", "15 gp"]], "note": "" }, { "n": "Lifestyle", "sub": "PER WEEK, ROOM + BOARD", "cols": ["TIER", "COST", "MEANS"], "rows": [["Squalid", "3 sp", "street, scraps"], ["Poor", "1 gp", "floor & poor meals"], ["Standard", "12 gp", "private room, std meals"], ["Wealthy", "85 gp", "fine room, wealthy fare"]], "note": "" }, { "n": "Food", "sub": "", "cols": ["FARE", "COST", "E.G."], "rows": [["Poor meal", "1d4 cp", "rat-on-a-stick"], ["Standard meal", "1d6 sp", "seared venison"], ["Wealthy meal", "1d8 gp", "griffon eggs"], ["Feast, per head ◆", "10 gp", ""], ["Rations (3 days)", "5 sp", "trail food & water"], ["Bread loaf · cheese ◆", "1 · 3 cp", ""], ["Salt pork or jerky, 1 lb ◆", "2 sp", ""], ["Sack of grain / flour ◆", "5 sp", ""], ["Salt, 1 lb · Spices, pouch ◆", "1 sp · 3 gp", ""]], "note": "" }, { "n": "Drink", "sub": "PER MUG / CUP", "cols": ["DRINK", "COST", "EFFECT"], "rows": [["Barnacle grog", "1 cp", "DC 9 CON or blind 1 hr"], ["Watered-down swill", "3 cp", "−1 CON 1 hr"], ["Vinegary wine · Stale ale", "5 cp", "−1 CHA / −1 WIS 1 hr"], ["Clear spirits", "1 sp", "ends 1 bad drink effect"], ["House ale", "2 sp", "first mug is free"], ["Autumn mead", "3 sp", "doubles next drink"], ["Halfling summer wine", "5 sp", "+1 CHA 1 hr"], ["Elvish brandy", "5 sp", "+1 INT 1 hr"], ["Dwarvish gold ale", "5 sp", "regain 1d4 HP / mug"], ["Aged royal wine", "2 gp", "+1 WIS 1 hr"], ["Van Dinkle whiskey, sip", "20 gp", "+1 XP; 5 bottles exist"], ["Keg of ale ( ≈ 60 mugs) ◆", "4 gp", ""], ["Bottle of decent wine ◆", "1 gp", ""]], "note": "" }, { "n": "Moneychangers & Vaults", "sub": "", "cols": ["SERVICE", "COST"], "rows": [["Change coin (e.g. cp → gp) ◆", "5% fee"], ["Temple or guild vault, per month ◆", "1 gp"], ["Letter of credit, city to city ◆", "3% fee"], ["Appraise gem or art (jeweler) ◆", "1 gp"]], "note": "" }, { "n": "Clothing", "sub": "", "cols": ["GARMENT", "COST"], "rows": [["Peasant garb ◆", "2 sp"], ["Boots, sturdy", "5 sp"], ["Traveler's clothes ◆", "1 gp"], ["Hooded cloak {PC}", "7 sp"], ["Cold-weather furs ◆", "4 gp"], ["Surcoat, heraldic ◆", "5 gp"], ["Fine clothes ◆", "15 gp"], ["Silk robe & slippers", "35 gp"], ["Noble's finery ◆", "50 gp"], ["Circlet {PC}", "40 gp"]], "note": "" }, { "n": "Mounts", "sub": "", "cols": ["MOUNT", "COST", "RARITY", "NOTES"], "rows": [["Donkey {RS}", "40 gp", "Common", "spooks"], ["Mule ◆", "45 gp", "Common", "spooks; sure-footed"], ["Pony ◆", "30 gp", "Common", "spooks; small rider"], ["Camel {RS}", "50 gp", "Common", "spooks"], ["Horse (riding) {RS}", "50 gp", "Common", "Adv on morale"], ["Draft horse ◆", "60 gp", "Common", "spooks; pulls wagon"], ["Horse, war {RS}", "100 gp", "Uncommon", "can wear barding"], ["Destrier ◆", "200 gp", "Rare", "war horse, Adv morale"], ["Scrag {RS}", "150 gp", "Uncommon", "special training"], ["Scrag, war {RS}", "250 gp", "Rare", "can wear armor"], ["Camel, silver {RS}", "200 gp", "Rare", "never spooks"], ["Elephant {RS}", "400 gp", "Rare", "never spooks"]], "note": "Mounts eat rations equal to their level each day (camels weekly). Slots = 5 × STR bonus; rider + gear = 10. Push: +CON-bonus hexes, DC 12 CON." }, { "n": "Tack & Barding", "sub": "", "cols": ["ITEM", "COST", "NOTES"], "rows": [["Horse tack, full set {PC}", "12 gp", "6 slots"], ["Saddle, war {RS}", "30 gp", "Adv to stay on"], ["Pack saddle (mule, donkey) ◆", "5 gp", ""], ["Saddlebags (+4 mount slots) ◆", "2 gp", ""], ["Harness, cart / wagon ◆", "4 gp", ""], ["Caparison (heraldic trappings) ◆", "15 gp", ""], ["Shoeing (set of 4) ◆", "5 sp", ""], ["Fodder, 1 mount-ration ◆", "1 sp", ""], { "s": "Barding (war mounts only)" }, ["Leather barding {RS}", "30 gp", "AC 11+DEX"], ["Chain barding {RS}", "80 gp", "AC 13+DEX"], ["Plate barding {RS}", "150 gp", "AC 15"], ["Mithral barding {RS}", "×5", "−1 slot"]], "note": "Player Companion lists chain barding at 240 gp; Red Sands (official) price used." }, { "n": "Livestock & Beasts", "sub": "", "cols": ["ANIMAL", "COST"], "rows": [["Chicken ◆", "2 sp"], ["Goose ◆", "4 sp"], ["Goat · Sheep ◆", "2 gp"], ["Pig ◆", "3 gp"], ["Cow ◆", "15 gp"], ["Ox ◆", "35 gp"], ["Dog, guard ◆", "5 gp"], ["Hound, hunting ◆", "15 gp"], ["Dog, war ◆", "25 gp"], ["Pigeon, msgr. ◆", "1 gp"], ["Falcon, trained ◆", "40 gp"]], "note": "" }, { "n": "Vehicles & Boats", "sub": "", "cols": ["VEHICLE", "COST", "NOTES"], "rows": [["Sled ◆", "20 gp", "pulled by dogs/ox"], ["Cart, 2-wheel ◆", "40 gp", "+8 slots, 1 mount"], ["Wagon {RS}", "120 gp", "+15 slots, ½ speed"], ["Coach, enclosed ◆", "300 gp", "6 passengers"], ["Raft {MS}", "40 gp", "spd 2, unseaworthy"], ["Canoe ◆", "60 gp", "spd 4, portage"], ["Rowboat {MS}", "200 gp", "spd 4, portage"], ["Longboat {MS}", "500 gp", "spd 9, oars, seaworthy"], ["Sailboat {MS}", "700 gp", "spd 8, seaworthy"], ["Galleon {MS}", "1,000 gp", "spd 8, 4 hvy crossbows"]], "note": "Boat speed = 6-mi hexes per 8 hrs. Travel: walk 4 hrs/hex · mounted 2 · sail 1." }, { "n": "Carousing", "sub": "", "cols": ["COST", "BONUS", "EVENT"], "rows": [["30 gp", "+0", "A worthy night of drinking"], ["100 gp", "+1", "Day & night of revelry"], ["300 gp", "+2", "Two days crawling taverns"], ["600 gp", "+3", "Three-day voyage of excess"], ["900 gp", "+4", "Weeklong bender"], ["1,200 gp", "+5", "Ten-day fete takes a district"], ["1,800 gp", "+6", "Two legendary weeks"]], "note": "Each participant pays, then rolls 1d8 + bonus on the Carousing Outcome table." }, { "n": "Hirelings", "sub": "PER DAY + UPKEEP", "cols": ["HIRELING", "WAGE", "NOTES"], "rows": [["Laborer / porter ◆", "2 sp", "carries 10 slots; won't fight"], ["Torchbearer / linkboy ◆", "3 sp", "holds the light"], ["Teamster / groom ◆", "5 sp", "drives & tends mounts"], ["Sailor ◆", "5 sp", ""], ["Guide / tracker ◆", "1 gp", "Adv to navigate"], ["Man-at-arms ◆", "1 gp", "spear & shield"], ["Archer / crossbowman ◆", "15 sp", "own bow"], ["Mounted sergeant ◆", "3 gp", "own horse"], ["Ship's captain ◆", "3 gp", ""], ["Sage, per question ◆", "5 gp", "70% accurate"]], "note": "Into the Shadowdark: double wage or a half share of treasure. Unpaid hirelings flee at the first chance." }, { "n": "Services", "sub": "", "cols": ["SERVICE", "COST"], "rows": [["Messenger, across town ◆", "2 sp"], ["Courier, mounted, per hex ◆", "5 sp"], ["Coach / caravan seat, per hex ◆", "2 sp"], ["Ship passage, per hex (deck / cabin) ◆", "1 sp / 5 sp"], ["Ferry · bridge · road toll ◆", "1-5 cp"], ["City gate tax (per head / per cart) ◆", "1 sp / 5 sp"], ["Bribe: guard · clerk · magistrate ◆", "1 · 5 · 25 gp"], ["Fine, brawling / public drunkenness ◆", "2d6 sp"], ["Scribe, letter · map copy ◆", "1 sp · 5 gp"], ["Translator, per day ◆", "1 gp"], ["Fortune teller", "1 gp"], ["Tattoo", "10 gp"], ["Barber / shave ◆", "2 cp"], ["Smith: sharpen · repair (¼ item cost) ◆", "1 cp · ¼"], ["Refit used armor to new wearer ◆", "10% cost"], ["Chirurgeon: stabilize · set bone ◆", "5 sp · 3 gp"], ["Back-alley chirurgeon (DC 9 CON or sick) ◆", "½ price"], ["Instructor, learn a skill (per attempt) ◆", "15 gp"], ["Identify a magic item (sage) ◆", "25 gp"], ["Burial: pauper's pit · rites · crypt ◆", "5 sp · 5 · 50 gp"]], "note": "" }, { "n": "Temple & Spellcasting", "sub": "", "cols": ["SPELL TIER", "CASTING", "PENANCE"], "rows": [["Tier 1 (e.g. Cure Wounds)", "25 gp", "5 gp"], ["Tier 2", "60 gp", "20 gp"], ["Tier 3 (e.g. Remove Curse)", "120 gp", "40 gp"], ["Tier 4 (e.g. Restoration)", "200 gp", "90 gp"], ["Tier 5", "300 gp", "150 gp"]], "note": "Casting fee (◆) if a willing caster can be found. Penance = Core sacrifice value to regain a lost priest spell." }, { "n": "Magic Items", "sub": "VALUE · RARELY FOR SALE", "cols": ["ITEM", "VALUE"], "rows": [["Spell scroll T1 · T2 · T3", "80 · 140 · 200 gp"], ["Spell scroll T4 · T5", "260 · 360 gp"], ["Magic wand T2 · T3 · T4 · T5", "100 · 250 · 300 · 360"], ["Potion of Invisibility", "80 gp"], ["Potion of Healing", "150 gp"], ["Potion of Flying · Giant Str.", "200 gp"], ["+1 / +2 / +3 armor", "150 / 300 / 900 gp"], ["+1 / +2 / +3 weapon", "200 / 500 / 900 gp"]], "note": "" }, { "n": "Gems & Trade Goods", "sub": "", "cols": ["VALUABLE", "VALUE"], "rows": [["Emerald chip · cracked · whole", "10 · 60 · 120 gp"], ["Pearl, small · fine · giant", "20 · 40 · 80 gp"], ["Ruby · giant ruby", "200 · 400 gp"], ["Sapphire", "280 gp"], ["Diamond, flawless", "360 gp"], ["Iron ingot · gold ingot", "10 · 20 gp"], ["Silver plate · silver spike", "2 gp each"], ["Bag of rare spices", "15 gp"], ["Pelt: wolf · bear · winter fox", "2 · 8 · 12 gp"]], "note": "" }];
+const DUNGEONS = Object.values(ADV)
+    .filter(d => d.url.trim())
+    .map(d => ({ url: d.url, name: d.name }));
+const dun = document.createElement('div'); dun.id = 'dun'; dun.hidden = true;
+dun.innerHTML = '<div id="dunh"><span>Dungeons</span><button id="dunx">&times;</button></div><div id="dunb"></div>';
+document.body.append(dun);
+function dunRender() {
+    $('#dunb').innerHTML = DUNGEONS.map(d => `<a class="dungeon-link" href="${e(d.url)}" target="_blank" rel="noopener">${e(d.name)}</a>`).join('');
+}
+$('#dunx').onclick = () => dun.hidden = true;
+const dunh = $('#dunh'); let dd = null;
+dunh.onpointerdown = ev => { if (ev.target.id === 'dunx') return; const b = dun.getBoundingClientRect(); dd = { x: ev.clientX - b.left, y: ev.clientY - b.top }; dunh.setPointerCapture(ev.pointerId) };
+dunh.onpointermove = ev => { if (!dd) return; dun.style.left = Math.max(0, Math.min(innerWidth - 80, ev.clientX - dd.x)) + 'px'; dun.style.top = Math.max(0, Math.min(innerHeight - 40, ev.clientY - dd.y)) + 'px' };
+dunh.onpointerup = () => dd = null;
 const eco = document.createElement('div'); eco.id = 'eco'; eco.hidden = true;
 eco.innerHTML = '<div id="ecoh"><span>Economy</span><button id="ecox">&times;</button></div><div id="ecot"></div><div id="ecob"></div>'; document.body.append(eco);
 const ecoCell = t => e(t).replace(/\{(PC|RS|MS|BZ)\}/g, '<sup class="tg">$1</sup>').replace(/\u25c6/g, '<span class="hp" title="GM house price">&#9670;</span>');
@@ -580,7 +594,7 @@ const ecoh = $('#ecoh'); let ed = null;
 ecoh.onpointerdown = ev => { if (ev.target.id == 'ecox') return; const b = eco.getBoundingClientRect(); ed = { x: ev.clientX - b.left, y: ev.clientY - b.top }; ecoh.setPointerCapture(ev.pointerId) };
 ecoh.onpointermove = ev => { if (!ed) return; eco.style.left = Math.max(0, Math.min(innerWidth - 80, ev.clientX - ed.x)) + 'px'; eco.style.top = Math.max(0, Math.min(innerHeight - 40, ev.clientY - ed.y)) + 'px' };
 ecoh.onpointerup = () => ed = null;
-[eco, rf].forEach(b => b.addEventListener('pointerdown', () => { zt++; b.style.zIndex = zt }));
+[eco, rf, dun].forEach(b => b.addEventListener('pointerdown', () => { zt++; b.style.zIndex = zt }));
 const CAR = { "how": { "rows": [["1 · Choose the table", "Choose the table that fits how the PC spends their time in town. Different PCs may use different tables."], ["2 · Pay the event cost", "Each participant pays the full cost for the tier chosen (Core costs, pg. 92)."], ["3 · Roll 1d8 + the event's bonus", "Gain the XP and the result. Gold lost or won is a % of total gold left after paying."], ["Allies & tokens", "Go on the character sheet. Tokens are one use. An ally can be lost if abused or betrayed."], ["Treasure Tables 1 · 2 · 3 ◆", "Roll on the Core treasure table for levels 0-3 · 4-6 · 7-9."], ["Playing it out", "If the group plays out one PC's roll, everyone carousing is usually present (Core)."]], "note": "Costs & bonuses: Shadowdark Core Rules, pg. 92 · Event names flavored per table · ◆ GM house ruling. Shadowdark RPG © The Arcane Library · Custom Carousing Compendium." }, "tables": [{ "n": "1", "name": "The Traditional Revelry", "sub": "CHAOTIC TAVERN NIGHTS & DRUNKEN MISCHIEF", "events": [["30 gp", "+0", "A worthy night of drinking and festivity"], ["100 gp", "+1", "A day and night of revelry and gambling"], ["300 gp", "+2", "Two days crawling dozens of taverns"], ["600 gp", "+3", "Three-day voyage of fine food, drink & dice"], ["900 gp", "+4", "A hazy, weeklong bender"], ["1,200 gp", "+5", "A ten-day fete that takes over a district"], ["1,800 gp", "+6", "Two legendary weeks; the streets run red with wine"]], "outcomes": [["3 or less", "1 XP", "You blacked out and woke up in a horse stall. Lose 15% of your total gold. You have an enormous headache and a strange tattoo of a turnip on your arm."], ["4-6", "2 XP", "You gambled heavily with a local card-sharp. Lose 30% of your total gold. You did manage to keep a fancy silver flask (0 slots, worth 10 gp)."], ["7-9", "3 XP", "You started a massive bar brawl that wrecked the tavern. Lose 20% of your total gold in structural damages, but you made a **Rowdy Ally** who will jump into local fights with you."], ["10-12", "4 XP", "You successfully drank an entire dwarven mining platoon under the table. You gain a strong reputation. The local barkeeps will give you free standard drinks for life."], ["13", "5 XP", "You woke up wearing a stranger's ceremonial velvet robe. Lose 10% of your total gold. The robe takes up 1 slot but gives you a +1 bonus to Charisma checks with cultists."], ["14+", "6 XP", "You woke up in the local magistrate's personal bed. He thinks you are a visiting foreign noble. Roll on **Treasure Table 2** for a fancy signet ring or pocket watch you 'borrowed'."]] }, { "n": "2", "name": "Community & Charity Reverie", "sub": "ALTRUISTIC · LIFTING THE DESOLATE", "events": [["30 gp", "+0", "Hot meals for a street of beggars"], ["100 gp", "+1", "Repairing a widow's roof and the town well"], ["300 gp", "+2", "A week of soup kitchen and shelter"], ["600 gp", "+3", "Paying the debts of a dozen families"], ["900 gp", "+4", "Endowing the orphanage or infirmary"], ["1,200 gp", "+5", "A harvest festival for the whole town"], ["1,800 gp", "+6", "Rebuilding a burned-out quarter"]], "outcomes": [["3 or less", "1 XP", "You spent your coin trying to fix a broken water well, but a corrupt tax collector pocketed it. Lose 15% of your total gold. Local laborers respect your effort and offer free basic shelter."], ["4-6", "2 XP", "You funded a week-long soup kitchen and shelter for town refugees. Lose 30% of your total gold. The experience humbles you; gain a temporary +1 to your next Charisma check with commoners."], ["7-9", "3 XP", "You completely paid off outstanding debts or medical fees for several struggling families. Gain a **Working-Class Ally** (blacksmith or farmer) who gives you a 50% discount on standard services."], ["10-12", "4 XP", "You donated heavily to the local orphanage or infirmary. The town considers you a local hero. Gain a **Token of Gratitude**; cash it in to automatically pass a single social check with local guards."], ["13", "5 XP", "You sponsored a grand public harvest festival, keeping the town safe and festive. The positive energy restores your spirit; gain +1 maximum hit points as a morale boost for your next adventure."], ["14+", "6 XP", "An elderly artisan, deeply moved by your immense charity, gifts you a sacred family heirloom. Roll on **Treasure Table 2** to see what masterwork or historical item they handed down to you."]] }, { "n": "3", "name": "The Sacred Vigil & Devotion", "sub": "LAWFUL · CLEANSING THE SOUL", "events": [["30 gp", "+0", "A night's vigil and candle offerings"], ["100 gp", "+1", "Alms, fasting and a day of prayer"], ["300 gp", "+2", "Restoring a defaced wayside shrine"], ["600 gp", "+3", "Pilgrimage to a holy site and back"], ["900 gp", "+4", "Commissioning relics and illuminated texts"], ["1,200 gp", "+5", "A new bell and altar for the chapel"], ["1,800 gp", "+6", "Endowing a temple and its holy order"]], "outcomes": [["3 or less", "1 XP", "You spent your time fasting in isolation, but a stray altar candle spark burned your pouch. Lose 10% of your total gold. You leave with a peaceful mind but smelling strongly of smoke."], ["4-6", "2 XP", "You paid to restore a defaced religious shrine or historical monument. Lose 25% of your total gold. Your meticulous work acts as meditation; gain a +1 bonus to your next Wisdom saving throw."], ["7-9", "3 XP", "You helped temple scribes translate and preserve deteriorating ancient ethical treatises. Gain a **Temple Ally** (acolyte or librarian) who will gladly research historical or monster lore for free."], ["10-12", "4 XP", "You stood a grueling 48-hour silent guard vigil over a sacred tomb to protect it from graverobbers. Your discipline hardens; gain advantage on your next saving throw against fear or paralysis."], ["13", "5 XP", "You successfully mediated a long-standing, bitter feud between two rival factions without bloodshed. The high priest blesses you with a **Holy Scroll of Protection** (tier 1 priest spell scroll)."], ["14+", "6 XP", "Your absolute righteousness draws the attention of a higher power. They entrust you with a sacred artifact to fight the dark. Gain a random **Magic Item** with a minor holy or lawful property."]] }, { "n": "4", "name": "Civic Duty & Town Defense", "sub": "LAWFUL / NEUTRAL · RULE OF LAW", "events": [["30 gp", "+0", "Lanterns and a round for the night watch"], ["100 gp", "+1", "Patching the town wall and gate"], ["300 gp", "+2", "Arming a neighborhood watch"], ["600 gp", "+3", "A week drilling the militia"], ["900 gp", "+4", "Spears and shields for the militia"], ["1,200 gp", "+5", "A town-wide defense drill and feast"], ["1,800 gp", "+6", "Rebuilding a watchtower and garrison"]], "outcomes": [["3 or less", "1 XP", "You volunteered to patch rotten timbers on the town defensive walls. Your coin pouch fell into a muddy trench. Lose 15% of your total gold. Your muscles are incredibly sore, but the wall is sturdier."], ["4-6", "2 XP", "You organized a neighborhood watch to protect shopkeepers from burglaries. Lose 20% of your total gold buying lanterns. Merchants are grateful and buy your next treasure for 10% more."], ["7-9", "3 XP", "You spent days drilling the local ragtag militia in shield-wall tactics. Gain a **Militia Ally** (the Watch Captain) who will look the other way for a minor civil infraction or provide muscle."], ["10-12", "4 XP", "You tracked down and peacefully negotiated the return of stolen livestock, resolving conflict through law. The magistrate rewards your civic mind with a Bounty Reward. Roll on **Treasure Table 1**."], ["13", "5 XP", "You spent downtime offering free, rigorous self-defense training to town laborers and peasants. Sharpening your own fundamentals improves your form; gain +1 to your next initiative roll."], ["14+", "6 XP", "You organized a highly successful town-wide defensive drill that deterred a group of bandit scouts. The governor officially honors you and awards you a **Masterwork Weapon or Armor** piece from the armory. ◆"]] }, { "n": "5", "name": "Occult Research & Mystery", "sub": "NEUTRAL · FORBIDDEN LORE", "events": [["30 gp", "+0", "Buying a drunk scholar's rumors"], ["100 gp", "+1", "Archive fees and candles for a day"], ["300 gp", "+2", "Forbidden pamphlets and old maps"], ["600 gp", "+3", "A hired sage for a week of study"], ["900 gp", "+4", "A rare tome from the black market"], ["1,200 gp", "+5", "A séance with a famed medium"], ["1,800 gp", "+6", "An expedition to a sealed library"]], "outcomes": [["3 or less", "1 XP", "You spent your coin buying maps from a shady hooded scholar; they turned out to be fake doodles. Lose 15% of your total gold. You have ink stains on your fingers that won't wash off for a week."], ["4-6", "2 XP", "You locked yourself in a dusty archive searching for a lost dungeon entrance. Lose 25% of your total gold in library fees. You find a clue: gain a +2 bonus to Intelligence checks on your next crawl."], ["7-9", "3 XP", "You investigated a strange series of local disappearances and found an eerie calling card. Gain an **Occult Ally** (a local investigator) who can identify strange runes or occult cult symbols for you."], ["10-12", "4 XP", "You solved a legendary tavern riddle box that hadn't been opened in decades. Inside you find a map showing a hidden cache. Gain a **secret location** on your map with guaranteed extra loot."], ["13", "5 XP", "You deciphered a fragment of a forbidden pre-human text before your nose started bleeding. You learn a dark truth. Gain a **tier 1 wizard spell scroll**, but take −1 to your next Wisdom save."], ["14+", "6 XP", "You uncovered a conspiracy linking a local merchant guild to a cosmic entity. You pocketed a strange talisman from their secret meeting room. Gain a random strange, alien **Magic Item**."]] }, { "n": "6", "name": "Gambling & the High-Stakes Underground", "sub": "CHAOTIC", "events": [["30 gp", "+0", "A night at the knucklebone tables"], ["100 gp", "+1", "A seat at a backroom card game"], ["300 gp", "+2", "Two nights in the fighting-pit stands"], ["600 gp", "+3", "High-stakes dice with a guildmaster"], ["900 gp", "+4", "A week inside the underground den"], ["1,200 gp", "+5", "Buying into the Thieves' Guild game"], ["1,800 gp", "+6", "Bankrolling a pit-fighting tournament"]], "outcomes": [["3 or less", "1 XP", "You got completely cleaned out by a group of card-playing goblins. Lose 50% of your total gold. You also had to surrender your favorite boots to pay off your final bar tab."], ["4-6", "2 XP", "You played a tight, cautious game of knucklebones all night. Lose 10% of your total gold. You walked away with a **lucky rabbit's foot**: reroll a single natural 1 on an attack (one use)."], ["7-9", "3 XP", "You won big against an aggressive thug, but had to fight your way out of the alley afterwards. Gain 15% more gold than you started with, but a local criminal gang is looking for payback."], ["10-12", "4 XP", "You completely outsmarted a wealthy guildmaster in a high-stakes dice match. Gain 40% more gold than you started with and a **Guild Invitation** granting entry to private merchant clubs."], ["13", "5 XP", "You bet on an absurd underdog in the underground fighting pits and won against all odds. Gain 60% more gold than you started with and a reputation as a reckless, fearless gambler."], ["14+", "6 XP", "You won the deed to a mysterious, abandoned property outside of town from a panicked nobleman. Gain 20% more gold and the **Deed to a Ruined Tower or Warehouse** (a future base)."]] }, { "n": "7", "name": "Aristocratic Galas & Intrigue", "sub": "SOCIAL CLIMBING · COURTLY FAVORS", "events": [["30 gp", "+0", "Fine clothes and a borrowed invitation"], ["100 gp", "+1", "A seat at a lesser noble's supper"], ["300 gp", "+2", "Hosting a private salon"], ["600 gp", "+3", "A three-day hunt with the gentry"], ["900 gp", "+4", "A masquerade ball in your honor"], ["1,200 gp", "+5", "Sponsoring a tourney for the court"], ["1,800 gp", "+6", "A royal gala the whole city talks about"]], "outcomes": [["3 or less", "1 XP", "You committed a horrific social faux pas by insulting a duchess's outfit. Lose 20% of your total gold in steep courtly fines; you are permanently barred from entering the High District."], ["4-6", "2 XP", "You were tricked into investing in an incredibly terrible local theatrical play. Lose 40% of your total gold. On the bright side, you keep a fancy, silk-lined velvet cloak (0 slots)."], ["7-9", "3 XP", "You spent the evening trading polite barbs with cutthroat politicians. Gain a **Noble Ally** who can secure you a private audience with the Magistrate, but a rival house now plots against you."], ["10-12", "4 XP", "You won a dramatic high-society duel of wits or fine archery against an arrogant lordling. Gain a **Royal Favor** token; cash it in to completely erase a single minor crime or arrest."], ["13", "5 XP", "You stumbled into a secret, forbidden romance with the ruler's closest relative. They gift you a fine silver signet ring worth 100 gp, but warn you to leave the city before sunrise."], ["14+", "6 XP", "You wake up in the royal guest palace. The King believes you saved his life from an invisible assassin and grants you a royal charter. Roll on **Treasure Table 3** for a pristine masterwork piece of gear. ◆"]] }, { "n": "8", "name": "Wilderness Expeditions & Scouting", "sub": "NEUTRAL · SURVIVAL", "events": [["30 gp", "+0", "A day hunting in the near woods"], ["100 gp", "+1", "A hired guide for an overnight trek"], ["300 gp", "+2", "Two days mapping the fringe trails"], ["600 gp", "+3", "A week tracking beasts in the hills"], ["900 gp", "+4", "Outfitting a mountain survey"], ["1,200 gp", "+5", "A ten-day expedition with porters"], ["1,800 gp", "+6", "A two-week march across the wilds"]], "outcomes": [["3 or less", "1 XP", "You got hopelessly lost in the nearby bramble-woods trying to map a shortcut. Lose 10% of your total gold in ruined gear. You are covered in itchy briar scratches for your next journey."], ["4-6", "2 XP", "You tracked a rare, majestic beast through the mountains but lost its trail. Lose 20% of your total gold in supply costs. Your instincts sharpen; gain +1 to your next navigation check."], ["7-9", "3 XP", "You cleared a dangerous infestation of giant spiders from an important logging trail. Gain a **Wilderness Ally** (a local ranger or woodcutter) who will guide your party through the local woods for free."], ["10-12", "4 XP", "You discovered an ancient hunter's cache hidden inside a hollowed-out ironwood tree. Gain a perfectly balanced **Masterwork Shortbow or Hunting Knife** (0 slots)."], ["13", "5 XP", "You befriended a grumpy, reclusive druid by helping nurse an injured dire wolf back to health. The druid rewards you with a rare **Herbal Poultice** that acts as a Potion of Healing when applied."], ["14+", "6 XP", "You mapped a safe, hidden trail through a notoriously treacherous mountain pass. Local merchant caravans pay you handsomely for the map. Gain a Bounty Reward: roll on **Treasure Table 2**."]] }] }; let carTab = 0;
 const car = document.createElement('div'); car.id = 'car'; car.hidden = true; car.style.left = '170px'; car.style.top = '95px';
 car.innerHTML = '<div id="carh"><span>Carousing (Use Toolbox)</span><button id="carx">&times;</button></div><div id="cart"></div><div id="carb"></div>'; document.body.append(car);
