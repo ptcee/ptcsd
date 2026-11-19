@@ -7606,37 +7606,37 @@ You drank with a gossiper and learned a random rumor
 A helpful, friendly raven follows you around for 1 week
 A soothsayer reads your palm; gain a luck token
 A sea wolf raider offers you free passage on his ship
-You stopped a zombie; the Charnel-Men owe you a favor
+You stopped a zombie; a local priest owes you a favor
 A falling gargoyle missed you by an inch; gain a luck token
 Children like you for 1 week thanks to a clever magic trick
 You converted a street thug to piety; gain an acolyte ally
 You've been knighted and don't remember how or why
-You saved a boat; Rowers transport you for free for a month
+You saved a burning boat; its owner offers you a free ride
 You mistakenly receive a sealed letter meant for a noble
 A priest mistakes your revelry for worship; gain a priest ally
 A street cat befriends you; you can't be surprised for 1 week
 You win an arm-wrestling contest; +1 renown
 You distracted a Thieves' Guild mark; gain a thief ally
-A shaman offers you free spiritual cleansing (see pg. 26)
+A shaman offers you free spiritual cleansing (see pg. 234)
 You got lucky this time; roll your next benefit with ADV
 You won a pit fight; gain +1 renown and a gladiator ally
 An eager, helpful acolyte follows you around for 1 week
 An honest heart-to-heart turns a former enemy into an ally
-You testified for a barrister; he helps you for free next time
+You testified for an innocent man; he'll do the same for you
 You unwittingly aided in a murder; gain an assassin ally
-You fall in the river and find something you lost long ago
+You fall in a well and find something you lost long ago
 You caught a thief; gain a City Guard ally (guard), +1 renown
-An ancient beggar gives you a gutter trinket (see pg. 68)
+A beggar gives you a gutter trinket (roll an ancestry trinket)
 You're a regular now; +1 on next carousing event roll
 A minor nobles offers you his heir's hand in marriage
 A retiring farmer gave you his best horse and a grumpy pig
 You found and returned a lost wizard hat; gain a mage ally
 You won 50 gp against a famous gambler; +1 renown
 A stray mastiff likes you; it defends you in your next combat
-The Onyx Eye clears you of your next crime accusation
+A forgiving guard clears you of your next crime accusation
 You discover a codex in the sewers; learn one rare language
-You learn you have a secret ally in The Shroud helping you
-A swordsman offers you free martial training (see pg. 26)
+You learn you have an anonymous sorcerer ally helping you
+A swordsman offers you free downtime martial training
 You earned a flattering nickname or title; +1 renown
 You survived the Rat Plague (see rat); now you're immune
 The Thieves' Guild helps you; cancel your next mishap
@@ -7649,7 +7649,7 @@ You saved a mage's pet; he identifies a magic item for you
 You won a philosophy debate; +1d4 INT points for 1 week
 You sang a beloved sea shanty; gain a pirate ally, +1 renown
 Good rest cleared your mind; +1d4 WIS points for 1 week
-You find a note in your bag: "I.O.U., Montmar Castle, noon"
+You find a note in your bag: “I.O.U., town square, noon”
 You find a discarded bag; roll on your level's Treasure Table
 You start an iconic new fashion trend; +2 renown
 You find the secret sewer entrance to a noble's mansion
@@ -7660,17 +7660,17 @@ You gracefully dodged a bull; +1 renown, +1d4 temporary HP
 You impressed a bard; +2 on your next carousing event roll
 The warlord Krell (berserker) now owes you a blood debt
 You woke up in a lab; gain two random magic potions
-You discover an iron key to the Duke's Donjon in your bag
+You discover an iron key to the local prison in your bag
 You won a weight lifting match; +1d4 STR points for 1 week
 You tossed a thug from a bar; +2 to next carousing event roll
 You beat a wizard at dice and won a Potion of Polymorph
 A retiring street magician gifts you an uncuttable rope
-You filled in for a sick performer at the theater; +2 renown
+You filled in for a sick performer at a show; +2 renown
 You aided a cartographer; gain a useful map of your choice
 A member of the clergy gave you a Potion of Healing
 You won at five-finger filet; +1d4 DEX points for 1 week
 A chatty parrot reveals the name of a noble's illicit paramour
-A thug offers to commit a free crime for you (see pg. 26)
+A thug offers to commit a free crime for you (see pg. 234)
 The Undertaker, a beggar gladiator, protects you for 1 week
 You won a bull-riding match; +1 renown, +1d6 temporary HP
 Treat your renown as 12 for 1 week thanks to a famous bard
@@ -7679,32 +7679,32 @@ You freed a pegasus; it serves as your mount for 1 week
 Find a flask of Van Dinkle Whisky (SD pg. 137) with 5 sips left
 You saved a life; gain a City Guard (guard) ally, +2 renown
 Fantastic haircut; +1 renown, +1d4 CHA points for 1 week
-You learn the True Name of a member of the Duke's family
+You learn the True Name of a member of a noble's family
 A nobleman was impressed by your sharp wit; +3 renown
 You find the Golden Rook; trade it for any merchant's item
 You find a Kytherian Cog (SD pg. 305) in a strange place
 A famous sculptor made a public statue of you; +3 renown
 You outsing a famous bard; +5 to next carousing event roll
 A legendary tailor gifts you an 800 gp outfit; +2 renown
-You won at fencing against the Duke's cousin; +3 renown
+You won at fencing against a noble's cousin; +3 renown
 You won the annual Jester's Leap contest; +4 renown
 You find a one-time, one-person teleporter to anywhere
 You drank something magical; permanently gain 1 HP
 An exotic animal handler gives you a trained panther
 You stop a noble's assassination; +5 renown and noble ally
-You prayed at the Ducal Tomb; gain Wraithsight (SD pg. 281)
+You prayed at a blessed tomb; gain Wraithsight (SD pg. 281)
 A kind old lady gifts you a roll on your level's Treasure Table
 A disguised archangel follows you for 1 week to defend you
-You have earned a major favor from the Duke
+You earned a major favor from the highest noble in the area
 Divine favor: permanently gain 1 stat point of your choice
-You get one roll at +15% on your level's Treasure Table
+Get a roll at +15 on your level's Treasure Table
 You get one roll at +20% on your level's Treasure Table
-You get one roll at +20% on the next highest Treasure Table
-You get one roll at +20% on the LV 10+ Treasure Table`.split('\n');
-    const MIS = `You wake up in the Duke's Donjon accused of a major crime
+Get a roll at +20 on the Treasure Table one up from your LV
+Get a roll at +20 on the LV 10+ Treasure Table`.split('\n');
+    const MIS = `You wake up in the local jail accused of a major crime
 You wake up in the stocks accused of a minor crime
 A gloating thief burgled 50% of your wealth; -3 renown
-You offended an important advisor to the Duke; -5 renown
+You offended an important noble advisor; -5 renown
 You wake up robbed in a gutter; lose 40% of your wealth
 You lost 35% of your wealth to a notorious con artist
 You lost 30% of your wealth in a string of gambling failures
@@ -7726,12 +7726,12 @@ You broke the taboos of a church; gain an enemy priest
 You lost a bet to a hated rival; -1 renown and lose 50 gp
 A corrupt City Guard member blackmailed you for 50 gp
 You agreed to a marriage with a disgraced noble in 1 week
-A prophet saw bad omens; roll next mishap with DISADV
+A prophet saw bad omens; roll next check with DISADV
 You got an awful tattoo in a visible location; -2 renown
 A pack of children humiliated you with a prank; -2 renown
-You got mugged by the Bywater Barons for 40 gp
+You got mugged by a local gang of thugs for 40 gp
 A snide bard performed a rude song about you; -2 renown
-You lost a 40 gp to an amateur gambler; -1 renown
+You lost 40 gp to an amateur gambler; -1 renown
 You sank a boat; Rowers won't transport you for a month
 You wake up wearing a famous noble's missing outfit
 You witnessed a crime; the Thieves' Guild now hunts you
@@ -7740,7 +7740,7 @@ A fashion critic eviscerated your choice in garb; -2 renown
 A rival crawler challenged you to a duel at midday today
 You wake up wearing the signet ring of a murdered noble
 You contract the Rat Plague (see rat) from a poxy old crone
-You upset a barrister; the next one you hire charges 900 gp
+You upset a judge; your next crime is fined at 900 gp
 You angered a bard; -2 on your next carousing event roll
 You borrowed 500 gp from a loan shark and lost it all
 You gave 40 gp to a tiny, dancing monkey in a vest and hat
@@ -7748,7 +7748,7 @@ You've been cursed; you can't use luck tokens for 2 weeks
 Awful haircut; -1 renown, lower CHA 1d4 points for 1 week
 You awake in an alley manacled to an escaped criminal
 You spent 40 gp to win a gold ring; it turned out to be fake
-The Charnel-Men thought you dead; you wake up in a coffin
+The gravediggers thought you dead; you wake up in a coffin
 The City Guard hunts for you regarding a minor crime
 You got locked in the stocks for three days; -2 renown
 Exhaustion; you have DISADV on all checks for 1d4 days
@@ -7756,7 +7756,7 @@ An irritating and tricksome ghost has begun haunting you
 You got fleas; -1 HP (min. 1) from itchy sores until treated
 A gambling disagreement turns a former ally into an enemy
 You smell strongly of pickled herring for a week; -1 renown
-You wake up locked inside a tomb in the city's graveyard
+You wake up locked inside a tomb in the local graveyard
 You let 2d6 prize mastiffs escape a kennel; find them or else
 You got an awful, hidden tattoo; -1 renown if anyone sees it
 You joined a strict cult of (d6) 1-2: evil, 3-4: nature, 5-6: purity
@@ -7774,7 +7774,7 @@ Poked in the eye; DISADV on WIS checks for 1 week
 You dropped a small item into a sewer grate; it's still there!
 You wake up holding a basket with a sleeping baby in it
 Violent food poisoning; DISADV on CON checks for 1 week
-You tipped a raft; Rowers won't transport you for 1 week
+You tipped a raft; nobody will transport you for 1 week
 You awake with a contract to buy a 1,000 gp elephant today
 Wrenched your back; DISADV on STR checks for 1 week
 A fortune teller has hexed you; you can't use luck for 1 week
@@ -7783,7 +7783,7 @@ Knife throwing accident; DISADV on DEX checks for 1 week
 You started a massive fight in a tavern and are now banned
 Your most expensive garb is completely soiled; -1 renown
 Punched in the face; DISADV on CHA checks for 1 week
-You insulted a famous tailor; you can't buy garb for 1 month
+You insulted a merchant; all purchases +20% gp for 1 month
 A press gang of 2d6 bandits tries to abduct you by night
 You slapped a street mime; children dislike you for 1 week
 An ally helps you escape arrest; now you owe them a favor
@@ -7791,11 +7791,11 @@ You stole a tavern's sign; you're in big trouble if you return
 A witch tricked you into drinking a Potion of Forgetfulness
 You wake up with a manor house deed; it might be fake
 You begin to appear on wanted posters around the city
-You find a bloody mask from The Shroud in your bag
+You find a blood-stained masquerade costume in your bag
 You learned your True Name and told it to 1d4 strangers
-You find a note in your bag: "The Onyx Eye is watching you."
+You find a note in your bag: “We're watching you closely.”
 You fell into sewage; -1 renown and check vs. rat disease
-You awake dangling by a fraying rope tied to a high bridge
+You awake dangling by a fraying rope tied to a high location
 You find a note written in blood in your bag: "I'll be back."
 Total blackout; you can't remember the last two weeks
 You dropped 30 gp into a cursed well; lose all luck tokens
