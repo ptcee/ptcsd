@@ -7583,15 +7583,17 @@ const MONSTERS = [
         else rollDaily(last.from, true);
     });
     el('hexElevation').addEventListener('change', render);
-    el('hexCopy').addEventListener('click', async () => {
-        const text = stateText();
-        if (!text) return;
-        try {
-            await navigator.clipboard.writeText(text);
-            const btn = el('hexCopy');
-            btn.textContent = 'Copied';
-            setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
-        } catch (e) { /* clipboard unavailable */ }
+    el('hexReset').addEventListener('click', () => {
+        if (!confirm('Reset the weather roller and clear its saved data?')) return;
+        base = null; boost = 0; rollText = ''; log = []; last = null;
+        el('hexSeason').value = 'mild';
+        el('hexElevation').value = '0';
+        el('hexName').textContent = 'Roll or pick a starting point';
+        el('hexStats').innerHTML = '';
+        el('hexRoll').textContent = '';
+        el('hexLog').innerHTML = '';
+        render();
+        try { localStorage.removeItem(HEX_KEY); } catch (e) { }
     });
     el('hexSeason').addEventListener('change', saveWeather);
     loadWeather();
