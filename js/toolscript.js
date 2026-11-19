@@ -7463,12 +7463,13 @@ const MONSTERS = [
     const el = id => document.getElementById(id);
     const roll2d6 = () => [1 + Math.floor(Math.random() * 6), 1 + Math.floor(Math.random() * 6)];
     const clamp = i => Math.max(0, Math.min(4, i));
-    let base = null, boost = 0, rollText = '', log = [];
+    // last = what Predict can re-roll: null, { kind: 'start' }, or { kind: 'daily', from: <ladder index before that roll> }
+    let base = null, boost = 0, rollText = '', log = [], last = null;
     const HEX_KEY = 'shadowdark-hex-weather';
     function saveWeather() {
         try {
             localStorage.setItem(HEX_KEY, JSON.stringify({
-                base, boost, rollText, log,
+                base, boost, rollText, log, last,
                 season: el('hexSeason').value,
                 elevation: el('hexElevation').value
             }));
@@ -7482,6 +7483,9 @@ const MONSTERS = [
             if (Number.isInteger(d.boost) && d.boost >= 0 && d.boost <= 4) boost = d.boost;
             if (typeof d.rollText === 'string') rollText = d.rollText;
             if (Array.isArray(d.log)) log = d.log.filter(t => typeof t === 'string').slice(0, 8);
+            if (d.last && d.last.kind === 'start') last = { kind: 'start' };
+            else if (d.last && d.last.kind === 'daily' && Number.isInteger(d.last.from) && d.last.from >= 0 && d.last.from <= 4) last = { kind: 'daily', from: d.last.from };
+            if (base === null) last = null;
             if (d.season === 'mild' || d.season === 'harsh') el('hexSeason').value = d.season;
             if (['0', '2', '5'].includes(d.elevation)) el('hexElevation').value = d.elevation;
         } catch (e) { }
@@ -7497,7 +7501,6 @@ const MONSTERS = [
     };
     function addLog(text) {
         log.unshift(text);
-        console.log(log);
         log = log.slice(0, 8);
         el('hexLog').innerHTML = '';
         log.forEach(t => { const li = document.createElement('li'); li.textContent = t; el('hexLog').appendChild(li); });
@@ -7505,6 +7508,7 @@ const MONSTERS = [
 
     function render() {
         saveWeather();
+        el('hexPredictOut').textContent = '';
         const w = current();
         const eff = base === null ? -1 : clamp(base + boost);
         el('hexLadder').querySelectorAll('button').forEach((b, i) => {
@@ -7524,33 +7528,43 @@ const MONSTERS = [
         });
         el('hexRoll').textContent = rollText;
     }
+
+    // Starting weather roll. redo = true when Predict forces a re-roll of it.
+    function rollStart(redo) {
+        const [a, b] = roll2d6(), t = a + b;
+        base = t <= 2 ? 0 : t <= 5 ? 1 : t <= 8 ? 2 : t <= 11 ? 3 : 4;
+        boost = 0;
+        last = { kind: 'start' };
+        rollText = `${redo ? 'Predict re-roll. ' : ''}Starting roll 2d6: ${a} + ${b} = ${t}`;
+        addLog(`${redo ? 'Predict re-roll' : 'Start'} (${t}): ${LADDER[base].name}`);
+        render();
+    }
+    // Daily change from ladder index `from`. redo = true when Predict forces a re-roll of the same day.
+    function rollDaily(from, redo) {
+        const [a, b] = roll2d6(), t = a + b, adj = SEASONS[season()](t);
+        base = clamp(adj.apply(from));
+        boost = 0;
+        last = { kind: 'daily', from };
+        rollText = `${redo ? 'Predict re-roll. ' : ''}${season() === 'mild' ? 'Mild' : 'Harsh'} season 2d6: ${a} + ${b} = ${t}. ${adj.label}.`;
+        addLog(`${redo ? 'Predict re-roll' : 'Roll'} (${t}): ${LADDER[from].name} to ${LADDER[base].name}`);
+        render();
+    }
+
     LADDER.forEach((w, i) => {
         const b = document.createElement('button');
         b.type = 'button';
         b.textContent = w.name;
         b.addEventListener('click', () => {
-            base = i; boost = 0; rollText = 'Set manually.';
+            base = i; boost = 0; last = null; rollText = 'Set manually.';
             addLog(`Set to ${w.name}`);
             render();
         });
         el('hexLadder').appendChild(b);
     });
-    el('hexStart').addEventListener('click', () => {
-        const [a, b] = roll2d6(), t = a + b;
-        base = t <= 2 ? 0 : t <= 5 ? 1 : t <= 8 ? 2 : t <= 11 ? 3 : 4;
-        boost = 0;
-        rollText = `Starting roll 2d6: ${a} + ${b} = ${t}`;
-        addLog(`Start (${t}): ${LADDER[base].name}`);
-        render();
-    });
+    el('hexStart').addEventListener('click', () => rollStart(false));
     el('hexDaily').addEventListener('click', () => {
-        if (base === null) { el('hexStart').click(); return; }
-        const [a, b] = roll2d6(), t = a + b, adj = SEASONS[season()](t), from = LADDER[base].name;
-        base = clamp(adj.apply(base));
-        boost = 0;
-        rollText = `${season() === 'mild' ? 'Mild' : 'Harsh'} season 2d6: ${a} + ${b} = ${t}. ${adj.label}.`;
-        addLog(`Roll: (${t}): ${from} to ${LADDER[base].name}`);
-        render();
+        if (base === null) { rollStart(false); return; }
+        rollDaily(base, false);
     });
     el('hexBoost').addEventListener('click', () => {
         if (base === null) return;
@@ -7559,16 +7573,14 @@ const MONSTERS = [
         addLog(`One step better: ${current().name}`);
         render();
     });
+    // Predict: force a re-roll of the weather that was just rolled, from the same starting point.
     el('hexPredict').addEventListener('click', () => {
-        if (base === null) { el('hexPredictOut').textContent = 'Set the current weather first.'; return; }
-        let b = base;
-        const out = [];
-        for (let d = 1; d <= 3; d++) {
-            const t = roll2d6().reduce((x, y) => x + y, 0);
-            b = clamp(SEASONS[season()](t).apply(b));
-            out.push(`Day ${d}: ${LADDER[b].name}`);
+        if (!last) {
+            el('hexPredictOut').textContent = 'Nothing to re-roll yet. Roll the starting or daily weather first.';
+            return;
         }
-        el('hexPredictOut').textContent = 'Forecast (not applied). ' + out.join(', ');
+        if (last.kind === 'start') rollStart(true);
+        else rollDaily(last.from, true);
     });
     el('hexElevation').addEventListener('change', render);
     el('hexCopy').addEventListener('click', async () => {
