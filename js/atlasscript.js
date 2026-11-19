@@ -265,7 +265,7 @@ const ADV = {
     "1405": { url: '', name: 'Emerald Wood: The Windfall Scar' },
     "1406": { url: '', name: 'Emerald Wood: The Windfall Scar' },
     "1407": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
-    "1408": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
+    "1408": { url: 'adv/1408.html', name: 'Emerald Wood: Runewillow' },
     "1409": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
     "1410": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
     "1411": { url: '', name: 'Emerald Wood: The Silverbark Stand' },
