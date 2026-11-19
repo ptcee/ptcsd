@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>House Auxor</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #7899fa;
+            --line: #4d4c4c;
+            --accent: #6ecaf5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>House Auxor</h1><span id="levelTabs" role="group"></span><input id="search" placeholder="Find a room or keyword..." ><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Unsafe. (3rds)</p>
+                    <p><strong>Light.</strong> Darkness.</p>
+                </div>
+                <div class="lvl-panel" data-panel="all">
+                    <h2>Random Encounters</h2>
+                    <table>
+                        <tr>
+                            <th>d6</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Look out! <strong>Prince Matyas</strong> breaks through the ceiling or wall, club overhead</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Heavy footsteps shake the room. <strong>Prince Matyas</strong> arrives in 2 rounds</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>1d4 <strong>panthers</strong> growl and hiss at the nearest light source, calming when dark</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>1d6+1 miniature <strong>golems</strong> bump into each other, fleeing a <strong>spider swarm</strong></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>A <strong>nebellem</strong> pleads for its life before 1d4 <strong>sahuagin</strong></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>4 <strong>sahuagin</strong> have climbed up from the Trench and soak in a barrel of saltwater. Slippery floor</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/house-auxor1.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Gilded Vestibule</button>
+                <button class="room-chip" data-room="2">Area 2: Shadowed Foyer</button>
+                <button class="room-chip" data-room="3">Area 3: Hall of Candles</button>
+                <button class="room-chip" data-room="4">Area 4: Forgotten Shrine</button>
+                <button class="room-chip" data-room="5">Area 5: Crystal Skull</button>
+                <button class="room-chip" data-room="6">Area 6: Grand Stairway</button>
+                <button class="room-chip" data-room="7">Area 7: Panther Den</button>
+                <button class="room-chip" data-room="8">Area 8: Zone of Calm</button>
+                <button class="room-chip" data-room="9">Area 9: Slimy Hall</button>
+                <button class="room-chip" data-room="10">Area 10: Kitchen</button>
+                <button class="room-chip" data-room="11">Area 11: Pantry (Secret)</button>
+                <button class="room-chip" data-room="12">Area 12: Servant's Quarters</button>
+                <button class="room-chip" data-room="13">Area 13: Treasury</button>
+                <button class="room-chip" data-room="14">Area 14: Arcanist's Lab</button>
+                <button class="room-chip" data-room="15">Area 15: Sitting Room</button>
+                <button class="room-chip" data-room="16">Area 16: Collapsed Hall</button>
+                <button class="room-chip" data-room="17">Area 17: Guest Room</button>
+                <button class="room-chip" data-room="18">Area 18: Painting Closet</button>
+                <button class="room-chip" data-room="19">Area 19: Painted Hall</button>
+                <button class="room-chip" data-room="20">Area 20: Prince Matyas' Room</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>A crumbling palace sunk beneath the whirlpool, where the last scion of a blood-cursed noble house rots among piles of treasure and faithful servants.</em></p>
+
+                        <h3>Auxor Palace.</h3>
+                        <p><strong>300 years ago...</strong> The venerable Auxor family were celebrated patrons of the arcane arts, lavishing dignitaries with magical gifts plundered from across the land.</p>
+                        <p><strong>100 years ago...</strong> Desiring items of immeasurable power, an Auxor warband raided the lair of a sorcerer: the <strong>Tidecaller</strong>, high priest-king of the sahuagin of the Trench Depths. They stole his regalia and his skull, a scrying relic that carries his spirit. His dying words enacted a curse that saw the Auxor bloodline wither nearly overnight, and called their palace down into the deep after what it stole. The cliff beneath it gave way into the lake, and the whirlpool is the wound it left. Prince Matyas, their final heir, proved resilient. Instead of death, his form warped in an achingly slow process of degradation into a lumbering troll, and what remains of his mind grows cloudier by the season.</p>
+                        <p><strong>Today...</strong> Servants (nebellem) are too loyal to flee but too wise to be near the prince. Their arcanist, Drulfor, has spent decades attempting both cure and magical placation. He and the nebellem also hold the falling water of the whirlpool back from the palace with stone-magic and control water, and he is exhausted. With the palace's gold stores exhausted by his experiments, he contracts sahuagin raiders to bleed the Brightscale Basin's lakeside settlements dry, promising them fresh meat and the north of Reedhaven Lake. With no true lord, the region grows lawless and desperate. For the brave or foolish, the palace gates stand unmanned.</p>
+                        <h3>Getting Down.</h3>
+                        <p>The central whirlpool pulls everything down its throat in 3 rounds. Each round, DC 12 STR or CON or take 1d6 damage. Holding breath follows normal drowning rules. Water breathing, control water, or a rope secured to a boat grants ADV.</p>
+                        <h3>The Great Stair.</h3>
+                        <p>Below the whirlpool, the throat opens into a vast cavern. A curtain of falling water pours down one wall, held in place by the nebellem's magic. Warm mineral runoff from the Cinder Peaks lights the water a teal glow. A giant, ancient processional stair descends along the wall to the Auxor palace far below. Areas 6 and 16 open onto the cavern.</p>
+                        <h3>The Sunken House.</h3>
+                        <p>The ice in Area 6 is curse-ice, the party frozen at the moment the house fell. The nebellem and Drulfor keep the palace dry. If Drulfor dies or the nebellem are slaughtered, the water wall begins to fail and the palace floods within 1d6 hours. The pantry hole (Area 11) is the sahuagin's way up from the Trench Depths.</p>
+                        <h3>Place of Power.</h3>
+                        <p>To the sahuagin, the Trench is the Tidecaller's kingdom, and the sunken palace is his tomb-shrine full of stolen relics. <strong>Vorka's</strong> tall orange dorsal fin marks her as a claimant to the Trench throne. She believes that waking the Tidecaller's skull (Area 5) and taking the palace will make her queen of the Trench Depths and rightful ruler of the Basin. Her price from Drulfor, the north of Reedhaven Lake, is the sovereign claim the sahuagin already want.</p>
+                        <p><strong>Vorka wins.</strong> The nebellem die, the water wall collapses, and the house floods. The palace becomes a sahuagin throne and raids on Reedhaven escalate.</p>
+                        <p><strong>Drulfor holds.</strong> The house stays dry and the status quo continues, with raids funding his experiments.</p>
+                        <p><strong>Lifting the curse.</strong> Returning the skull to the Tidecaller's resting place in the Trench ends the Auxor curse and could cure Matyas, but it empowers whoever carries the skull there.</p>
+                        <h3>Hooks.</h3>
+                        <p><strong>Reedhaven's raft-council.</strong> A cloaked lizardfolk envoy waylays the party. Sahuagin raiders have capsized rafts and burned three lakeside settlements in a month, dragging their spoils down the whirlpool. The council offers 500 gp for proof the raids will cease. The lizardfolk need allies, not rescue; they cannot contest the Trench alone.</p>
+                        <p><strong>Desperate correspondence.</strong> A letter is pinned to a Reedhaven dock board. Drulfor writes with a shaking hand for kind scholars to help him cure an affliction that has long bested him.</p>
+                        <h3>Rumors.</h3>
+                        <p>1. “Sea-raiders razed three rafts last month. All their loot went down the Drain.”</p>
+                        <p>2. “The Auxors had treasure from every corner of the world. It's still down there, they say. None brave enough to claim it.”</p>
+                        <h3>Factions.</h3>
+                        <p><strong>Nebellem.</strong> Ancestral guardian-folk of House Auxor, sworn to protect their benefactors in return for being delivered from tyranny centuries prior. They attend to Prince Matyas at any cost, clinging to the belief that a cure remains possible and that a new golden age for the family will yet come. Death at his hands is a recognised possibility, but not a sufficient deterrent. They are suspicious of intruders' intent towards the prince, but wary of conflict.</p>
+                        <p><strong>Sahuagin.</strong> A mercenary band contracted by Drulfor to raid the Basin for gold, promised fresh meat and territorial gains in return. The nebellem have failed to deliver. The sahuagin grow impatient, plotting to take the palace from its dwindling staff of retainers by force. They are led by Vorka, a conniving warlord whose bright orange dorsal fin betrays her regal blood. Typically suspicious, opportunistically hostile.</p>
+                        <p><strong>Prince Matyas Auxor.</strong> Once a handsome prince, now the sole surviving member of the Auxor family, cursed with the brutish body of a troll and a tempestuous mind. Prone to breaking through walls and ceilings in fits of rage, clobbering indiscriminately.</p>
+                        <p><strong>Drulfor.</strong> The nebellem's chief arcanist, burning through gold and sanity alike in decades of failed experiments. He teeters on losing hope, and his exhaustion makes him volatile. The overlapping magic warping the palace, the prince's pet panthers, and the golems built to placate a degrading mind are all his doing.</p>
+                        <p><strong>Lady Auxor.</strong> Prince Matyas' mother, who died decades ago from the Auxor curse. A figment of her spirit lingers in Area 6, born of her son's suffering, and intent on seeing it end.</p>
+                        <h3>Order of Battle.</h3>
+                        <p><strong>Nebellem.</strong> Will attempt to herd intruders toward exits. If combat is heard from Area 20, nebellem (other than Drulfor) move toward Matyas' location to shield him, converging in 1d4 rounds.</p>
+                        <p><strong>Sahuagin.</strong> Aggressive, but only when tactically sound (e.g. numbers, reward). If Vorka decides to seize the palace, she will rally stragglers into a horde in 1d6 rounds.</p>
+                        <p><strong>Prince Matyas.</strong> When encountered outside Area 20, spends 2 rounds superficially searching his origin and an adjacent room for intruders before returning to his room.</p>
+                        <h3>Followups.</h3>
+                        <p><strong>Matyas dies.</strong> Drulfor is relieved, setting out to find his own path and giving the party his decades of research (providing a hook opportunity). Word reaches Vorka fast. In 1d4 hours, she rallies an extra 2d6 sahuagin from Area 11 and moves to eliminate remaining inhabitants. Do the PCs defend the palace?</p>
+                        <p><strong>Matyas lives, unfettered.</strong> He grows stronger and more berserk with time. In 3 years, his brutality makes him the last living inhabitant.</p>
+                        <p><strong>Matyas is cured.</strong> This requires exceptional tools that LV 2 PCs likely wouldn't have access to, such as wish, or returning the Tidecaller's skull to the Trench. Matyas will be introspective after a century of half-consciousness, imploring the party to take the palace and offering himself as retainer (LV 6 Fighter). This would create an opportunity for domain play. Will the nebellem serve new lords, or only ever serve Auxors?</p>
+                        <h3>When Searching, You Find...</h3>
+                        <p>d8 Loot</p>
+                        <p>1. A glass jar of green slime (1 gp)</p>
+                        <p>2. A burlap pouch of dried truffle slivers (1 ration) (10 gp)</p>
+                        <p>3. A crude, blackened steel trident (spear) (15 gp)</p>
+                        <p>4. A small chunk of gnawed gold (35 gp)</p>
+                        <p>5. A skull fragment etched with directions to an abandoned mine.</p>
+                        <p>6. A wand of alarm, fashioned from a dried strangler claw (80 gp)</p>
+                        <p>7. A chunk of golden, resinous rock sugar (90 gp). Eating grants luck token.</p>
+                        <p>8. A lock of flaxen hair. Dissolves into skin when touched, glowing. The next creature touched falls victim to detect thoughts (automatic success).</p>
+                        <h3>Common Creatures.</h3>
+                        <h4>Miniature Dirt Golem (New!)</h4>
+                        <div class="stats">AC 14, HP 4, ATK 1 fist +1 (1d4), MV near, S 1, D 0, C 1, I -4, W -3, Ch -4, AL N, LV 1.
+Impervious. Immune to damage from fire, acid, or cold.
+Animate. Attempts reviving itself 12 hours after death. Killed permanently when mixed with water.
+2' tall golem of dust and dirt from the floor. Can reshape itself to anything it has seen. Designed by Drulfor to entertain Prince Matyas.</div>
+                        <h4>Nebellem (New!)</h4>
+                        <div class="stats">AC 12, HP 8, ATK 1 verdant blast (near) +2 (1d6) or stone form, MV near, S 0, D -1, C 1, I -1, W 3, Ch -1, AL N, LV 2.
+Stone Form. 1/day, AC 15, MV close (3 rounds).
+3' tall humanoids of rocky, barnacled flesh, covered in white body hair. Insular but caring and wise. In tune with the natural world, from which they draw basic magic.</div>
+                        <h4>Panther (SD Pg. 242)</h4>
+                        <div class="stats">AC 14, HP 14, ATK 2 rend +3 (1d6), MV near (climb), S 3, D 4, C 1, I -2, W 1, Ch -3, AL N, LV 3.
+Supple large cats with blue-black fur. Stealthy hunters.</div>
+                        <h4>Sahuagin (SD Pg. 249)</h4>
+                        <div class="stats">AC 14 (leather + shield), HP 9, ATK 2 trident (near) +1 (1d6), MV near (swim), S 1, D 1, C 0, I -1, W 0, Ch -1, AL C, LV 2.
+Half-Amphibious. Must be submerged in water every 4 hours or suffocates.
+Humanoids with sea-green skin, webbed limbs, and shark teeth. Vicious hunters.</div>
+                        <h4>Spider, Swarm (SD Pg. 254)</h4>
+                        <div class="stats">AC 13, HP 9, ATK 1 bite +3 (1d4 + poison), MV near (climb), S -1, D 3, C 0, I -3, W 1, Ch -3, AL N, LV 2.
+Poison. DC 12 CON or paralyzed 1d4 rounds.
+A scurrying carpet of spiders.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "1f",
+                "label": "Level 1",
+                "img": "adv-maps/houseauxor.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "1f",
+                "name": "Gilded Vestibule",
+                "description": "Ornate chamber with marble tiles and crystal chandeliers. The room is in disrepair; scattered vellum and upturned furniture form a field of **debris**. Vaulted plaster ceilings bear faded **paintings**. Smoking candles line the floor, just catching the **gold** at the edges of the **western wall**.",
+                "bullets": [
+                    "**Debris.** Searching the ground yields 1d20 gp and a scroll of sleep. The text on the papers is mostly illegible, both from age and the elemental scribblings of the nebellem language.",
+                    "**Paintings.** Depict a jubilant and large family of humans in clouds with seraphim, all linking hands. Several faces are unidentifiable due to missing chunks.",
+                    "**Gold.** Several panels have been prised away messily, leaving only a few bent and chipped sections.",
+                    "**Western wall.** A wall panel bordered with gold marks a one-way secret door. No amount of pushing, pulling, or searching reveals a mechanism. The mechanism is on the other side (Area 13) only."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "1f",
+                "name": "Shadowed Foyer",
+                "description": "Messy, smelly, dusty. Refuse has been dumped haphazardly in each corner of the room. Small **distortions of shadow** appear at the edge of torchlight. The **southeastern pile** glistens near light.",
+                "bullets": [
+                    "**Distortions of shadow.** From **miniature dirt golems** that escaped from Area 14. Their limbs extend and cast shapes against the walls, starting simple and escalating to grotesque (spiders, sahuagin, finally giant trolls with raised clubs). Intentionally avoid PC vision.",
+                    "▶ **Investigation.** Golems fearfully flee to Area 3. They make high pitched, frantic whirring sounds as they run.",
+                    "**Southeastern pile.** Searching yields a golden horse statuette (100 gp) and finds a humanoid arm sticking out from the pile.",
+                    "▶ **Humanoid arm.** Attached to a deceased nebellem with a crushed head, wearing a weighty gold shield crest necklace engraved with the words “AUXOR ETERNAL” (100 gp)."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "1f",
+                "name": "Hall of Candles",
+                "description": "A long, cramped passage with walls crowded with alternating tiny mirrors and unlit **candles**.",
+                "bullets": [
+                    "**Patrol.** 1:2 on entry that a nebellem will be wandering, carrying a lantern. Will ask sternly for a formal statement of intent. At the first whiff of a threat, will bolt to alert Matyas (next random encounter check will be guaranteed, -3 to roll). If amicable, he will warn the party not to light the candles and go on his way.",
+                    "**Unlit candles.** If any candle is lit, all candles ignite simultaneously, starting dim and culminating in a blinding flash.",
+                    "▶ **Flash.** If eyes are uncovered, DC 12 CON or blinded for 1d6 rounds. All light extinguished."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "1f",
+                "name": "Forgotten Shrine",
+                "description": "A small alcove holds an **altar** with a joyous human woman, mounded with mouldy offerings: bread, a broken clay cup, and 10 gold coins, blemished with age.",
+                "bullets": [
+                    "**Altar.** If cleaned or shown genuine respect, the shrine refreshes in a glow of warm light, and provisions appear.",
+                    "▶ **Provisions.** A fresh loaf of buckwheat bread (3 rations), and a clay cup with powdered beakmoss (3 uses).",
+                    "**Human woman.** Lady Auxor (Area 6). Resembles a face from the ceiling of Area 1.",
+                    "**Gold coins.** If taken before the altar is refreshed, the relief of Lady Auxor cracks loudly down the middle. Her initial reaction in Area 6 will be suspicious (though she won't know why)."
+                ],
+                "stats": "Beakmoss (100 gp) (3 uses). Grown on a chuul's beak, crushed into a fine green powder. When released, assumes the flavour of what the user was thinking about. Potent enough to flavour 50 L of liquid."
+            },
+            "5": {
+                "level": "1f",
+                "name": "Crystal Skull",
+                "description": "2 **sahuagin** curiously fiddle with an inverted **crystal skull** stuck fast to a plinth, its gemstone eyeballs glinting even in darkness.",
+                "bullets": [
+                    "**Sahuagin.** Distracted. Upon noticing the party, they demand to be shown how to work the crystal skull contraption (basic speech, hissing, gestures).",
+                    "**The Tidecaller's Skull.** The skull is the scrying relic of the Tidecaller, the sahuagin high priest-king the Auxors robbed a century ago. Vorka believes waking it will make her queen of the Trench Depths. Returning it to his resting place in the Trench would end the Auxor curse.",
+                    "**Crystal skull.** Sticking one's face into the hollow reveals a silvery mist, clearing into a foggy vision of Prince Matyas' room (Area 20), seen through the eyes of the skull. An orb simultaneously manifests in Matyas' room, betraying the observer's presence.",
+                    "▶ **Matyas' reaction.** He notices the orb and stares back, unsettled and nervous. If observed for 2 player turns, his temperament curdles to disgruntlement. A 3rd turn, and he becomes irate. Matyas storms through the palace, arriving at this location in 2 rounds."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "1f",
+                "name": "Grand Stairway",
+                "description": "Frozen solid and blue but decorated for a lavish party. A figure in a ball gown (the ghost of **Lady Auxor**) lies strewn across the stairway at the southern wall. Plush velvet couches line a silk rug just smaller than the room. Atop, 20 spectral **dancers** waltz. Sections of the 10' high ceiling have collapsed, granting vision of Area 16 and the cavern.",
+                "bullets": [
+                    "**Curse-ice.** The ice is a remnant of the Tidecaller's curse: the party frozen at the moment the house fell.",
+                    "▶ **Listening.** Wind plays across hanging icicles like an out-of-tune harp. Lady Auxor can be heard sobbing intermittently.",
+                    "▶ **Loud noise.** 1:3 chance icicles resonate and collapse. Impact extinguishes light sources. DC 12 DEX or 1d6 damage to all in the room.",
+                    "**Lady Auxor.** Lamenting the fate of her son, Prince Matyas.",
+                    "▶ **If approached.** Raises her head and pleads for Prince Matyas to be put to rest before his further degradation.",
+                    "▶ **Ascending without agreeing.** Eyes turn black, spectral daggers manifest, she turns hostile.",
+                    "**Spectral dancers.** Incorporeal. Cannot perceive PCs.",
+                    "▶ **Resolution.** Defeating Matyas or Lady Auxor causes her to vanish. The ice melts, filling the room with 3' of water. The Ring of Great Esteem sits at the bottom of the staircase shooting a beam of light upwards."
+                ],
+                "stats": "Lady Auxor (New!). AC 13, HP 16, ATK 2 spectral dagger +3 (1d4 + life sap), MV near (fly), S 1, D 1, C 0, I 3, W 2, Ch 4, AL C, LV 5.\nUndead. Immune to morale checks.\nLife sap. 1 CON damage, lasting until caster is defeated. Target dies if reduced to 0 CON.\nThe crestfallen spirit of Prince Matyas' mother, bound to the room in which she died. Obsessed with keeping up appearances. Speaks in received pronunciation and expects deference.\nKnows there is no earthly cure to Matyas' condition; treasury location (Area 13); Auxor Longsword's ability to be pulled to one's hand.\nWants to end Matyas' suffering; preserve what's left of their legacy.\n\nRing of Great Esteem (200 gp). Bears a gold shield crest. +1 CHA. Advantage on rolls involving disguises. If the wearer makes a social faux pas, the ring tightens. 2nd tightening: too tight to be removed normally. 3rd tightening: the wearer's finger pops off."
+            },
+            "7": {
+                "level": "1f",
+                "name": "Panther Den",
+                "description": "Rocky floors coated in dirt, moss, and **tall grass**. Smells like a farm. A large, **white panther** lounges atop a piece of collapsed wall. A **golden blade** is propped up against it.",
+                "bullets": [
+                    "**Tall grass.** 2 panthers hide inside, non-hostile, growling at PCs that get too close; will assist the white panther if she is attacked. Searching yields a gnawed gold chain (25 gp) and scraps of noble regalia.",
+                    "**White panther.** Uninterested in the party, but will become hostile if the golden blade is disturbed.",
+                    "**Golden Blade.** The legendary Auxor Longsword. Quickly jolts to the hand of anybody reaching out to grab it, near range."
+                ],
+                "stats": "Auxor Longsword (450 gp). +1 longsword. Pure gold, hardened with arcane magic. As an action, extend blade to pulse a cone of psionic force (DC 9 DEX or pushed to a wall within near, 1d6 damage)."
+            },
+            "8": {
+                "level": "1f",
+                "name": "Zone of Calm",
+                "description": "Every surface is sheeted in dull **gold**, applied with obsessive evenness. 2 **nebellem** sit cross legged, mouth agape, non-responsive. A perfectly round golden **sphere** rotates mid-air.",
+                "bullets": [
+                    "▶ **Stupefaction.** Refer to the calming apparatus stat block. Breaks immediately upon leaving the room or defeating apparatus.",
+                    "**Gold.** Fool's gold (10 sp per panel). Feels lighter than actual gold. 1:3 chance to crumble when removed from wall.",
+                    "**Nebellem.** Totally stupefied. If awoken, will graciously thank PCs and inform Drulfor in Area 14.",
+                    "**Sphere.** Calming apparatus that developed a desire to placate all creatures. Becomes hostile if PCs attempt to wake a creature from placidity. Missed beam attacks ricochet from panels; all creatures DC 9 DEX or hit."
+                ],
+                "stats": "Calming Apparatus (New!). AC 16, HP 5, ATK 1 beam +2 (1d6) (near), MV near (fly), S 1, D 3, C -2, I 3, W 0, Ch -2, AL N, LV 3.\nImpervious. Immune to damage from fire, acid, or cold.\nStupefaction. From round 3 of creatures being near or closer, DC 12 CON each turn or lose action from placidity.\nA rogue golden orb the size of a grapefruit, designed to calm the maddened Prince Matyas.\nTreasure. Salvaged body (90 gp)."
+            },
+            "9": {
+                "level": "1f",
+                "name": "Slimy Hall",
+                "description": "2' of pulsing green **slime** coats the floor. The craggy walls are riddled with scratch marks and embedded fingernails.",
+                "bullets": [
+                    "▶ **Listening.** Periodical, ambidirectional tentacle suction sounds from the strangler above. Only perceptible when the room is quiet.",
+                    "▶ **Strangler.** Clings to the ceiling, waiting for prey to fall into a pit trap so it can drop and feast on a fragmented group. Otherwise, tries to stay still and inconspicuous.",
+                    "▶ **Pit trap.** Tile shifts and clicks out of place when first walked over. On subsequent contact, DC 15 DEX or fall 10' (1d6 damage). Slime begins rushing down. Climb up in 5 minutes or drown.",
+                    "**Slime.** Traversing through halves movement. The slime moves very slowly. Careful observation reveals it is moving in two directions: it is slowly draining into the crack of two concealed pit traps. The slime will not spill out of the room."
+                ],
+                "stats": "Strangler (SD Pg. 254). AC 12, HP 14, ATK 2 claws +2 (1d6) (near), MV near (climb), S -2, D 2, C 0, I -2, W 0, Ch -2, AL C, LV 3.\nStealthy. ADV on checks to hide/sneak.\nStrangle. Deals x2 damage against surprised creatures.\nA gray-skinned, gaunt creature with four ropy limbs tipped in sucker-lined claws."
+            },
+            "10": {
+                "level": "1f",
+                "name": "Kitchen",
+                "description": "3 **nebellem** are here; 2 waddle to and fro just beyond the southern door, checking under tables. The other is red with blood, hacking away at a meat haunch at the northern wall. A pot of **black goop** bubbles on the stove. The floor is wet near the **western wall**.",
+                "bullets": [
+                    "**Nebellem.** Desperately searching for a missing plate of offal intended for the insatiable Prince Matyas. The chef hastily cooks more.",
+                    "**Black goop.** Tastes metallic. 2 opalescent bottles of exotic spices sit near the stove (25 gp each).",
+                    "**Western wall.** Sporadic puddles trail from the chef to a false bookshelf secret door to Area 11. Spins on central axis when pushed."
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "1f",
+                "name": "Pantry (Secret)",
+                "description": "Damp, steamy. 4 **sahuagin** lick their blackened chops, gathering around a 5' **hole** in the floor filled with sea water. Amber bottles line shelves.",
+                "bullets": [
+                    "**Sahuagin.** Just ate a plate of offal from Area 10. Their leader (denoted by her tall, orange dorsal fin), Vorka, is highly impatient. Her warriors were promised ample meat and some territorial rights (the north of Reedhaven Lake) weeks ago by Drulfor (Area 14) as reward for raiding the lakeside settlements for gold, but have received none yet. They are increasingly irrational and are considering taking their pay (or even control of the palace) by force.",
+                    "**Vorka.** Conniving warlord of regal blood. She believes the Tidecaller's skull (Area 5) will crown her queen of the Trench Depths.",
+                    "**Hole.** Unascertainably deep, leading down into the Trench Depths. The sahuagin come and go through it.",
+                    "**Amber bottles.** Lamp oil, vinegar, and dried legumes (2 rations)."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "1f",
+                "name": "Servant's Quarters",
+                "description": "Messy, cramped. There is little room to walk; the floor is covered in burlap **bed tarps**. Most are dusty.",
+                "bullets": [
+                    "**Bed tarps.** Searching for 5 minutes: 20 sp and a dagger (1 gp). Searching for 10 minutes: small pile of pearls (80 gp)."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "1f",
+                "name": "Treasury",
+                "description": "3 sturdy **chests** sit atop a scattered pile of gold coins (268 gp).",
+                "bullets": [
+                    "**Chests.** All unlocked. 1. A mound of cracked, tiny emeralds, enough for one pouch (100 gp). 2. Staff of the Beginning. 3. A solid gold statuette of a roc (300 gp), wrapped in Dragonfly Gambeson.",
+                    "**Western wall.** Secret door to Area 1. Seamless. Spins on central axis when pushed."
+                ],
+                "stats": "Staff of the Beginning (300 gp). +1 staff. Sturdy, gnarled oak branch crowned with a chunk of amber. 1/day, spin staff overhead; all near creatures DC 12 WIS or completely forget the last 30 minutes.\n\nDragonfly Gambeson (250 gp). Leather armour. +1 DEX. Iridescent (disadvantage on stealth checks with a near light source). Can sprout insectoid wings, capable of hovering in place for 2 rounds."
+            },
+            "14": {
+                "level": "2f",
+                "name": "Arcanist's Lab",
+                "description": "A particularly short nebellem (**Drulfor**) grumbles hoarsely, pawing at several arcane **workbenches** filled with aged tomes and glass baubles. A red-grey sulphurous smoke spills from an iron **cauldron**. The northern wall is transparent, displaying the contents of Area 20 (Prince Matyas' room).",
+                "bullets": [
+                    "**Drulfor.** Brewing attempt #322 at a draught to cure the prince. His eyelids droop to his cheeks. Increasingly forgetful, in need of sleep.",
+                    "**The Water Wall.** Drulfor's control water, with the nebellem's stone-magic, holds the falling water of the whirlpool back from the palace. If he dies, the wall begins to fail and the palace floods within 1d6 hours.",
+                    "**Workbenches.** 3 inert miniature dirt golems sit lifeless next to piles of salt and various powders.",
+                    "**Iron cauldron.** Miscellaneous grassy herbs and oily tinctures sit nearby. 3 potions of healing. A vial of nightbloom is marked with a skull (2d6 damage when consumed).",
+                    "**Northern wall.** A one-way mirror. Allows Drulfor to safely spectate Matyas and the effects of treatment attempts."
+                ],
+                "stats": "Drulfor (New!). AC 12, HP 14, ATK 1 verdant blast (near) +2 (1d6) or spell +3, MV near, S 0, D -1, C 1, I 3, W 3, Ch -1, AL N, LV 4.\nMirror Image (INT spell). DC 12. Creates 2 illusory duplicates. Attacks cause a duplicate to evaporate.\nControl water (INT spell). DC 13. Freely alter up to 100 ft width and depth of water.\nThe longstanding palace arcanist and de facto leader of the nebellem. Ingenious, but exhausted and losing hope.\nKnows the magical properties of rooms in the palace.\nWants to restore House Auxor; to cure Prince Matyas; (subconsciously) to accept defeat and rest."
+            },
+            "15": {
+                "level": "2f",
+                "name": "Sitting Room",
+                "description": "A grey-brown set of velvet **couches** and armchairs flank a pine table with worn playing cards.",
+                "bullets": [
+                    "**Couches.** Musty. Large claw marks. Sitting on one releases a plume of dust and reveals they were once purple."
+                ],
+                "stats": ""
+            },
+            "16": {
+                "level": "2f",
+                "name": "Collapsed Hall",
+                "description": "A 15' long section of the floor is missing, creating an opening to Area 6, 10' below. Very small, imperfect **ledges** remain.",
+                "bullets": [
+                    "**Ledges.** DC 18 DEX to cross, DC 12 DEX if very slow (hugging the wall, etc.). Falling causes 1d6 damage.",
+                    "**Cavern.** The hall is open to the great cavern and lit by its teal glow."
+                ],
+                "stats": ""
+            },
+            "17": {
+                "level": "2f",
+                "name": "Guest Room",
+                "description": "Beneath a **glass dome**, a violet **semisphere** ripples in the center of the room, cutting into the floor. In the middle of the forcefield is a **helmet**, glowing green. Littered chunks of furniture are cut clean open with a perfectly round curve.",
+                "bullets": [
+                    "**Glass dome.** 0.5' thick. The words “DO NOT TOUCH. EVER.” are scratched into the southern side.",
+                    "**Semisphere.** An anti-physical disintegration zone. Only magical entities can safely enter the zone. Segments of normal items and creatures that touch the zone are evaporated instantly.",
+                    "**Helmet.** Galea of the Pure. Its magic prevents its disintegration, creating a green forcefield."
+                ],
+                "stats": "Galea of the Pure (300 gp). Gold helm with a fan of white feathers as a crown. 1/day, can cast the priest spell shield of faith using STR as the spellcasting modifier (DC 11, self, +2 AC, 5 rounds)."
+            },
+            "18": {
+                "level": "2f",
+                "name": "Painting Closet",
+                "description": "Stacks of dusty **canvases** lean against the wall.",
+                "bullets": [
+                    "**Canvases.** Mostly too faded to parse. The painting at the bottom of the stack is clearly more recent, showing a handsome man. Nebellem inhabitants would recognise the figure as Prince Matyas."
+                ],
+                "stats": ""
+            },
+            "19": {
+                "level": "2f",
+                "name": "Painted Hall",
+                "description": "A long white **spiral** spanning the corridor's length is painted on obsidian-black stone walls and floors.",
+                "bullets": [
+                    "**Listening.** Increasingly loud stomping and guttural vocalisations can be heard if Prince Matyas is in Area 20.",
+                    "**Spiral.** Walking carelessly: DC 9 INT or bump into a wall, dealing 1d4-1 damage."
+                ],
+                "stats": ""
+            },
+            "20": {
+                "level": "2f",
+                "name": "Prince Matyas' Room",
+                "description": "Dilapidated. Piles of gnawed **gold** lie scattered: rods, sheets, and flakes. **Prince Matyas** walks like a gorilla in circles, dragging his oversized club behind him. The windows are boarded shut. Threadbare rugs and tapestries litter the floor, sagging into a depression in the northwest corner.",
+                "bullets": [
+                    "**Gnawed gold.** Enough for 3 pouches, each worth 100 gp to someone willing to melt them down.",
+                    "**Prince Matyas.** Under the effects of an experimental draught (see Area 14) administered a few days ago. Increasingly volatile.",
+                    "**Northwest corner.** Rug sagging into floor conceals stairs to Area 13."
+                ],
+                "stats": "Prince Matyas (New!). AC 12, HP 26, ATK 2 club +3 (1d6) and 1 bite +4 (1d10), MV near, S 3, D 2, C 2, I -1, W 0, Ch -1, AL C, LV 6.\nRegenerate. Regains 2d6 HP on its turn unless its wounds are cauterized with fire or acid.\nThe sole surviving Auxor, warped beyond recognition by a curse. Ripped princely attire partially covers green, warty skin. Angular and lanky. Extremely territorial. Can understand very basic common, but can't vocalise beyond grunts.\nWants more food and gold to chew on; to smash things.\nTreasure. Wearing a gold Auxor medallion (100 gp)."
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'house-auxor-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
