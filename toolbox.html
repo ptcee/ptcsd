@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
-    <script src="js/toolscript.js" defer></script>
+    <script src="../js/toolscript.js" defer></script>
     <title>Shadowdark Toolbox</title>
     <style>
         :root {
@@ -1061,7 +1061,7 @@
                 <button id="hexStart">Roll Starting Weather</button>
                 <button id="hexDaily">Roll Daily Change</button>
                 <button id="hexBoost">One Step Better</button>
-                <button id="hexPredict">Predict 3 Days</button>
+                <button id="hexPredict">Predict Re-roll</button>
                 <button id="hexCopy">Copy</button>
             </div>
             <div class="hex-ladder" id="hexLadder"></div>
@@ -1187,13 +1187,14 @@
                     <p>Each PC can do one task while camping and still get a full rest. PCs can do the same task. Default DC 12.</p>
                     <ul>
                         <li><b>Batten Down.</b> INT or CON. Treat the weather as one step better until the end of the rest. Limit 1/day.</li>
-                        <li><b>Cook.</b> INT or WIS. Each PC that consumes a ration wakes up with +2 temporary HP (maximum 6).</li>
-                        <li><b>Craft.</b> DEX. Create 2d4 pieces of mundane weapon ammunition.</li>
-                        <li><b>Entertain.</b> CHA. Grant 1 luck token.</li>
-                        <li><b>Firewood.</b> STR or CON. Make one free campfire this rest.</li>
-                        <li><b>Hunt.</b> STR or DEX. The group gains the benefit of consuming rations without expending any.</li>
-                        <li><b>Keep Watch.</b> WIS. Reduce the danger level of all hexes by one step this rest (minimum unsafe).</li>
-                        <li><b>Predict.</b> INT or WIS. Learn the weather for the next 3 days.</li>
+                        <li><b>Bed Down.*</b> WIS or CON. You do not need to make checks to benefit from rest if your sleep is interrupted during this rest..</li>
+                        <li><b>Cook.*</b> INT or WIS. Each PC who consumes a ration gains +2 temporary HP that lasts 1 day.</li>
+                        <li><b>Craft.*</b> DEX. Create 2d4 pieces of mundane weapon ammunition or one torch. Alternatively, repair a broken piece of mundane gear.</li>
+                        <li><b>Entertain.*</b> CHA. Grant 1 luck token to another PC.</li>
+                        <li><b>Firewood.</b> STR or CON. Make one free campfire this rest without expending torches.</li>
+                        <li><b>Hunt.</b> STR or DEX. Find 1d4 rations. You cannot hunt if you pushed during today's travel.</li>
+                        <li><b>Keep Watch.*</b> WIS. You cannot be surprised during one half of the rest (you choose which).</li>
+                        <li><b>Predict.</b> INT or WIS. You may force a re-roll of tomorrow's weather after learning the result.</li>
                     </ul>
                     <p><b>Procedure.</b> 1. The PCs make task checks in any order. 2. The GM checks for two random encounters. 3. If an encounter occurs, PCs who chose Keep Watch may make DC 12 WIS checks to not be surprised.</p>
                 </details>
@@ -1358,6 +1359,75 @@
                 <details>
                     <summary>Food and Water</summary>
                     <p>PCs and mounts can go three days without consuming a ration. They take 1 CON damage each day after that (death at 0). Mounts find their rations during a rest unless in a barren location.</p>
+                </details>
+            </div>
+        </div>
+
+        <div id="renown" class="panel" style="margin-top:18px">
+            <h2>Renown</h2>
+            <p>A character's renown can grow over time and increase their fame (or infamy). Having a high renown confers benefits. A PC's renown starts out equal to their CHA modifier (it can be negative).</p>
+
+            <h3>Renown Levels</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Renown</th>
+                            <th>Bonus</th>
+                            <th>Standing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3 or less</td>
+                            <td>None</td>
+                            <td>You're mostly invisible, even to regular folks. You're not welcome in upscale places.</td>
+                        </tr>
+                        <tr>
+                            <td>4-7</td>
+                            <td>+1</td>
+                            <td>Regular folk view you favorably. People of high status ignore you, especially in upscale places.</td>
+                        </tr>
+                        <tr>
+                            <td>8-11</td>
+                            <td>+2</td>
+                            <td>You're a known name. High-status people treat you as a peer.</td>
+                        </tr>
+                        <tr>
+                            <td>12+</td>
+                            <td>+3</td>
+                            <td>You're a celebrity, welcome in the most luxurious of places. People of high status defer to you.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The renown bonus applies to carousing event rolls.</p>
+
+            <div class="adventure-tables">
+                <details>
+                    <summary>Gaining Renown</summary>
+                    <p>PCs gain a point of renown each time the following occurs:</p>
+                    <ul>
+                        <li>Gaining a level</li>
+                        <li>Being honored publicly</li>
+                        <li>Extravagant public spending</li>
+                        <li>A major triumph or success</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>Losing Renown</summary>
+                    <p>PCs lose a point of renown each time the following occurs:</p>
+                    <ul>
+                        <li>Public humiliation</li>
+                        <li>A negative run-in with the law</li>
+                        <li>Committing a fashion mistake</li>
+                        <li>Making a cultural faux pas</li>
+                        <li>Offending a person of higher renown or social status</li>
+                    </ul>
+                </details>
+                <details>
+                    <summary>Reactions</summary>
+                    <p>PCs may add their renown bonus to their reaction rolls when they are in a location where they are likely to be recognized. Double 1s always result in a hostile reaction.</p>
                 </details>
             </div>
         </div>
