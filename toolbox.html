@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
-    <script src="js/toolscript.js" defer></script>
+    <script src="../js/toolscript.js" defer></script>
     <title>Shadowdark Toolbox</title>
     <style>
         :root {
@@ -77,6 +77,7 @@
             padding: 9px 13px;
             border-radius: 4px;
             cursor: pointer;
+            text-overflow: ellipsis;
         }
 
         button.primary {
@@ -102,6 +103,11 @@
             margin: 0 0 12px;
             border-bottom: 1px solid var(--line);
             padding-bottom: 8px;
+        }
+
+        .twoby {
+            display: flex;
+            gap: 18px;
         }
 
         .seed {
@@ -302,7 +308,7 @@
         .generator-controls,
         .treasure-controls {
             display: flex;
-            gap: .65rem;
+            gap: .55rem;
             flex-wrap: wrap;
             margin: 1rem 0;
         }
@@ -316,6 +322,11 @@
             padding: .40rem .8rem;
             border-radius: 4px;
             font: inherit;
+        }
+
+        .treasure-controls button {
+            width: 56px;
+            text-align: center;
         }
 
         .generator-controls button:hover,
@@ -920,6 +931,9 @@
             #torch-time {
                 font-size: 1.65rem;
             }
+            .twoby {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
@@ -1003,41 +1017,6 @@
 
         </div>
 
-        <div id="treasure-generator" class="panel treasure-generator">
-            <h2>Treasure & Item Generator</h2>
-            <p class="muted">Generate treasure for the selected level, a mundane item, a boon, or a fully generated magic item.</p>
-
-            <div class="treasure-controls">
-                <label>
-                    Level
-                    <select id="treasureLevel">
-                        <option value="0-3">0-3</option>
-                        <option value="4-6">4-6</option>
-                        <option value="7-9">7-9</option>
-                        <option value="10+">10+</option>
-                    </select>
-                </label>
-
-                <label>
-                    Generator
-                    <select id="treasureMode">
-                        <option value="treasure">Treasure</option>
-                        <option value="mundane">Mundane Item</option>
-                        <option value="boon">Boon</option>
-                    </select>
-                </label>
-
-                <button id="generateTreasure">Get!</button>
-                <button id="copyTreasure">Copy</button>
-            </div>
-
-            <article class="treasure-result-card">
-                <div class="treasure-result-label">Result</div>
-                <div id="treasureResult" class="treasure-result"></div>
-                <div id="treasureRoll" class="treasure-roll"></div>
-            </article>
-        </div>
-
         <div id="hex-crawl" class="panel" style="margin-top:18px">
             <h2>Hex Crawling</h2>
 
@@ -1062,7 +1041,7 @@
                 <button id="hexDaily">Roll Daily Change</button>
                 <button id="hexBoost">One Step Better</button>
                 <button id="hexPredict">Predict Re-roll</button>
-                <button id="hexCopy">Copy</button>
+                <button id="hexReset">Reset</button>
             </div>
             <div class="hex-ladder" id="hexLadder"></div>
             <article class="result-card">
@@ -1074,8 +1053,10 @@
             <ol class="hex-log" id="hexLog" reversed></ol>
 
             <h3>Quick Reference</h3>
-            <p class="muted">Hexes are 6 miles across. PCs and mounts can travel up to 8 hours a day. One clear terrain hex takes 2 hours to cross.</p>
-            <p class="muted">Roll encounters .</p>
+            <p class="muted">Hexes are 6-miles across. The PCs can enter a number of hexes per day based on travel method.</p>
+            <h4>Movement</h4>
+            <p class="muted">PCs move from hex to hex as a group while traveling overland. Shift into combat or crawling rounds if an encounter occurs.</p>
+            <p class="muted">Check for a random encounter twice a day and twice overnight with a 1:6 chance each time. Roll a d12 to determine what time of day the encounters happen.</p>
             <div class="hex-ref">
                 <div class="table-wrap">
                     <table>
@@ -1088,11 +1069,11 @@
                         <tbody>
                             <tr>
                                 <td>Walking</td>
-                                <td>4 (2 hours per)</td>
+                                <td>4</td>
                             </tr>
                             <tr>
                                 <td>Mounted</td>
-                                <td>6 (1hr20m per)</td>
+                                <td>6</td>
                             </tr>
                             <tr>
                                 <td>Sailing</td>
@@ -1106,21 +1087,17 @@
                         <thead>
                             <tr>
                                 <th>Terrain</th>
-                                <th>Cost to Enter</th>
+                                <th>Hex Cost to Enter</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Clear</td>
-                                <td>1 hex (2 hours)</td>
+                                <td>Normal</td>
+                                <td>1 hex</td>
                             </tr>
                             <tr>
                                 <td>Difficult</td>
-                                <td>2 hexes (4 hours)</td>
-                            </tr>
-                            <tr>
-                                <td>Perilous</td>
-                                <td>8 hexes (16 hours)</td>
+                                <td>2 hexes</td>
                             </tr>
                             <tr>
                                 <td>Impassable</td>
@@ -1159,18 +1136,17 @@
                 <details>
                     <summary>Travel Procedure</summary>
                     <ol>
-                        <li>The GM determines and shares the weather.</li>
-                        <li>The GM determines and shares visible hexes and their danger levels.</li>
-                        <li>The GM rolls a d6 for each newly visible hex. On a 1, it has a point of interest (pg. 25). If it is visible, the GM shares this information.</li>
-                        <li>The PCs make task checks in any order they choose.</li>
-                        <li>The PCs choose a direction and a number of hexes to move, and move accordingly.</li>
-                        <li>The GM checks for a random encounter in every other hex using the hex's danger level.</li>
-                        <li>Each time the PCs enter a hex, the GM repeats steps 2-3.</li>
-                        <li>Repeat steps 4-8 until all hex travel is completed.</li>
-                        <li>When all hex travel is completed, go to Camping on pg. 25.</li>
+                        <li>Determine the weather.</li>
+                        <li>Visible Hexes. Determine which hexes the PCs can see.</li>
+                        <li>Travel Method. The PCs decide their mode of travel.</li>
+                        <li>Travel Speed. The PCs decide whether to move at normal speed or push.</li>
+                        <li>Traveling. The PCs move, expending as much available movement as they want. Update the visible hexes as they travel.</li>
+                        <li>Traveling Encounters. Check for and trigger random encounters while the PCs travel.</li>
+                        <li>Resting. Optionally, the PCs may camp. They can forage for rations if they didn't push. Consume rations (x2 if in a harsh climate) and rest.</li>
+                        <li>Resting Encounters. Check for and trigger random encounters while the PCs rest.</li>
                     </ol>
                 </details>
-                <details>
+                <!-- <details>
                     <summary>Travel Tasks</summary>
                     <p>Each PC can attempt one task per day. PCs can do the same task. Each task effect is limited to once per day. The GM sets the DC based on the situation (default DC 12).</p>
                     <ul>
@@ -1180,7 +1156,7 @@
                         <li><b>Scout.</b> DEX or WIS. Reduce the danger level of all hexes by one step until the next rest (minimum unsafe).</li>
                         <li><b>Trailblaze.</b> STR or INT. For each PC who succeeds, reduce the terrain type of 1d4 adjacent hexes by one step. Can't be used on impassable terrain. The PCs choose which terrain to affect as they travel. Lasts until the next rest.</li>
                     </ul>
-                </details>
+                </details> -->
                 <details>
                     <summary>Camping</summary>
                     <p>PCs can camp during a rest when outside a settlement. Use standard resting rules (Shadowdark RPG pg. 86). Camping without a campfire gives DISADV on all checks.</p>
@@ -1196,7 +1172,7 @@
                         <li><b>Keep Watch.*</b> WIS. You cannot be surprised during one half of the rest (you choose which).</li>
                         <li><b>Predict.</b> INT or WIS. You may force a re-roll of tomorrow's weather after learning the result.</li>
                     </ul>
-                    <p><b>Procedure.</b> 1. The PCs make task checks in any order. 2. The GM checks for two random encounters. 3. If an encounter occurs, PCs who chose Keep Watch may make DC 12 WIS checks to not be surprised.</p>
+                    <p><b>Procedure.</b> 1. The PCs make task checks in any order they choose. 2. After resolving tasks, the GM follows normal resting and random encounter procedures.</p>
                 </details>
                 <details>
                     <summary>Fast Travel</summary>
@@ -1358,9 +1334,49 @@
                 </details>
                 <details>
                     <summary>Food and Water</summary>
-                    <p>PCs and mounts can go three days without consuming a ration. They take 1 CON damage each day after that (death at 0). Mounts find their rations during a rest unless in a barren location.</p>
+                    <p>PCs and mounts must each consume one ration per day, taking 1 CON damage (death at 0) if they do not. A PC can forage for 1 ration a day during travel with an INT check.</p>
+                </details>
+                <details>
+                    <summary>Pushing</summary>
+                    <p>At the start of the day, the PCs can choose to push to multiply their hexes per day by 1.5 times. (6/9/12) Increase the random encounter chance by 1:6 that day. PCs can't forage on a day they push.</p>
                 </details>
             </div>
+        </div>
+
+        <div class="twoby">
+        <div id="treasure-generator" class="panel treasure-generator">
+            <h2>Treasure & Item Generator</h2>
+            <p class="muted">Generate treasure for the selected level, a mundane item, a boon, or a fully generated magic item.</p>
+
+            <div class="treasure-controls">
+                <label>
+                    Level
+                    <select id="treasureLevel">
+                        <option value="0-3">0-3</option>
+                        <option value="4-6">4-6</option>
+                        <option value="7-9">7-9</option>
+                        <option value="10+">10+</option>
+                    </select>
+                </label>
+
+                <label>
+                    Generator
+                    <select id="treasureMode">
+                        <option value="treasure">Treasure</option>
+                        <option value="mundane">Mundane Item</option>
+                        <option value="boon">Boon</option>
+                    </select>
+                </label>
+
+                <button id="generateTreasure">Go!</button>
+                <button id="copyTreasure">❏</button>
+            </div>
+
+            <article class="treasure-result-card">
+                <div class="treasure-result-label">Result</div>
+                <div id="treasureResult" class="treasure-result"></div>
+                <div id="treasureRoll" class="treasure-roll"></div>
+            </article>
         </div>
 
         <div id="renown" class="panel" style="margin-top:18px">
@@ -1431,11 +1447,15 @@
                 </details>
             </div>
         </div>
+        </div>
 
         <div id="carousing" class="panel" style="margin-top:18px">
             <h2>Downtime and Carousing</h2>
+            <p>PCs can do one downtime activity between adventures. Activities marked with an asterisk* cost 50 gp per attempt.</p>
+            <p> To succeed on a downtime activity, a character must pass the associated check. PCs can't use luck tokens on these checks.</p>
+            <p> If a PC fails a check, reduce its DC one step the next time they attempt it (reset after success).</p>
 
-            <h3>Carousing Roller</h3>
+            <h3>Carousing</h3>
             <div class="generator-controls">
                 <label>Event <select id="carEvent"></select></label>
                 <label>Extra bonus <input id="carExtra" type="number" value="0" style="width:4.5rem"></label>
@@ -1446,7 +1466,7 @@
                 <div id="carLines"></div>
             </article>
 
-            <h3>Look Up a Player's Roll</h3>
+            <h4>Look Up a Player's Roll</h4>
             <div class="generator-controls">
                 <label>d8 + bonus <input id="carOutIn" type="number" min="1" style="width:5rem"></label>
                 <label>Benefit d100 <input id="carBenIn" type="number" min="1" max="100" style="width:5rem"></label>
@@ -1457,7 +1477,9 @@
             <div class="adventure-tables">
                 <details>
                     <summary>Carousing Rules and Event Costs</summary>
-                    <p>Expands Shadowdark RPG pg. 92. Each PC pitches in toward the total cost, then rolls 1d8 + the event's bonus on the Outcome table. Each PC gains the listed XP and rolls the listed number of times on the d100 Benefit and Mishap tables, adding the % modifier to those rolls. Bonuses can also come from renown (pg. 18), holidays (pg. 46), bard talents (pg. 12), garb, or the carousing site.</p>
+                    <p>Characters can go carousing as their downtime activity. To participate, each PC pitches in toward the total cost of the event on the below table.</p>
+                    <p>Then, each participant rolls 1d8 + the event's bonus to determine their result on the Carousing Outcome table. </p>
+                    <p>PCs can gain bonuses to their carousing event rolls due to many factors including renown, holidays, bard talents, and even their garb or carousing site.</p>
                     <div class="table-wrap">
                         <table>
                             <thead>
@@ -1516,10 +1538,9 @@
                         </table>
                     </div>
                 </details>
-                <h3>Downtime Rules</h3>
-                <p class="muted">PCs do one downtime activity between adventures. Activities marked * cost 10 gp x PC level. The PC must pass the check, and can't use luck tokens. After a failed check, reduce that DC one step next time (reset after success).</p>
+                <h3>Other Activities</h3>
                 <details>
-                    <summary>Downtime: Spiritualism</summary>
+                    <summary>Spiritualism</summary>
                     <p><b>WIS check.</b> Meditation, prayer, self-reflection, or mystical study.</p>
                     <ul>
                         <li><b>DC 9:</b> Gain favor with a local church. Your renown increases by 1 point.</li>
@@ -1529,7 +1550,7 @@
                     </ul>
                 </details>
                 <details>
-                    <summary>Downtime: Skulduggery</summary>
+                    <summary>Skulduggery</summary>
                     <p>Thievery, criminal activity, or churning the rumor mill.</p>
                     <p><b>CHA check</b></p>
                     <ul>
@@ -1545,7 +1566,7 @@
                     </ul>
                 </details>
                 <details>
-                    <summary>Downtime: Martial Training</summary>
+                    <summary>Martial Training</summary>
                     <p>Weapons and armor training by a suitable expert. Training depends on the PC's class hit points die. INT, STR, or DEX check.</p>
                     <p><b>d4</b></p>
                     <ul>
@@ -1565,7 +1586,7 @@
                     </ul>
                 </details>
                 <details>
-                    <summary>Downtime: Magical Research</summary>
+                    <summary>Magical Research</summary>
                     <p>Studying spells, praying to the gods, or consulting oracles. Spellcasters make spellcasting checks.</p>
                     <p><b>INT or CHA spellcasters</b></p>
                     <ul>
