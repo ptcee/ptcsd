@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>Runewillow</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #f5bf6e;
+            --line: #4d4c4c;
+            --accent: #8dc987;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Runewillow</h1><span id="levelTabs" role="group"></span><input id="search" placeholder="Find a room or keyword..." ><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Safe.</p>
+                    <p><strong>Light.</strong> Lanterns light the city.</p>
+                </div>
+                <div class="lvl-panel" data-panel="all">
+                    <h2>Random Encounters</h2>
+                    <table>
+                        <tr>
+                            <th>d6</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>A warning arrow thunks into wood beside the nearest PC. A <strong>Warden</strong> patrol (1d4+1) arrives in 1d4 rounds</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>A young <strong>rune-elk</strong> has slipped its tether and bolts across the platform: DC 12 DEX or 1d6 damage</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A <strong>Gardener</strong> hurries by with a basket of moon-blossoms and asks for a hand with an urgent chore</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>A pale-eyed <strong>thrall spy</strong> in elven dress shadows the party and reports to the Court</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>A <strong>runesinger</strong> hums a ward song. A rune on a nearby trunk flares, revealing something hidden or invisible</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Black <strong>Blightcreep</strong> sap seeps from a bough: DC 12 CON or sickened 1d4 rounds</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="/img/1408.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Root Gate</button>
+                <button class="room-chip" data-room="2">Area 2: Rune-Elk Paddock</button>
+                <button class="room-chip" data-room="3">Area 3: Calving Barn</button>
+                <button class="room-chip" data-room="4">Area 4: Tine Forge</button>
+                <button class="room-chip" data-room="5">Area 5: Elkmaster's Lodge</button>
+                <button class="room-chip" data-room="6">Area 6: Counterweight Lifts</button>
+                <button class="room-chip" data-room="7">Area 7: Glow-Ring</button>
+                <button class="room-chip" data-room="8">Area 8: Stump Row</button>
+                <button class="room-chip" data-room="9">Area 9: The Patience</button>
+                <button class="room-chip" data-room="10">Area 10: Judgement Platform</button>
+                <button class="room-chip" data-room="11">Area 11: Lantern-Wrights' Hall</button>
+                <button class="room-chip" data-room="12">Area 12: Moon-Blossom Nursery</button>
+                <button class="room-chip" data-room="13">Area 13: Mushroom Gardens</button>
+                <button class="room-chip" data-room="14">Area 14: Cistern of Dew</button>
+                <button class="room-chip" data-room="15">Area 15: Apothecary of Pale Light</button>
+                <button class="room-chip" data-room="16">Area 16: The Weave</button>
+                <button class="room-chip" data-room="17">Area 17: Council Hall</button>
+                <button class="room-chip" data-room="18">Area 18: Wardens' Watch</button>
+                <button class="room-chip" data-room="19">Area 19: Fletchery and Archery Hall</button>
+                <button class="room-chip" data-room="20">Area 20: Runesingers' Atelier</button>
+                <button class="room-chip" data-room="21">Area 21: Great Houses Row</button>
+                <button class="room-chip" data-room="22">Area 22: Gallery of the Fallen</button>
+                <button class="room-chip" data-room="23">Area 23: Guest Hollow</button>
+                <button class="room-chip" data-room="24">Area 24: Spire Shrine</button>
+                <button class="room-chip" data-room="25">Area 25: Seed Vault</button>
+                <button class="room-chip" data-room="26">Area 26: Observatory</button>
+                <button class="room-chip" data-room="27">Area 27: Ward Anchor</button>
+                <button class="room-chip" data-room="28">Area 28: Heartwood Chamber</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>A guarded treetop city of platforms, rope bridges, and lantern-lit houses, where elk-riding elves keep watch against the dark below.</em></p>
+
+                        <h3>Runewillow.</h3>
+                        <p>Tall silver-barked trees rise like pillars, and high above, an entire city of platforms, rope bridges, and graceful lantern-lit houses winds through the canopy. Soft music drifts down on the breeze, and the smell of woodsmoke and sweet blossoms fills the air. Slender figures with bows watch from the branches. At the base of the city is what is effectively a rune-elk ranch.</p>
+                        <p>The Rune-Elk Elves consider the Emerald Wood theirs and treat outsiders as trespassers. They fire warning shots at any Hunt patrol entering the area. Their greatest concern is the Obsidian Court beneath them, but they also clash with Hunt patrols from Frostholm and with the Blightcreep's corrupted druids as the mires move north. They may have a practical relationship with the Lizardfolk, whose lake borders the forest. They plant bioluminescent mushrooms and moon-blossoms to ward off the vampires.</p>
+                        <h3>The Mother Tree.</h3>
+                        <p>The city grows from one colossal willow whose runes are carved into its bark. The runes act as a ward against shadow, and the thralls of the Obsidian Court fell sacred trees to break the runic network. The mother tree's roots reach down toward the Court, so the city's foundation is the front line.</p>
+                        <h3>Ward Strength.</h3>
+                        <p>Track the ward at the Ward Anchor (Area 27). It starts at 6. Each sacred tree the thralls fell takes 1 off. At 3, vampires can cross the glow-ring unharmed at night. At 0, the ward fails and thralls pour into the Rootfold. Moon-blossom raids and cleansing the Blightcreep taint add 1 each.</p>
+                        <h3>Law of the Wood.</h3>
+                        <p><strong>Trespass ladder.</strong> First, a warning arrow in the trunk at eye level. Second, an arrow at the feet. Third, a volley. Fire, hunting for sport, and needless killing are crimes here, not just rudeness.</p>
+                        <p><strong>Entering peacefully.</strong> Open flame doused, empty hands, weapons lowered. Wait at the Root Gate to be fetched.</p>
+                        <p><strong>Alarm.</strong> Any bloodshed sounds the horn at the Wardens' Watch. A patrol of 1d4+1 Wardens arrives in 1d4 rounds, 16 more in 2 rounds.</p>
+                        <h3>Trust.</h3>
+                        <p>Track the party's standing: Hostile (0), Tolerated (1), Welcome (2), Honored (3). It rises by 1 for returning proof of the Court's thralls, curing the sick calf (Area 3), repairing glow-ring gaps (Area 7), planting blossoms (Area 12), and cleansing the cistern (Area 28). It falls by 1 for open flame, hunting, needless killing, or a caught lie.</p>
+                        <p><strong>Tolerated:</strong> Understory services and the Visitor's Basket. <strong>Welcome:</strong> the Canopy, rune-arrows, moon-blossom potions, the inn. <strong>Honored:</strong> a council audience, an elk ride, a rune-antler weapon, the Seed Vault.</p>
+                        <h3>Factions.</h3>
+                        <p><strong>The Wardens.</strong> Hard-line patrol captains who want no outsiders, led by Captain Aldreth Vane.</p>
+                        <p><strong>The Gardeners.</strong> Moon-blossom and mushroom keepers, open to useful allies, led by Elder Gardener Sylvenne Dawnmoss.</p>
+                        <p><strong>The Runesingers.</strong> Carve and sing the antler runes and the tree's ward, led by Maerith.</p>
+                        <p><strong>The Ranchers.</strong> Rune-elk handlers, practical and blunt, led by Elkmaster Taurin Hollowhorn. The Wardens and Gardeners disagree over cooperating with outsiders, and the Council of Three (Aldreth, Sylvenne, Maerith) decides.</p>
+                        <h3>Rune-Elk.</h3>
+                        <p>Elk choose their riders, and the herd acts as a living defense. Shed antlers can be forged into blades that cut through armor, a reward and a trade item. A sick calf is an early clue to the Blightcreep.</p>
+                        <h3>Services.</h3>
+                        <p><strong>Moon-blossom</strong> (20 gp). Glows as a torch for 1 hour; undead in its light have DISADV on attacks. <strong>Moon-lantern</strong> (30 gp). A hooded lantern with a blossom lens. <strong>Pale Light Potion</strong> (40 gp). Drinker glows near range for 5 rounds; vampires have DISADV against them. <strong>Blight antidote</strong> (25 gp). Cures sickened. <strong>Rune-arrow</strong> (5 gp each). +1 against undead. <strong>Rune-antler weapon</strong> (300 gp, 1 week). +1 weapon; target's armor counts as 1 AC lower against it.</p>
+                        <h3>Hooks.</h3>
+                        <p><strong>Captured Hunt patrol.</strong> Three hunters wait in the Wardens' cellar (Area 18). The party can negotiate their release or watch their execution.</p>
+                        <p><strong>Lizardfolk emissary.</strong> Stuck at the Root Gate until someone vouches for them.</p>
+                        <p><strong>Missing scout.</strong> The Wardens suspect the Obsidian Court took Faeril (Area 22).</p>
+                        <p><strong>Poisoned cistern.</strong> Corrupted druids have tainted the water. The party can trace it to the Heartwood Chamber (Area 28).</p>
+                        <p><strong>A thrall in the city.</strong> A vampire spy hides among the elves (Areas 21 and 23). A consort who wants to defect is the flip side.</p>
+                        <h3>Rune-Elk Warden (New!)</h3>
+                        <div class="stats">AC 13 (leather), HP 14, ATK 1 antler spear +3 (1d8) or 1 longbow +3 (far, 1d6), MV near, S +1, D +3, C +1, I +0, W +2, Ch +0, AL N, LV 3.
+Warning Shot. May fire a warning arrow as a free action.</div>
+                        <h3>Rune-Elk (New!)</h3>
+                        <div class="stats">AC 12, HP 22, ATK 1 gore +4 (1d10), MV double near, S +3, D +1, C +2, I -2, W +1, Ch -1, AL N, LV 4.
+Rune Antlers. Target's armor counts as 1 AC lower against gore. The runes flare near fire or undead.</div>
+                        <h3>Runesinger (New!)</h3>
+                        <div class="stats">AC 11, HP 12, ATK 1 staff +1 (1d4) or spell +4, MV near, S -1, D +1, C +0, I +2, W +3, Ch +2, AL N, LV 4.
+Ward Song. 1/day, all near allies +2 AC against undead for 5 rounds; undead in near DC 12 WIS or flee for 1 round.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "root",
+                "label": "Upper City",
+                "img": "img/1408.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "root",
+                "name": "Root Gate",
+                "description": "Two silver-barked trunks lean together to form a living arch, hung with carved antlers and rune-lanterns. A **gate** of woven willow stands closed. Slender **archers** watch from the branches above.",
+                "bullets": [
+                    "**Warning Arrows.** The trespass ladder applies: an arrow in the trunk, an arrow at the feet, then a volley (3d6 damage spread among the party, DC 12 DEX to halve).",
+                    "**Gatewarden.** Warden Corliss (suspicious, dry-humored) demands names and purpose. Open flame must be doused here.",
+                    "**Entering Peacefully.** Empty hands, no open flame, weapons lowered. Someone is sent to fetch the party in about an hour."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "root",
+                "name": "Rune-Elk Paddock",
+                "description": "A broad meadow of trampled clover and silver grass, ringed by willow fences. Dozens of thick-furred **rune-elk** graze or lie in herds, their antlers glowing faintly with carved runes.",
+                "bullets": [
+                    "**Herd.** About 60 rune-elk. They choose their riders; a creature the elk accept may ride (Honored only). They are hostile to intruders.",
+                    "**Antlers.** The runes flare when the herd senses fire or undead."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "root",
+                "name": "Calving Barn",
+                "description": "A long barn of living branches woven into a roof, warm and thick with the smell of hay and milk. A **calf** lies in the straw, breathing badly, its coat flecked with grey.",
+                "bullets": [
+                    "**Sick Calf.** The grey flecks are Blightcreep rot. A DC 12 INT or WIS check links it to the tainted cistern (Area 14). Curing it (DC 15 WIS, with herbs from Area 15) earns +1 trust.",
+                    "**Elkmaster Taurin Hollowhorn.** Gruff and anxious. Judges people by how they treat animals and distrusts the Wardens' harshness."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "root",
+                "name": "Tine Forge",
+                "description": "A smoky forge where antlers are cut, boiled, and carved. **Shed antlers** hang in racks.",
+                "bullets": [
+                    "**Antlersmith.** Hara Tine (broad, soot-streaked) crafts rune-antler weapons for Honored guests: +1 weapon, target's armor counts as 1 AC lower, 300 gp, 1 week.",
+                    "**Scraps.** Cuts of antler sell for 10 gp each."
+                ],
+                "stats": ""
+            },
+            "5": {
+                "level": "root",
+                "name": "Elkmaster's Lodge",
+                "description": "A round hut of woven willow beneath the trunk, hung with saddles and bridles. **Antler trophies** line the walls.",
+                "bullets": [
+                    "**Saddles.** Rune-elk saddles for riders the herd has accepted. A ride requires Honored."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "root",
+                "name": "Counterweight Lifts",
+                "description": "Two platforms of woven willow hang from ropes thick as a man's arm, rising into the canopy on stone counterweights.",
+                "bullets": [
+                    "**Elven Lift.** For Wardens only.",
+                    "**Visitor's Basket.** A small basket carries 4 passengers to the Understory, worked by an elf below. Requires Tolerated.",
+                    "**Cut Ropes.** During an alarm, the Wardens cut the Visitor's Basket. A fall of 30' deals 3d6 damage."
+                ],
+                "stats": ""
+            },
+            "7": {
+                "level": "root",
+                "name": "Glow-Ring",
+                "description": "A ring of bioluminescent **mushrooms** circles the trunk, glowing soft blue-green. Moon-blossoms ring the ground.",
+                "bullets": [
+                    "**Ward.** Vampires cannot cross the ring without taking 1d6 damage each round.",
+                    "**Gaps.** Several mushrooms have been uprooted, with the boot prints of thralls beside them. Repairing the gaps (or reporting them) earns +1 trust."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "root",
+                "name": "Stump Row",
+                "description": "Beyond the fence, a line of fresh **stumps** scars the edge of the glade. Sawdust still clings to the bark.",
+                "bullets": [
+                    "**Thrall Tracks.** Bootprints of men with dragging feet and sap-stained axes. A DC 12 WIS check follows them toward a cave mouth in the roots (the Court's logging crew).",
+                    "**Dropped Axe.** An axe stamped with a red crown. Proof for the Wardens (+1 trust)."
+                ],
+                "stats": ""
+            },
+            "9": {
+                "level": "under",
+                "name": "The Patience",
+                "description": "Open platforms ringed with benches and hung with glowing mushrooms. A few weary **travelers** and a bored elf **guard** wait.",
+                "bullets": [
+                    "**Waiting.** Outsiders are made to wait 1d6 hours before being heard. Impatience or open flame costs 1 trust.",
+                    "**Travelers.** A Frostholm trader waiting three days to be heard, and a quiet Forgotten Folk guide. Good sources of rumors."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "under",
+                "name": "Judgement Platform",
+                "description": "A circular dais of pale wood beneath a hanging lantern. **Three Wardens** sit behind a low bench.",
+                "bullets": [
+                    "**Hearing.** The Wardens question the party's purpose. Honest, useful testimony or a DC 12 CHA check sets trust at Tolerated. A lie (the dais glows red) sets it at Hostile.",
+                    "**Captain Aldreth Vane.** Fierce and direct. Wants no outsiders but respects results."
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "under",
+                "name": "Lantern-Wrights' Hall",
+                "description": "A bright hall of hanging **lanterns** in every color, glass blown thin as petals.",
+                "bullets": [
+                    "**Soren.** The lantern-wright sells moon-lanterns (30 gp): near light for 1 hour per blossom; undead in its light have DISADV on attacks. Requires Tolerated."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "under",
+                "name": "Moon-Blossom Nursery",
+                "description": "Terraced planters of **moon-blossoms** glimmer silver-white, tended by robed elves.",
+                "bullets": [
+                    "**Elder Gardener Sylvenne Dawnmoss.** Practical and kind, secretly open to outside help.",
+                    "**Blossoms.** 20 gp each. Glows as a torch for 1 hour, wilts at dawn; undead in its light have DISADV on attacks. Requires Tolerated.",
+                    "**Raid Hook.** Sylvenne asks the party to plant blossoms on the perimeter near Stump Row (+1 trust)."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "under",
+                "name": "Mushroom Gardens",
+                "description": "Rows of **fungi** grow in barrels of rotted wood, glowing blue, green, and gold.",
+                "bullets": [
+                    "**Glow-caps.** Harvested for the ward ring and for light. Eaten raw: DC 12 CON or hallucinate for 1d4 rounds.",
+                    "**Blight Spot.** A patch of grey fungus is wilted and weeping black."
+                ],
+                "stats": ""
+            },
+            "14": {
+                "level": "under",
+                "name": "Cistern of Dew",
+                "description": "A great bowl of carved wood catches rain and dew. The water is crystal clear, but a faint **oily sheen** drifts across it.",
+                "bullets": [
+                    "**Tainted.** Blightcreep corruption seeps from the mother tree's roots into the cistern. Drinking: DC 12 CON or sickened for a day (DISADV on checks).",
+                    "**Source.** Tracing the taint (DC 15 INT or WIS) leads to a blackened root in the Heartwood Chamber (Area 28)."
+                ],
+                "stats": ""
+            },
+            "15": {
+                "level": "under",
+                "name": "Apothecary of Pale Light",
+                "description": "A cramped tree-hollow shop of dried herbs and drips of silver tincture.",
+                "bullets": [
+                    "**Apothecary Nel.** Brews moon-blossom draughts.",
+                    "**Pale Light Potion.** 40 gp. Drinker glows near range for 5 rounds; vampires have DISADV against them. Requires Welcome.",
+                    "**Blight Antidote.** 25 gp. Cures sickened."
+                ],
+                "stats": ""
+            },
+            "16": {
+                "level": "canopy",
+                "name": "The Weave",
+                "description": "Dozens of rope **bridges** converge on a wide platform, swaying in the wind.",
+                "bullets": [
+                    "**Sentries.** Two Wardens watch the platform.",
+                    "**Cut Ropes.** Elves can cut a bridge in 1 round. Running across a bridge: DC 9 DEX or fall."
+                ],
+                "stats": ""
+            },
+            "17": {
+                "level": "canopy",
+                "name": "Council Hall",
+                "description": "A teal-domed hall of pearl-white arches, its windows glowing blue-violet. **Three** elves sit in high-backed willow chairs.",
+                "bullets": [
+                    "**Council of Three.** Captain Aldreth (hard line), Elder Gardener Sylvenne (open to outsiders), and Runesinger Maerith (neutral, decides).",
+                    "**Audience.** Requires Honored. Outsiders may petition for alliance against the Blightcreep."
+                ],
+                "stats": ""
+            },
+            "18": {
+                "level": "canopy",
+                "name": "Wardens' Watch",
+                "description": "A tower of woven branches with arrow slits and **racks** of long bows and quivers.",
+                "bullets": [
+                    "**Garrison.** 8 Wardens on duty, 16 more in 2 rounds. The alarm horn rallies the city.",
+                    "**Prisoners.** Three captured Hunt hunters are tied in the cellar. Their fate is the Council's to decide."
+                ],
+                "stats": ""
+            },
+            "19": {
+                "level": "canopy",
+                "name": "Fletchery and Archery Hall",
+                "description": "A long gallery of straw targets smelling of tallow, with **fletchers** at their benches.",
+                "bullets": [
+                    "**Rune-Arrows.** Carved with runes by Maerith's apprentices: +1 against undead, 5 gp each. Requires Welcome.",
+                    "**Contest.** The elves host shooting matches. A party archer who wins (DC 15 DEX) earns +1 trust."
+                ],
+                "stats": ""
+            },
+            "20": {
+                "level": "canopy",
+                "name": "Runesingers' Atelier",
+                "description": "A circular hall where **runes** are carved into antler, bark, and bone to soft **singing**.",
+                "bullets": [
+                    "**Runesinger Maerith.** Ancient and quiet. Keeper of the ward-lore.",
+                    "**Rune-Carving.** Antler runes cost 50 gp and 1 hour.",
+                    "**Lore.** Maerith knows the Court's rule runs on contracts and guest-right."
+                ],
+                "stats": ""
+            },
+            "21": {
+                "level": "canopy",
+                "name": "Great Houses Row",
+                "description": "A winding avenue of **houses** with carved doors, hung with silver-leaf bells.",
+                "bullets": [
+                    "**House Silverbough.** A noble house whose scion, Wyren, has been bled and thralled by the Court. He feeds them guard rotations.",
+                    "**House Aldreth.** The Captain's home."
+                ],
+                "stats": ""
+            },
+            "22": {
+                "level": "canopy",
+                "name": "Gallery of the Fallen",
+                "description": "A long walkway hung with **names** carved in bark: elves killed by the Court.",
+                "bullets": [
+                    "**Names.** Over 200 names; the newest are freshly carved.",
+                    "**Faeril.** One name is left uncarved. Her family hopes she is alive."
+                ],
+                "stats": ""
+            },
+            "23": {
+                "level": "canopy",
+                "name": "Guest Hollow",
+                "description": "A warm tree-hollow **inn** where outsiders who have earned Welcome may rest.",
+                "bullets": [
+                    "**Innkeeper Pia.** Rooms cost 5 gp a night. Loves gossip.",
+                    "**Thrall Spy.** One of the staff (Dun) is a Court thrall. A DC 15 WIS check notices his pale eyes."
+                ],
+                "stats": ""
+            },
+            "24": {
+                "level": "crown",
+                "name": "Spire Shrine",
+                "description": "A needle-fine **spire** crowned with a teal dome. Inside, a quiet shrine of silver bells.",
+                "bullets": [
+                    "**Forest Spirits.** An offering of moon-blossoms grants a luck token (once a day)."
+                ],
+                "stats": ""
+            },
+            "25": {
+                "level": "crown",
+                "name": "Seed Vault",
+                "description": "A circular chamber of woven roots, its shelves lined with glass **jars** of faintly glowing moon-blossom seeds.",
+                "bullets": [
+                    "**Seeds.** 50 jars; each seeds a field of 20 blossoms.",
+                    "**Guards.** Two Wardens. Without Honored, theft drops trust to 0."
+                ],
+                "stats": ""
+            },
+            "26": {
+                "level": "crown",
+                "name": "Observatory",
+                "description": "A glass-domed **observatory** with brass tubes aimed at the forest below.",
+                "bullets": [
+                    "**Watchers.** Wardens watch for stray fires and Court activity.",
+                    "**View.** On a clear night, a faint red glow flickers in the depths of the wood: the Crimson Manor."
+                ],
+                "stats": ""
+            },
+            "27": {
+                "level": "crown",
+                "name": "Ward Anchor",
+                "description": "A great carved **rune** the size of a table spirals at the heart of the tree, pulsing soft light.",
+                "bullets": [
+                    "**Ward Strength.** Starts at 6. See Other Info.",
+                    "**Upkeep.** Maerith re-carves the rune each week.",
+                    "**Sabotage.** A saboteur can shut it down (DC 18 INT)."
+                ],
+                "stats": ""
+            },
+            "28": {
+                "level": "crown",
+                "name": "Heartwood Chamber",
+                "description": "A hollow deep within the mother tree, damp with sap. Roots drop away into darkness below.",
+                "bullets": [
+                    "**Listening Hollow.** Pressing an ear to the roots carries faint sounds from beneath: chopping, chanting, a distant bell.",
+                    "**Blight.** One root is blackened and weeping, the source of the cistern taint (Area 14). Cleansing it (DC 15 WIS, with moon-blossoms) ends the taint (+1 trust).",
+                    "**Root-Stair.** A narrow stair of roots leads down to the Court's tunnels."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'runewillow-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
