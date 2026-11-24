@@ -724,7 +724,19 @@ const dun = document.createElement('div'); dun.id = 'dun'; dun.hidden = true;
 dun.innerHTML = '<div id="dunh"><span>Dungeons</span><button id="dunx">&times;</button></div><div id="dunb"></div>';
 document.body.append(dun);
 function dunRender() {
-    $('#dunb').innerHTML = DUNGEONS.map(d => `<a class="dungeon-link" href="${e(d.url)}" target="_blank" rel="noopener">${e(d.name)}</a>`).join('');
+    const g = {};
+    DUNGEONS.forEach(d => {
+        const i = d.name.indexOf(': ');
+        const reg = i > -1 ? d.name.slice(0, i) : 'Other';
+        const nm = i > -1 ? d.name.slice(i + 2) : d.name;
+        (g[reg] = g[reg] || []).push({ url: d.url, name: nm });
+    });
+    $('#dunb').innerHTML = Object.keys(g).sort().map(r =>
+        `<h4 style="flex-basis:100%;margin:8px 0 0">${e(r)}</h4>` +
+        g[r].sort((a, b) => a.name.localeCompare(b.name)).map(d =>
+            `<a class="dungeon-link" href="${e(d.url)}" target="_blank" rel="noopener">${e(d.name)}</a>`
+        ).join('')
+    ).join('');
 }
 $('#dunx').onclick = () => dun.hidden = true;
 const dunh = $('#dunh'); let dd = null;
