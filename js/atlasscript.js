@@ -62,7 +62,7 @@ const ADV = {
     "0305": { url: '', name: 'Rotbark: The Grey Ring' },
     "0306": { url: '', name: 'Rotbark: Red Moss Hollow' },
     "0307": { url: '', name: 'Rotbark: The Twin Gate' },
-    "0308": { url: '', name: 'Rotbark: The Twin Gate' },
+    "0308": { url: 'adv/0308.html', name: 'Rotbark: Bloodrot Keep' },
     "0309": { url: '', name: 'Rotbark: The Twin Gate' },
     "0310": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
     "0311": { url: '', name: "Behemoth's Rift: Behemoth's Rift" },
