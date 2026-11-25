@@ -711,10 +711,8 @@ const T = {
     ]
 };
 
-// Roll a random row from a table.
 const roll = a => a[Math.floor(Math.random() * a.length)];
 
-// Roll one random entry from a specific column.
 const rollColumn = (table, column) =>
     table[Math.floor(Math.random() * table.length)][column];
 
@@ -722,7 +720,6 @@ let dungeon = {};
 
 function generate() {
 
-    // Each column rolled independently.
     const p = [
         rollColumn(T.purpose, 0),
         rollColumn(T.purpose, 1)
@@ -777,7 +774,7 @@ function generate() {
         );
     }
 
-    // scatter rooms while maintaining reasonable spacing
+    // scatter rooms
     const pts = [];
 
     for (let i = 0; i < n; i++) {
@@ -795,7 +792,7 @@ function generate() {
         pts.push({ x, y });
     }
 
-    // entrance = closest to border
+    // entrance closest to border
     let ei = 0, best = Infinity;
 
     pts.forEach((q, i) => {
@@ -818,7 +815,7 @@ function generate() {
         type: types[i]
     }));
 
-    // connect each room to nearest prior room, plus some extra edges
+    // connect each room to nearest prior room
     const edges = [];
 
     for (let i = 1; i < n; i++) {
@@ -6287,26 +6284,6 @@ const MONSTERS = [
             "Ability 3": "Rend. Deals 1d6 extra damage if it hits same target with both claws in same turn.",
         },
         {
-            "Name": "Owlbear Zombie",
-            "Source": "Dusk Queen Tomb",
-            "Flavor Text": "The shambling corpse of a ferocious beast of the forests.",
-            "AC": "13",
-            "HP": "25",
-            "ATK": "2 claw +4 (1d6)",
-            "MV": "near (climb)",
-            "S": "+4",
-            "D": "+1",
-            "C": "+3",
-            "I": "-2",
-            "W": "+1",
-            "Ch": "-2",
-            "AL": "N",
-            "Level": "5",
-            "Ability 1": "Undead. Immune to morale checks.",
-            "Ability 2": "Rotting Resilience. 1/day, cancel harmful effect affecting owlbear zombie.",
-            "Ability 3": "Rend. Deals 1d6 extra damage if it hits same target with both claws in same turn.",
-        },
-        {
             "Name": "Dusk Queen Mummy",
             "Source": "Dusk Queen Tomb",
             "Flavor Text": "The mummified remains of a fearsome fey queen who once ruled the lands under the colossal golden tree.",
@@ -6730,7 +6707,159 @@ const MONSTERS = [
             "Ability 4": "Tectonic Roar. Once per fight, a roar shakes the cavern: all in near DC 12 DEX or 2d6 damage from falling rock, and a rockslide blocks one tunnel.",
             "Ability 5": "Fire Breath. Fills a double near-sized cube extending from dragon. DC 15 DEX or 6d10 damage.",
             "Ability 6": "Greed Sense. Knows when any gem or treasure leaves his domain.",
-        }
+        },
+        {
+            "Name": "Hollowspawn",
+            "Source": "CR",
+            "Flavor Text": "A child-sized shade born of torment and despair, feeding on the hope of others.",
+            "AC": "11",
+            "HP": "4",
+            "ATK": "2 rend +2 (1d6)",
+            "MV": "near (fly)",
+            "S": "-2",
+            "D": "+2",
+            "C": "+1",
+            "I": "-2",
+            "W": "-3",
+            "Ch": "-3",
+            "AL": "C",
+            "Level": "4",
+            "Ability 1": "Withering Stare. Creatures who meet its gaze must succeed on a DC 12 CHA check or be stunned for 1d4 rounds. May repeat the check on its turn to end the effect.",
+            "Ability 2": "Undead. Immune to morale checks.",
+            "Ability 3": "Shadow Veil. Takes half damage from attacks from non-magical sources."
+        },
+        {
+            "Name": "Kolara",
+            "Source": "CR",
+            "Flavor Text": "Harmless-looking, cat-sized bears that leap onto unsuspecting heads and latch on with their claws. Hunt in packs.",
+            "AC": "13",
+            "HP": "5",
+            "ATK": "1 leap and 1 bite +3 (1d4)",
+            "MV": "near (climb)",
+            "S": "-1",
+            "D": "+3",
+            "C": "+0",
+            "I": "-2",
+            "W": "+0",
+            "Ch": "+2",
+            "AL": "C",
+            "Level": "1",
+            "Ability 1": "Leap. Jump up to double Near and latch onto one target's head. Target is blinded until the Kolara is removed. DC 12 STR on turn to remove.",
+            "Ability 2": "Vicious. Cumulative 1:6 chance each turn while latched to maim the target's face or head."
+        },
+        {
+            "Name": "Tadpole, Chuul",
+            "Source": "CR",
+            "Flavor Text": "A slimy, fish-like larva no larger than a leech.",
+            "AC": "10",
+            "HP": "1",
+            "ATK": "1 bite +0 (1 + feed)",
+            "MV": "near (swim)",
+            "S": "-3",
+            "D": "+0",
+            "C": "+1",
+            "I": "-4",
+            "W": "-2",
+            "Ch": "-3",
+            "AL": "N",
+            "Level": "0",
+            "Ability 1": "Feed. Attaches to a target it bites and automatically hits again the following round.",
+            "Ability 2": "DC 9 STR on turn to remove."
+        },
+        {
+            "Name": "Bugbear Commoner",
+            "Source": "CR",
+            "Flavor Text": "A broad, shaggy bugbear who keeps the lair supplied and guards its young.",
+            "AC": "12 (hide)",
+            "HP": "3",
+            "ATK": "1 club +1 (1d6)",
+            "MV": "near",
+            "S": "+1",
+            "D": "+0",
+            "C": "+1",
+            "I": "-1",
+            "W": "+0",
+            "Ch": "-1",
+            "AL": "C",
+            "Level": "1",
+            "Ability 1": "Lair-wise. Knows the hidden pools, side passages, and approaches to the caverns."
+        },
+        {
+            "Name": "Bugbear Warrior",
+            "Source": "CR",
+            "Flavor Text": "A hulking, long-armed ambusher in scavenged furs and hide armour.",
+            "AC": "14 (hide + shield)",
+            "HP": "9",
+            "ATK": "1 spear +2 (near, 1d8) or 1 handaxe +2 (1d6)",
+            "MV": "near",
+            "S": "+2",
+            "D": "+1",
+            "C": "+1",
+            "I": "-1",
+            "W": "+0",
+            "Ch": "-1",
+            "AL": "C",
+            "Level": "2",
+            "Ability 1": "Ambusher. Advantage on checks to hide in darkness, rubble, or natural terrain.",
+            "Ability 2": "Surprise Attack. A target surprised by the bugbear takes +1d6 damage from its first attack."
+        },
+        {
+            "Name": "Bugbear Young",
+            "Source": "CR",
+            "Flavor Text": "A small, shaggy bugbear, quick to hide when strangers approach.",
+            "AC": "10",
+            "HP": "1",
+            "ATK": "1 bite -1 (1d4)",
+            "MV": "near",
+            "S": "-1",
+            "D": "+1",
+            "C": "+0",
+            "I": "-1",
+            "W": "+0",
+            "Ch": "-1",
+            "AL": "C",
+            "Level": "0",
+            "Ability 1": "Hide. Advantage on checks to hide among the lair's bedding, stores, and narrow passages."
+        },
+        {
+            "Name": "Cragbairn",
+            "Source": "CR",
+            "Flavor Text": "Deformed, rabid dwarves with empty, sunken eye sockets. They wear soiled rags and carry pockets full of rats.",
+            "AC": "10",
+            "HP": "4",
+            "ATK": "1 club +0 (1d6) or 1 sling (far) +0 (1d4 + ratsling)",
+            "MV": "near",
+            "S": "+0",
+            "D": "+0",
+            "C": "+1",
+            "I": "-3",
+            "W": "+1",
+            "Ch": "-3",
+            "AL": "C",
+            "Level": "1",
+            "Ability 1": "Ratsling. 1:6 chance the rat projectile survives and lands within Close.",
+            "Ability 2": "Malformed. Eyeless and blind, their hearing has evolved. Advantage on WIS checks to listen."
+        },
+        {
+            "Name": "Cragbairn Priest",
+            "Source": "CR",
+            "Flavor Text": "A malformed, bloodied figure concealed beneath bulky robes, chanting in an ancient language.",
+            "AC": "10",
+            "HP": "9",
+            "ATK": "1 dagger (near) +0 (1d4) or 1 spell +1",
+            "MV": "near",
+            "S": "+0",
+            "D": "+0",
+            "C": "+1",
+            "I": "-2",
+            "W": "+1",
+            "Ch": "-3",
+            "AL": "C",
+            "Level": "2",
+            "Ability 1": "Malformed. Eyeless and blind, their hearing has evolved. Advantage on WIS checks to listen.",
+            "Ability 2": "Fleshweave (WIS Spell). DC 11. Heal one creature within Close for 1d4 HP.",
+            "Ability 3": "Fleshrend (WIS Spell). DC 12. One target in Far takes 2d4 damage and violently vomits blood."
+        },
     ]
 ];
 
