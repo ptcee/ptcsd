@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>The Forgotten Halls of Brassfire</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #8bb8f2;
+            --line: #4d4c4c;
+            --accent: #ffad72;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 5px 0;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>The Forgotten Halls of Brassfire</h1><span id="levelTabs" role="group"></span><input id="search" placeholder="Find a room or keyword..."><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Darkness.</p>
+                </div>
+                <div class="lvl-panel summ" data-panel="ravine">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Zone.</strong> Ravine, Areas 1-8.</p>
+                    <p><strong>Danger.</strong> Unsafe. Check for random encounters every 3 crawling rounds and after opening the brass door in Area 2. Roll 1d6; an encounter occurs on a 1.</p>
+                    <p><strong>Light.</strong> Ambient light spills from a tiny crevice 50 feet above the bridge in Area 6.</p>
+                    <p><strong>Sound.</strong> The loud rushing river limits communication to within Near distance.</p>
+                    <table>
+                        <tr>
+                            <th>2d6</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>The <strong>chuul</strong> climbs up the ravine searching for prey for its tadpoles</td>
+                        </tr>
+                        <tr>
+                            <td>3-5</td>
+                            <td>1d6 startled <strong>stingbats</strong> flutter out of a gritty hole in the wall</td>
+                        </tr>
+                        <tr>
+                            <td>6-7</td>
+                            <td>An intense updraft upsets balance and blows out torches and lanterns</td>
+                        </tr>
+                        <tr>
+                            <td>8-11</td>
+                            <td>2d4 <strong>thugs</strong> argue about how to share their newfound treasure. Roll on the treasure table, results 0-3</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>2d6 <strong>bugbears</strong> drag a captured traveller toward Area 13</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="lvl-panel summ hide" data-panel="caverns">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Zone.</strong> Caverns, Areas 9-14.</p>
+                    <p><strong>Danger.</strong> Risky. Check for random encounters every 2 crawling rounds and after disturbing any pools. Roll 1d6; an encounter occurs on a 1.</p>
+                    <p><strong>Light.</strong> Total darkness. All denizens are dark-adapted.</p>
+                    <table>
+                        <tr>
+                            <th>2d6</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>The <strong>chuul</strong> invades the caverns searching for prey for its tadpoles</td>
+                        </tr>
+                        <tr>
+                            <td>3-5</td>
+                            <td>1d4 bugbear <strong>young</strong> approach from a nearby pool or passage</td>
+                        </tr>
+                        <tr>
+                            <td>6-7</td>
+                            <td>A random PC plummets into a 10-foot-deep crevice of hot water</td>
+                        </tr>
+                        <tr>
+                            <td>8-11</td>
+                            <td>1d4 <strong>bugbears</strong> defend against 1d4 invading <strong>Cragbairn</strong></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>2d4 <strong>bugbears</strong> return from a surface hunting trip</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="lvl-panel summ hide" data-panel="ruins">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Zone.</strong> Ruins, Areas 15-26.</p>
+                    <p><strong>Danger.</strong> Risky. Check for random encounters every 2 crawling rounds or after the PCs make a lot of noise. Roll 1d6; an encounter occurs on a 1.</p>
+                    <p><strong>Light.</strong> Total darkness. All denizens are dark-adapted.</p>
+                    <table>
+                        <tr>
+                            <th>2d6</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>The <strong>chuul</strong> emerges from a burrow searching for prey for its tadpoles</td>
+                        </tr>
+                        <tr>
+                            <td>3-5</td>
+                            <td>1d4 <strong>Cragbairn</strong> chant and paint the walls with their own blood</td>
+                        </tr>
+                        <tr>
+                            <td>6-7</td>
+                            <td>One random small item is stolen from a PC by a cunning <strong>giant rat</strong></td>
+                        </tr>
+                        <tr>
+                            <td>8-11</td>
+                            <td>2d4 hungry <strong>giant rats</strong> scurry out of a hole searching for morsels</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>A wide-eyed sacrificial prisoner tries a desperate escape</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/brassfire-ravine.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Reservoir</button>
+                <button class="room-chip" data-room="2">Area 2: Collapsed Entrance</button>
+                <button class="room-chip" data-room="3">Area 3: Submerged Cavern</button>
+                <button class="room-chip" data-room="4">Area 4: South Precipice</button>
+                <button class="room-chip" data-room="5">Area 5: East Precipice</button>
+                <button class="room-chip" data-room="6">Area 6: North Precipice</button>
+                <button class="room-chip" data-room="7">Area 7: Whistling Cave</button>
+                <button class="room-chip" data-room="8">Area 8: West Precipice</button>
+                <button class="room-chip" data-room="9">Area 9: Ritual Antechamber</button>
+                <button class="room-chip" data-room="10">Area 10: Geothermal Cavern</button>
+                <button class="room-chip" data-room="11">Area 11: Cave Den</button>
+                <button class="room-chip" data-room="12">Area 12: Winter Nursery</button>
+                <button class="room-chip" data-room="13">Area 13: Cave Scullery</button>
+                <button class="room-chip" data-room="14">Area 14: Fortified Antechamber</button>
+                <button class="room-chip" data-room="15">Area 15: Herb Garden Chamber</button>
+                <button class="room-chip" data-room="16">Area 16: Apothecary Chamber</button>
+                <button class="room-chip" data-room="17">Area 17: Dormitory Chamber</button>
+                <button class="room-chip" data-room="18">Area 18: Service Corridor</button>
+                <button class="room-chip" data-room="19">Area 19: Archive Chamber</button>
+                <button class="room-chip" data-room="20">Area 20: Meditation Chamber</button>
+                <button class="room-chip" data-room="21">Area 21: Kitchen Chamber</button>
+                <button class="room-chip" data-room="22">Area 22: Hall of Legacy</button>
+                <button class="room-chip" data-room="23">Area 23: Hall of Devotion</button>
+                <button class="room-chip" data-room="24">Area 24: Hall of Atonement</button>
+                <button class="room-chip" data-room="25">Area 25: The Kytherian Mechanism</button>
+                <button class="room-chip" data-room="26">Area 26: Chamber of Absolution</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>The Kytherian halls lie buried beneath the Rimewastes, warmed by an ancient hydraulic system and fought over by bugbears, the blind Cragbairn, and treasure-hungry thugs. A 1st-3rd level Shadowdark adventure.</em></p>
+
+                        <h3>Background.</h3>
+                        <p>The Brassfire Crags once spanned the mountain range where the legendary Kytherian metalsmiths worked brass into wonders. The range now lies buried beneath the northern ice. The Kytherians mined deep into the mountains and built vast brass mechanisms beneath them, using geothermal heat and an underground hydraulic system to power their works.</p>
+                        <p>As the glaciers advanced, the mountains were swallowed. The halls survived beneath the ice, sealed away for generations. A shifting ice sheet has recently opened a fissure into the ruins. Treasure hunters and villagers have begun searching the exposed caverns. Several have disappeared.</p>
+                        <p>The old hydraulic system still operates. Its warmth has made the underground pools and caverns habitable, attracting creatures and desperate people from the tundra. The deeper halls remain dangerous, and the Kytherian machinery is not fully understood by anyone now living there.</p>
+                        <h3>Factions.</h3>
+                        <p><strong>The Cragbairn.</strong> Descendants of Kytherian slaves who survived beneath the ice. Generations of darkness and isolation have left them frail, blind, and savage. They inhabit Areas 15-22 and worship the crumbling ruins with cruel blood rituals and cannibalistic feasts. They are leaderless and rudimentary but fiercely protect their halls from outsiders seeking to despoil them.</p>
+                        <p><strong>The Bugbears.</strong> A band of bugbears driven south by the worst of the Rimewastes winter. They have occupied the geothermal caverns, where the warm pools and narrow passages make a defensible lair. They wear stolen furs and scraps of hide armour, and hunt along the ravine for game, travellers, and anything foolish enough to cross their territory.</p>
+                        <p>Their leader, <strong>Grakka</strong>, took command after her father was killed by the chuul. She is strong and suspicious, but not foolish. The bugbears are territorial and cruel to trespassers, though they can be bargained with when doing so serves their interests. They fear the chuul and know it moves through the flooded burrows beneath the ruins. Grakka wants the clockwork medallion as proof that she has claim to the deeper halls.</p>
+                        <p><strong>The Thugs.</strong> A haphazard group of delinquents, prospectors, and villagers chasing tales of riches and treasure. They are leaderless and entirely opportunistic, seeking to get rich without getting into danger.</p>
+                        <p><strong>The Chuul.</strong> An eight-foot-long mix of crustacean, insect, and serpent, the result of an ancient magical ritual gone awry. It mostly resides at the bottom of the ravine but has made a nest for its tadpole offspring inside Area 25. It can also move around underground between its many burrows.</p>
+                        <h3>Rumours.</h3>
+                        <ol>
+                            <li>A powerful amulet is hidden deep within the halls.</li>
+                            <li>The Kytherians built an enormous brass mechanism capable of granting a wish.</li>
+                            <li>The bugbear chieftain carries a mighty enchanted spear.</li>
+                            <li>One of the Kytherian kings and all of his possessions were cursed.</li>
+                        </ol>
+                        <h3>Entrances and Environment.</h3>
+                        <p><strong>Reservoir.</strong> A fissure in the tundra drops 40 feet into a 5-foot-deep freshwater pool in Area 1.</p>
+                        <p><strong>Ravine path.</strong> A narrow hunting path used by the bugbears leads to Area 8.</p>
+                        <p><strong>Skylight.</strong> A crevice in the ceiling, 50 feet above Area 6, admits faint daylight.</p>
+                        <p><strong>Ravine.</strong> A cool breeze blows through the gorge above the rushing din of a freezing river 100 feet below. A broken stone bridge spans the ravine. Directly above it is a crevice in the ice and dirt ceiling, bathing the ravine with faint light from outside.</p>
+                        <p><strong>Caverns.</strong> Humid and warm, the cave interiors smell like sulfur and rotten eggs. Ankle-deep warm water covers the slippery ground and slowly drains over the edge of the ravine. Steam occasionally seeps out of cracks in the walls. The bugbears use these caverns as shelter from the Rimewastes.</p>
+                        <p><strong>Ruins.</strong> Sounds of dripping water and the smell of rot fill the stale air. The vaulted 20-foot ceiling is carved from smooth granite, speckled with flakes of sparkling quartz that catch the light. Marble tiles in the floor and walls are decrepit and decayed.</p>
+                        <p><strong>Brass doors.</strong> Made from solid brass, 20 feet tall, 5 feet wide, and 2 feet thick. They operate on a vast underground hydraulic system. Opening a door requires a nearby brazier to be lit by placing a burning torch into its centre receptacle. The doors open one round later and stay open for as long as the torch burns in the brazier, closing one round after it is extinguished.</p>
+                        <p><strong>Burrows.</strong> A series of curving tunnels lead into the submerged underbelly of Brassfire, where a complicated hydraulic system operates. The maze-like tunnels are about 7 feet wide, pitch black, and filled with murky water. The chuul may move into and out of a burrow with ease, taking 1-4 rounds to move between burrows if in a hurry. Both sides of the sheer ravine wall are littered with hidden burrow entries.</p>
+                        <h3>Combat Overview.</h3>
+                        <p><strong>Thugs.</strong> Sneak into Area 1 shortly after the PCs enter the dungeon. They hang around Areas 1 and 2 digging through rubble and looking for treasure. They retreat toward Area 1 if threatened and leave the dungeon if needed. They avoid combat at all costs but loot mercilessly. They mostly consist of young, simple human villagers.</p>
+                        <p><strong>Cragbairn.</strong> Keep to Areas 15-17 and 21, avoiding other areas unless attacking the bugbears. If overwhelmed, retreat to Area 21 and barricade themselves in. Only priests and other higher-ups are allowed in Area 22 during the ritual. They do not know about secret doors or what the receptacles do.</p>
+                        <p><strong>Bugbears.</strong> Mostly keep to Areas 10-13, avoiding Area 23. They check the net in Area 8 for anything caught in it and inspect or reset traps in Areas 7 and 14. They use the pools and side passages to flank intruders. If overwhelmed, they escape through Area 8 or regroup in Area 10. They fear the chuul and know about the secret door in Area 23 and the traps in Areas 7 and 14.</p>
+                        <p><strong>Chuul.</strong> An extremely cunning predator. Tries to bring live prey to a nearby burrow so it can feed it to its tadpoles in Area 25. Mostly swims in the bottom of the ravine and inside the subterranean hydraulic system. Drawn to extremely loud noises outside of the river. Retreats down into the ravine or a burrow if overwhelmed.</p>
+                        <h3>Running the Halls.</h3>
+                        <p>Grakka can be bargained with. She wants the clockwork medallion as proof of her claim to the deeper halls and leverage against the Cragbairn. The bugbears do not know the true function of the Kytherian Mechanism.</p>
+                        <p>The Cragbairn and bugbears are in conflict over access to the old halls. Neither faction needs to be wholly reasonable or wholly evil.</p>
+                        <p>The chuul remains the major shared threat. Both factions fear it, and its burrows let it appear in unexpected places.</p>
+                        <p>The Shatter-Tooth ogres and Runt-Grown Goblins remain part of the wider Rimewastes, not replacements for either dungeon faction. The ogres know the fissure exists but have not entered.</p>
+                        <p>Mammoths may be seen crossing the tundra above the ruins.</p>
+                        <h3>Random Potion Table (d6).</h3>
+                        <ol>
+                            <li>Oil flask (Shadowdark page 34).</li>
+                            <li>Potion of healing. Heals 1d6 HP.</li>
+                            <li>Potion of defense. AC 17 for 5 rounds.</li>
+                            <li>Elixir of health. Cures poison and disease.</li>
+                            <li>Potion of invisibility. Invisible for 10 rounds or until you attack or cast a spell.</li>
+                            <li>Potion of speed. MV double Near for 5 rounds.</li>
+                        </ol>
+                        <h3>Treasure.</h3>
+                        <p>Room keys that call for treasure table results, roll on the random treasure tables for the party's level.</p>
+                        <h3>Traps and Secret Doors.</h3>
+                        <p><strong>Spiked wall trap.</strong> Spring-loaded board full of sharpened sticks. DC 12 DEX or 2d6 damage.</p>
+                        <p><strong>Brass banshee trap.</strong> Tiny, flat brass disk. When stepped on, it emits a gravitic field underfoot and a long, extremely loud warning screech. DC 15 STR to escape. Dwarves are immune. DC 18 INT to re-arm; 1:6 chance, otherwise the device is destroyed.</p>
+                        <p><strong>Secret doors.</strong> Murky underwater passages and grinding, revolving walls.</p>
+                        <h3>Magic Items.</h3>
+                        <div class="stats">
+                            <h4>Frostpiercer.</h4>
+                            <p>A long bone-tipped spear with a dark iron head that never gathers frost.
+                                Bonus: +1 spear.</p>
+                            <ul>
+                                <li>Benefit: Regain 1d6 HP whenever you slay a creature with this weapon. The wielder suffers no penalties for fighting in deep snow or on ice.</li>
+                                <li>Curse: The spear must be kept near open air or cold wind every 4 hours or temporarily lose all magical properties.</li>
+                            </ul>
+                        </div>
+                        <div class="stats">
+                            <h4>Gladius of the Arena Master.</h4> 
+                            <p>A mirror-like blade that reflects the wielder's image.</p>
+                            <ul>
+                            <li>Bonus: +0 shortsword. Can only be wielded by a fighter.</li>
+                            <li>Benefit: Crits on a 19 or 20.</li>
+                           <li> Curse: Weapon constantly amplifies the wielder's bravado and pride.</li></ul>
+                        </div>
+                        <div class="stats">
+                            <h4>Clockwork Medallion.</h4> 
+                            <p>A tarnished brass medallion with numerous ticking clockwork mechanisms.</p>
+                            <ul>
+                            <li>Benefit: Wearer always knows the time of day and what direction is north. Once per day, this medallion can cast the knock spell without making a spellcasting check.</li></ul>
+                        </div>
+                        <div class="stats">
+                            <h4>Miserable Maplewand.</h4> 
+                            <p>A gnarled old branch with a broken tip and spindly roots jutting out of the handle.</p>
+                            <ul><li>Benefit: This wand contains the spells invisibility and silence.</li>
+                            <li>Curse: Each time you fail a spellcasting check with this wand, you can only whisper until completing a rest. On a critical failure, it teleports to a far-flung isolated location.</li>
+                            <li>Personality: Miserable and senile. Only wants to be left alone with some peace and quiet.</li></ul>
+                        </div>
+                        <div class="stats">
+                            <h4>Hammerhelm of the Thunder King.</h4> 
+                            <p>A battle-scarred bronze helm with indigo plume and polished edges.</p>
+                            <ul>
+                            <li>Benefit: Grants +1 AC. Attacks with maces and hammers deal an additional 1d8 damage.</li>
+                            <li>Curse: You attract storms and bad weather.</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "ravine",
+                "label": "Ravine",
+                "img": "adv-maps/brassfire.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+            {
+                "id": "caverns",
+                "label": "Caverns",
+                "img": "adv-maps/brassfire.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+            {
+                "id": "ruins",
+                "label": "Ruins",
+                "img": "adv-maps/brassfire.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "ravine",
+                "name": "Reservoir",
+                "description": "**Sound.** Loud mechanical rattling from Area 2 echoes through the cave. **Villagers.** A humanoid figure lies unmoving in the mud. **Floor.** Wet mud that sucks at feet. **Gear.** Digging equipment scattered next to the pool.",
+                "bullets": [
+                    "**Villagers.** A man is sleeping against a wall with a broken ankle. A woman's torso is crushed beneath a rock, her legs sticking out.",
+                    "**NPC.** Eldric, resourceful and positive.",
+                    "**Help.** Eldric offers a scroll of floating disk for help escaping. He found it in Area 2.",
+                    "**Hole.** Eldric and Lysandra were digging and fell into the hole together.",
+                    "**Pool.** A submerged tunnel leading to Area 3 is hidden beneath the murky pool.",
+                    "**Gear.** Shovel, pickaxe, rusty lantern, bucket, rope, and leather satchel.",
+                    "**Satchel.** Elkskin cloak (5 sp), 1 torch, and 1 healing poultice (heals 1 HP)."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "ravine",
+                "name": "Collapsed Entrance",
+                "description": "**Brass Doors.** Loud, repetitive mechanical rattling. **Murals.** Dwarf slaves building a structure while being whipped. **Skeleton.** Wearing mouldy black robes with stars. **Cave-in.** Passageway south completely blocked by rubble.",
+                "bullets": [
+                    "**Brass Doors.** Shut tight; mechanism broken. Once opened, they do not fully close again.",
+                    "**Brass Receptacle.** Opens doors with a lit torch.",
+                    "**Corpse.** Long-dead wizard, looted. 1:6 chance to hide a random Tier 1 scroll.",
+                    "**Cave-in.** Evidence of hammer strikes. The cave-in was intentional.",
+                    "**Kolaras.** Four starving kolaras nest atop the rubble.",
+                    "**Dig.** DC 15 STR. On a failure, debris falls for 1d4 damage. On a success, uncover a skeletal forearm clutching a well-made bronze warhammer (12 gp)."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "ravine",
+                "name": "Submerged Cavern",
+                "description": "**Water.** Dark and murky, vision limited to Close.",
+                "bullets": [
+                    "**Giant Leech.** Hides in eastern crevice, hungry and hostile.",
+                    "**Bottom.** Littered with bones and gold coins.",
+                    "**Loot.** Roll 1d6. 1-2: 6d4 gp. 3-4: Bead of Force. 5-6: Pearl of Power. Treat duplicate magic-item results as 4d4 gp. Maximum 130 gp total."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "ravine",
+                "name": "South Precipice",
+                "description": "**Skeletons.** Dozens of skeletal remains; desperate claw marks cover the walls and doors. **Bridge.** Ruined marble bridge with two black pillars on either side. **Cave Passage.** A cool breeze comes from a narrow crevice. **Drawbridge.** Rotten wood and frayed rope. **Rats.** Two small rats next to the bridge fight over scraps.",
+                "bullets": [
+                    "**Skeletons.** Dwarf slaves locked inside, who eventually turned on each other.",
+                    "**Robed Skeleton.** Wears a brass ring (15 gp). Inscribed inside in Dwarvish: “This temple opens to me”.",
+                    "**Bridge.** Narrow ledge crumbles immediately if stepped on.",
+                    "**Rope Bridge.** DC 12 DEX or a plank breaks; foot stuck for 1 round.",
+                    "**Brass Banshee.** See Traps. If activated, three Cragbairn from Area 15 investigate in one round. Immediately trigger a random encounter.",
+                    "**Rats.** Two more giant rats nest in the corner next to the drawbridge.",
+                    "**Nest.** Miserable Maplewand is buried under a putrid refuse pile."
+                ],
+                "stats": "Miserable Maplewand. A gnarled old branch with a broken tip and spindly roots jutting out of the handle.\nBenefit: This wand contains the spells invisibility and silence.\nCurse: Each time you fail a spellcasting check with this wand, you can only whisper until completing a rest. On a critical failure, it teleports to a far-flung isolated location.\nPersonality: Miserable and senile. Only wants to be left alone with some peace and quiet."
+            },
+            "5": {
+                "level": "ravine",
+                "name": "East Precipice",
+                "description": "**Cliff Wall.** Roughly excavated sections of stone and dirt reveal an overgrown hole in the wall leading into a lush underground structure. **Tools.** Bronze tools lie discarded around the hole.",
+                "bullets": [
+                    "**Brass Banshee.** See Traps. If activated, the remaining Cragbairn from Area 15 investigate. Immediately trigger a random encounter.",
+                    "**Tools.** Three old Kytherian clockwork inventions combining a shovel and pickaxe into one versatile tool called a Terranith.",
+                    "▶ Each is worth at least 50 gp and grants advantage on checks made to dig."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "ravine",
+                "name": "North Precipice",
+                "description": "**Brass Doors.** Engraved with the face of a majestic dwarf looking upward in veneration. **Crevice.** Frayed rope dangles from a crevice 50 feet above the bridge. **Bridge.** A corpse is sprawled across the steps next to a precariously dangling backpack.",
+                "bullets": [
+                    "**Bridge.** Four kolaras hide in their nest beneath the bridge.",
+                    "**Brass Doors.** Touching the closed doors from this side activates the engraving to speak in Dwarvish: “The temple is currently closed. Please come back later.”",
+                    "▶ Replying to the door in Dwarvish with “This temple opens to me” opens the doors for one round.",
+                    "**Corpse.** Recently dead elf clutching a crudely drawn treasure map. Wears ragged leather armour, a quiver holding 2d6 arrows, and a shortbow.",
+                    "**Backpack.** 1 torch, 2 rations, shovel, and roll twice on the random potion table."
+                ],
+                "stats": ""
+            },
+            "7": {
+                "level": "ravine",
+                "name": "Whistling Cave",
+                "description": "**Crevice.** A gentle breeze blows through tight vertical passages. **Trap.** A dead Cragbairn is impaled on wooden spikes protruding from the north wall. **South Wall.** Water soaks the wall and drips into small puddles.",
+                "bullets": [
+                    "**Crevice.** Requires an action to squeeze through.",
+                    "**Trap.** Two identical traps line the north wall 5 feet apart. The right one is already activated; the left one is hidden and ready.",
+                    "**Spring-loaded spiked wall.** DC 12 DEX or 2d6 damage.",
+                    "**Noise.** Loud noise or activating the remaining trap alerts the bugbears in Area 8 that intruders are coming."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "ravine",
+                "name": "West Precipice",
+                "description": "**Stone Pillar.** Curves toward the south wall, forming an overhead arch. **Pool.** Two hulking, fur-clad humanoids stand next to the pool, surrounded by corpses. **Baskets.** Reed baskets hug the stone pillar. **Net.** A sturdy net spans the ravine.",
+                "bullets": [
+                    "**Stone Pillar.** Primitive drawings depict bugbears hunting mammoths, crossing frozen rivers, and marking their territory with bloody handprints.",
+                    "**Bugbear Guards.** Tired after fighting off five Cragbairn. They retreat through the pool and hide if attacked.",
+                    "**NPCs.** Grakka, young and hard-bitten chieftain; Murg, a hulking guard wearing a mammoth-skull helm and fiercely protective of Grakka.",
+                    "**Gear.** Grakka wields Frostpiercer and carries one healing potion.",
+                    "**Retreat.** Grakka returns with five more bugbears within an hour and sets up an ambush near the pool.",
+                    "**Deal.** Grakka grants safe passage through the caverns if the PCs promise to bring her the clockwork medallion from the ruins.",
+                    "**One Chance.** If they return empty-handed from the ruins, the bugbears consider the party untrustworthy and may attack or drive them out. They do not automatically kill the party; use judgement based on the party's conduct.",
+                    "**Baskets.** Three. One has 2d6 raw fish, another has 1d6 dead stingbats, and the third is full of junk and debris (roll on potion table).",
+                    "**Net.** Sturdy and easy to traverse if done carefully. Otherwise DC 12 DEX or foot stuck for 1 round.",
+                    "**Size.** 35 feet across and dips down 100 feet into the rushing river."
+                ],
+                "stats": "Frostpiercer. A long bone-tipped spear with a dark iron head that never gathers frost.\nBonus: +1 spear.\nBenefit: Regain 1d6 HP whenever you slay a creature with this weapon. The wielder suffers no penalties for fighting in deep snow or on ice.\nCurse: The spear must be kept near open air or cold wind every 4 hours or temporarily lose all magical properties."
+            },
+            "9": {
+                "level": "caverns",
+                "name": "Ritual Antechamber",
+                "description": "**Stone Cairns.** Three evenly spaced 1-foot-tall piles of nearly identical smooth stones. **West Wall.** A concave wall covered in primitive drawings of offerings for fertility and healthy offspring. **Pool.** Warm and 7 feet deep in the centre.",
+                "bullets": [
+                    "**Stone Cairns.** Bugbear offerings for strong births and healthy young. The cairns are also marked with scraps of fur and bone.",
+                    "**Fragile.** Collapse if poked. This provokes any nearby bugbears."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "caverns",
+                "name": "Geothermal Cavern",
+                "description": "**Fumaroles.** Bubble and hiss out white vapour, filling the cavern. **Stalactites.** Drip rhythmically into pools. **Reeds.** Stacks of water reeds line the fumaroles to dry.",
+                "bullets": [
+                    "**Fumaroles.** Sulfuric smell, intense heat, and choking vapour. Visibility limited to Near.",
+                    "**Pool.** A large murky pool connects Area 10 with Areas 11 and 12.",
+                    "**In the pool.** Four bugbear noncombatants, four young, and six warriors shelter below the surface or in submerged alcoves. They use the pool to bathe, hide, and reach other chambers."
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "caverns",
+                "name": "Cave Den",
+                "description": "**Floor.** Smooth stone covered in soft moss and lichen beds. **Creatures.** A dozen fur-clad figures. **Basket.** A small reed basket sits in the corner.",
+                "bullets": [
+                    "**Creatures.** Five bugbear warriors, three noncombatants, and four young.",
+                    "▶ Warriors sleep on lichen beds inside the chamber.",
+                    "▶ Noncombatants and young mend furs, sort scavenged goods, and make crude baskets beside the pool.",
+                    "**Basket.** Contains 4d4 cave pearls (5 gp each). 1:6 chance to contain mother-of-pearl (70 gp)."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "caverns",
+                "name": "Winter Nursery",
+                "description": "**Walls.** Adorned with algae and aquatic plants. **Nests.** Ten lichen nests dot the floor. **Creatures.** Four bugbear warriors guard the young.",
+                "bullets": [
+                    "**Nests.** Each nest contains bedding, food, and scavenged supplies for a bugbear family. The clan keeps its youngest here when the caverns are threatened.",
+                    "The nursery is precious to the bugbears. Threatening the young turns the entire clan against the party.",
+                    "**Guards.** Four warriors watch the pool for intruders.",
+                    "**NPCs.** Ozi (strong), Sirzet (kind), Attuc (sociable), and Keen (practical)."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "caverns",
+                "name": "Cave Scullery",
+                "description": "**Walls.** Carved to form natural shelves lined with ingredients and tools. **Baskets.** Several water-reed baskets line the walls. **Table.** A large slab of rock sits in the inner chamber, crowded by six fur-clad warriors and their kin.",
+                "bullets": [
+                    "**Baskets.** 2d8 rations of fish and game; 2d10 preserved human or other meat rations. The latter are scavenged from the dead and are not necessarily victims of the bugbears.",
+                    "**Table.** Various cutting instruments and 2 1/2 human bodies, taken from travellers killed by the chuul or found dead in the ravine.",
+                    "**Under the table.** Bric-a-brac bundled under the table. Roll on treasure table, results 0-3.",
+                    "**NPCs.** Three bugbear warriors eating, one noncombatant, and two young preparing food.",
+                    "**Warriors.** Attal (rude), Idi (clumsy), and Vennan (dutiful).",
+                    "**Noncombatant.** Norada (wise, cowardly)."
+                ],
+                "stats": ""
+            },
+            "14": {
+                "level": "caverns",
+                "name": "Fortified Antechamber",
+                "description": "**Pool.** Murky and shallow. **Creature.** A blue-grey giant frog stands guard next to the pool.",
+                "bullets": [
+                    "**Pool.** Two bugbear warriors watch from a concealed ledge beside the water.",
+                    "**Trap.** Spring-loaded spiked wall, DC 12 DEX or 2d6 damage.",
+                    "**Deal.** If the party struck a deal with Grakka, a bugbear warns them."
+                ],
+                "stats": ""
+            },
+            "15": {
+                "level": "ruins",
+                "name": "Herb Garden Chamber",
+                "description": "**Plants.** Tiled plant beds erupt with an unrecognisable jumble of vines and leaves. **Tools.** Copper hoes and brass watering jugs are strewn among greenery. **Creatures.** Several rancid and misshapen figures recline on comfortable leaf piles.",
+                "bullets": [
+                    "**Emberbloom.** A soft, red weed grows in the undergrowth.",
+                    "▶ 1:6 chance when walking around to develop an intensely burning rash.",
+                    "**Watering Jug.** One brass jug is full of watered-down acid.",
+                    "**Cragbairn.** Five. They resent having guard duty during the ritual in Area 22. They mostly sleep and play a gambling game.",
+                    "**NPCs.** Luc (envious), Drav (missing fingers, greedy), Hadri (no teeth, distrustful), Valers (dumb), Casi (crippled, resourceful).",
+                    "**Game.** Similar to liar's dice but with teeth instead of dice. Piled between them are 19 polished stones (1 sp each), 27 gp, and an intricate brass walking cane (10 gp)."
+                ],
+                "stats": ""
+            },
+            "16": {
+                "level": "ruins",
+                "name": "Apothecary Chamber",
+                "description": "**Workshop.** Messy stone table workbench with wooden chair. **Shelves.** Wooden shelves lined with alchemical vials. **Creatures.** Two scruffy children wearing sacks tied with rope play unattended with alchemical equipment on the floor.",
+                "bullets": [
+                    "**Workshop.** Two brass vials behind the workbench. Roll twice on potion table.",
+                    "**Shelves.** Three vials of preserved alchemical ingredients (10 gp each).",
+                    "**Secret Wall Compartment.** DC 18 DEX to pick. Forcing it open breaks the contents. Contains one potion of legendary deeds.",
+                    "**Children.** Brother and little sister play on the floor with a petrified griffon feather (15 gp). They are willing to trade their toy.",
+                    "▶ They run to Mikos in Area 17 if scared.",
+                    "**NPCs.** Gradsi (toddler, mischievous) and Hadtor (child, courageous)."
+                ],
+                "stats": ""
+            },
+            "17": {
+                "level": "ruins",
+                "name": "Dormitory Chamber",
+                "description": "**Creatures.** A burly, rank figure rocks back and forth on a corner bed while reciting a poem in Dwarvish. **Furniture.** Each corner has a stone bed, table, and stool. **Alcoves.** Above each bed is an alcove for personal belongings.",
+                "bullets": [
+                    "**Cragbairn.** Mikos is insane and unstable. His fingers are bloody and raw from painting the poem in Area 23.",
+                    "**NPC.** Mikos speaks slowly in jagged Dwarvish.",
+                    "**Gear.** Mikos wields the Gladius of the Arena Master and is wrapped in a foul blanket made from rat-tail macrame.",
+                    "**Deal.** Mikos wants the clockwork medallion destroyed to ensure the Kytherian Mechanism is never used again. In return, he offers the key to the secret wall compartment in Area 16.",
+                    "**Rats.** Mikos' two pet giant rats, Maxi and Deci, nest in separate beds.",
+                    "**Alcoves.** For each alcove, roll 1d6. On a 1-2, roll on the potion table. Otherwise roll on the random treasure table, results 0-3."
+                ],
+                "stats": "Gladius of the Arena Master. A mirror-like blade that reflects the wielder's image.\nBonus: +0 shortsword. Can only be wielded by a fighter.\nBenefit: Wielder gains weapon master for this weapon.\nCurse: Weapon constantly amplifies the wielder's bravado and pride."
+            },
+            "18": {
+                "level": "ruins",
+                "name": "Service Corridor",
+                "description": "**Benches.** Two stone benches line the hallway. **Hooks.** Two brass lanterns hang from copper hooks. **Skeleton.** Sitting next to a rotten leather backpack, holding an empty potion vial and a ramshackle wooden shield.",
+                "bullets": [
+                    "**Skeleton.** Cracked emerald (60 gp) and a giant rat inside the stomach cavity.",
+                    "**Backpack.** Ten iron pitons, iron crowbar, and roll once on potion table."
+                ],
+                "stats": ""
+            },
+            "19": {
+                "level": "ruins",
+                "name": "Archive Chamber",
+                "description": "**Shelves.** Empty moss-covered stone shelves border the room. **Repository.** Two chair-sized brass hands protrude from the floor in the middle of the room. **Corpse.** Small body burnt to a crisp, kneeling on the floor.",
+                "bullets": [
+                    "**Shelves.** Full of mouldy books and cobwebs. 2:6 chance to contain a random Tier 2 scroll tucked in a corner.",
+                    "**Hands.** Left hand holds The Ancestral Codex, a Kytherian genealogy compendium. Right hand holds The Stonegrimoire, a sacred Kytherian ritual tome (90 gp each).",
+                    "**Trapped.** Touching a hand causes electricity to continually shock the toucher and anyone touching them for 2d6 damage per round and stuns them.",
+                    "▶ Touching both hands simultaneously closes the loop, negating the damage.",
+                    "**Burrow.** Cragbairn avoid this room. Loud noises trigger random encounter #1 after 1d4 rounds.",
+                    "**Brass Banshee.** If activated, immediately trigger random encounter #1."
+                ],
+                "stats": ""
+            },
+            "20": {
+                "level": "ruins",
+                "name": "Meditation Chamber",
+                "description": "**Walls.** Polished stone mosaics of blue and white waves. **Plinths.** Four stone plinths arranged around a central pillar. **Pillar.** Emits soothing yellow light.",
+                "bullets": [
+                    "**Pillar.** Touching the pillar changes the light's colour.",
+                    "**Ooze.** Four grey oozes encircle the pillar, mesmerised by the yellow light.",
+                    "▶ While the light is yellow, the oozes are docile."
+                ],
+                "stats": ""
+            },
+            "21": {
+                "level": "ruins",
+                "name": "Kitchen Chamber",
+                "description": "**Table.** Laden wooden table surrounded by stone benches. **Walls.** Wooden shelves with earthenware jugs and dishes. **Hearth.** Caved in and full of rubble, surrounded by copper pots. **Creatures.** Wicked, hunched figures chopping meat.",
+                "bullets": [
+                    "**Table.** Three carved bodies, five copper knives, and one large brass bowl full of harvested vital organs.",
+                    "▶ Two bodies are Cragbairn; the other is a bugbear warrior.",
+                    "**Walls.** An earthenware vial is hidden behind jugs. Roll on potion table.",
+                    "**Cragbairn.** Three. A head chef and two assistants-in-training prepare the vital organs for the blood ritual in Area 22.",
+                    "**NPCs.** Maximilima (old, senile), Arm (cruel, eager), and Octo (insecure, stutters)."
+                ],
+                "stats": ""
+            },
+            "22": {
+                "level": "ruins",
+                "name": "Hall of Legacy",
+                "description": "**Room.** Curved meteorite walls emit a low hum. **Cages.** Bronze bars, gate, and wall-mounted manacles. **Guards.** East cage guarded by deformed dwarves. **Statues.** North wall entirely made of brass with large bas-relief statues. **Ritual.** Robed figures chant and move rhythmically in front of the statues.",
+                "bullets": [
+                    "**Curved Walls.** Emit constant gravitational pull. DC 15 STR to move past; dwarves are immune.",
+                    "**Cages.** Doors are unlocked but rusted and noisy.",
+                    "**Cragbairn Guards.** Five.",
+                    "**NPCs.** Qin (takes short, quick steps), Appoa (long nails and hair), Pua (quiet, shy), Juns (only wears loincloth, brutish), Antos (sniffs and licks everything).",
+                    "**Prisoners.** Two injured (1 HP) bugbear warriors manacled to the wall.",
+                    "**NPCs.** Artemido (athletic, brave), Kalistra (acrobatic, detests Cragbairn).",
+                    "**Cragbairn Priests.** Four. They dance and chant, pausing only to smear their own blood on the floor in patterns and circles. They await the brass bowl from Area 21 containing the ritual sacrifices.",
+                    "**NPCs.** Renatus (very old, bad memory), Valentina (perfectionist, cruel), Scaurus (extremely short, club-footed), Clemens (weak, hates Valentina).",
+                    "**Statue of Baldrak Stormhammer.** Armoured dwarf holding a large warhammer. Plaque: “He who united the lands into an empire.”",
+                    "**Statue of Hadrian Stoneheart.** Crowned dwarf wearing a toga, palms held out. Plaque: “He who united the people, ushering in an era of peace.”",
+                    "**Statue of Magnus Forgebane.** Meditating dwarf in simple robes, hands resting on knees. Plaque: “He who led the people in a spiritual search.”",
+                    "**Statue of Titus Goldbeard.** Levitating dwarf with crustacean face and limbs. One foot higher as if ascending, pincers holding a scroll. Plaque: “He who transformed the people and awakened their souls.”"
+                ],
+                "stats": ""
+            },
+            "23": {
+                "level": "ruins",
+                "name": "Hall of Devotion",
+                "description": "**Walls.** Murals of dwarven kings and their deeds have been vandalised with smeared blood. **Niches.** Four, strewn with decrepit offerings in a stone bowl and earthenware amphoras below a brass plaque.",
+                "bullets": [
+                    "**Brass Doors.** North double doors require the knock spell to open.",
+                    "**Niches.** Murals around each are vandalised in blood. The poem is in Dwarvish.",
+                    "**Stormhammer Niche (northwest).** “Deep in the heart of a kingdom fair, where brass gleamed without a care, the people sang and danced merrily, unbeknownst to its trickery.”",
+                    "**Stoneheart Niche (southwest).** “But one day, the device did stir, and whispers of power it did confer, to those who touched its brass hand, a terrible fate they did command.”",
+                    "**Forgebane Niche (northeast).** “The kingdom was consumed by fear, as its terrible magic became clear, for those who sought its power and might, were lost forever to the eternal night.”",
+                    "**Goldbeard Niche (southeast).** “Beware, oh children, of this tale, and the brass hand's tempting veil, for its promises are but a snare, leading to a fate dark and unfair.”",
+                    "**Offerings.** Roll 4d6 gp and treasure table, results 0-3, for each niche.",
+                    "**Amphoras.** Four, one per niche. A centipede swarm hides inside one.",
+                    "**Burrow.** Loud noises trigger random encounter #1 after 1d4 rounds."
+                ],
+                "stats": ""
+            },
+            "24": {
+                "level": "ruins",
+                "name": "Hall of Atonement",
+                "description": "**Chandelier.** Hangs from a high, vaulted ceiling. **Pews.** Dilapidated wooden benches engraved with laurel wreaths. **Altar.** Atop a raised dais. **Statues.** Two brass statues wielding executioner's axes. **Corpse.** One-armed figure lies prone on the dais steps. **Walls.** Ruined banners featuring a white sun on a blue field.",
+                "bullets": [
+                    "**Chandelier.** Brass, with four dormant oil lamps.",
+                    "**Brass Altar.** Small circular holes on each side reveal a brass clockwork medallion magically suspended inside the hollow altar. It features bas-relief art of a forge, hammer, beard, and heart.",
+                    "**Buttons.** Each bas-relief conceals a thumb-sized button.",
+                    "**Trap.** Reaching into the altar without sequentially pressing the buttons in the correct order (Hammer, Heart, Forge, Beard) triggers hidden iris blades to close around the hole. DC 18 DEX or 2d12 damage and amputation.",
+                    "**Medallion.** Retrieving the medallion disrupts the hydraulic system below. Murky water bubbles and spews out of the altar along with seven tiny chuul tadpoles.",
+                    "**Corpse.** Wears rusty chainmail. Their arm is cleanly severed.",
+                    "**Hidden treasure in boot.** Roll on treasure table, results 0-3, until result fits.",
+                    "**Banners.** One banner is in pristine condition and worth 30 gp.",
+                    "**Burrow.** Loud noises trigger random encounter #1 after 1d4 rounds."
+                ],
+                "stats": "Clockwork Medallion. A tarnished brass medallion with numerous ticking clockwork mechanisms.\nBenefit: Wearer always knows the time of day and what direction is north. Once per day, this medallion can cast the knock spell without making a spellcasting check."
+            },
+            "25": {
+                "level": "ruins",
+                "name": "The Kytherian Mechanism",
+                "description": "**Floor.** Knee-deep murky water. **Mechanism.** Three embedded brass platforms mounted with countless cogs and gears speckled in blue-green rust. **Brass Pedestal.** Holds a lever shaped like a hand reaching upward.",
+                "bullets": [
+                    "**Nest.** This entire chamber serves as the chuul's lair.",
+                    "▶ Thirteen tiny chuul tadpoles swim hungrily in the water.",
+                    "**Burrow.** Partially hidden under the murky water. The chuul returns here at least once every hour.",
+                    "**Mechanism.** The brass lever turns the Kytherian Mechanism's mighty wheels, but it does not function until its seven missing Kytherian Cogs are replaced.",
+                    "▶ Once functional, activating the mechanism allows the operator to undo one event of their choosing from history.",
+                    "▶ The seven Kytherian Cogs then magically scatter to far-flung locations.",
+                    "**Curse.** Changes to history are twisted, brutally transforming the recipients."
+                ],
+                "stats": ""
+            },
+            "26": {
+                "level": "ruins",
+                "name": "Chamber of Absolution",
+                "description": "**Room.** Vaulted glass mosaic ceiling catches the light and appears to glow from within. **Furniture.** Central kneeling stool surrounded by stone thrones in each corner. **Alcoves.** Four, behind glass windows with bronze grilles.",
+                "bullets": [
+                    "**Creature.** A hollowspawn has been drawn to the lingering despair of this room. It hides behind a throne, striking with its withering stare once it is confident everyone is inside.",
+                    "**Alcoves.** Dust and grime make peering through the windows difficult. The windows are hinged and locked with a small bronze latch.",
+                    "**Treasure.** Hidden behind each window are items once belonging to the four Kytherian kings.",
+                    "**Magnus Forgebane (northwest).** Silk robes with brass buttons (100 gp).",
+                    "**Hadrian Stoneheart (northeast).** Exquisite brass laurel brooch (60 gp).",
+                    "**Titus Goldbeard (southwest).** Black leather belt with gold pincer buckle (150 gp). Cursed: Wearing this belt permanently swaps your highest and lowest mental stats before the pincer buckle snaps the belt in two, destroying it.",
+                    "**Baldrak Stormhammer (southeast).** Battle-scarred bronze helm with indigo plume and polished edges (150 gp; Hammerhelm of the Thunder King).",
+                    "**Throne.** One throne has a hidden brass lever on the back. Pulling it activates one of the axe-wielding statues in Area 24, striking anyone at the altar for 2d12 damage."
+                ],
+                "stats": "Hammerhelm of the Thunder King. A battle-scarred bronze helm with indigo plume and polished edges.\nBenefit: Grants +1 AC. Attacks with maces and hammers deal an additional 1d8 damage.\nCurse: You attract storms and bad weather."
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'brassfire-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
