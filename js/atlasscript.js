@@ -54,7 +54,7 @@ const ADV = {
     "0216": { url: '', name: 'Cinder Peaks: The Ash Fall' },
     "0217": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
     "0218": { url: '', name: "Cinder Peaks: Sleepers' Rim" },
-    "0300": { url: '', name: 'Rimewastes: The Singing Ice' },
+    "0300": { url: 'adv/0300.html', name: 'Rimewastes: The Forgotten Halls of Brassfire' },
     "0301": { url: '', name: 'Rimewastes: The Singing Ice' },
     "0302": { url: '', name: 'Rimewastes: The Singing Ice' },
     "0303": { url: '', name: 'Rotbark: The Grey Ring' },
