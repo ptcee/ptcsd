@@ -330,7 +330,7 @@ const ADV = {
     "1714": { url: '', name: "Winter's Edge: The Whistling Vents" },
     "1715": { url: 'adv/1715.html', name: "Winter's Edge: Tomb of the Dusk Queen" },
     "1716": { url: '', name: "Winter's Edge: The Whistling Vents" },
-    "1717": { url: '', name: "Winter's Edge: The Rime Stair" },
+    "1717": { url: 'adv/1717.html', name: "Winter's Edge: The Frozen Vaults" },
     "1718": { url: '', name: "Winter's Edge: The Rime Stair" },
     "1801": { url: '', name: 'Rimewastes: The Sleeping Bear' },
     "1802": { url: '', name: 'Rimewastes: The Sleeping Bear' },
