@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>The Frozen Vaults</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #5cfff4;
+            --line: #4d4c4c;
+            --accent: #f5e86e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>The Frozen Vaults</h1><span id="levelTabs" role="group"></span><input id="search" placeholder="Find a room or keyword..." ><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Darkness.</p>
+                </div>
+                <div class="lvl-panel" data-panel="all">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Lower Vaults</strong></p>
+                    <table>
+                        <tr>
+                            <th>d8</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Merfolk</strong> (2d4) hunting in the flooded passages try to kidnap the party</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Frostbite Goblins</strong> (2) fishing or carrying a message for their tunnel-chief</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A <strong>goblin scout</strong> returning to the Ice-Grip Tunnels</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Stingbats</strong> (1d4) clinging to the ceiling or concealed beneath floating ice</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Pale <strong>cave creepers</strong> (3d4) scavenging among refuse and dead fish</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>A pair of cold-haunted <strong>ghouls</strong> silently following the rearmost character</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>A band of hungry <strong>bandit</strong> scavengers (2d4) who followed the party's tracks</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>A beam of light sweeps across the passage, make a DC 12 DEX check or take 1d6 damage as razor-sharp shards of ice erupt from the walls</td>
+                        </tr>
+                    </table>
+                    <p><strong>Upper Cliff and Tunnels</strong></p>
+                    <table>
+                        <tr>
+                            <th>d8</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Merfolk</strong> (1d6) moving between a wreck and the lower caves</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Frostbite Goblins</strong> (2d4) returning from an eastern watch post</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A <strong>goblin lookout</strong> who shadows the party and tries to report its numbers to Rathgamon</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Stingbats</strong> (1d4) nesting in the cracks above an ice shelf</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Pale <strong>cave creepers</strong> (3d4) feeding on a frozen carcass</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Cold-haunted <strong>ghouls</strong> (1d4) waiting in a windless passage</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>A small <strong>ogre</strong> scouting party (2d4) searching for escaped goblin slaves</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Rathgamon's shadow passes over the cliff face. Goblins immediately seek cover</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/frozen-vaults.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: The Meltwater Cleft</button>
+                <button class="room-chip" data-room="2">Area 2: The Tide Dock</button>
+                <button class="room-chip" data-room="3">Area 3: The Bloodied Landing</button>
+                <button class="room-chip" data-room="4">Area 4: The Ambush Pool</button>
+                <button class="room-chip" data-room="5">Area 5: The Ruined Great Room</button>
+                <button class="room-chip" data-room="6">Area 6: The Ritual Chamber</button>
+                <button class="room-chip" data-room="7">Area 7: The Ruined Bedchamber</button>
+                <button class="room-chip" data-room="8">Area 8: The Listening Door</button>
+                <button class="room-chip" data-room="9">Area 9: The Crude Hostel</button>
+                <button class="room-chip" data-room="10">Area 10: The Goblin Market</button>
+                <button class="room-chip" data-room="11">Area 11: The Tunnel-Chief's Den</button>
+                <button class="room-chip" data-room="12">Area 12: The Lackeys' Workroom</button>
+                <button class="room-chip" data-room="13">Area 13: The Fire-Carved Junction</button>
+                <button class="room-chip" data-room="14">Area 14: The Rubbled Stair</button>
+                <button class="room-chip" data-room="15">Area 15: The Ice Drake's Lair</button>
+                <button class="room-chip" data-room="16">Area 16: The Frost-Scarred Door</button>
+                <button class="room-chip" data-room="17">Area 17: The Jammed Door</button>
+                <button class="room-chip" data-room="18">Area 18: The Ash Chamber</button>
+                <button class="room-chip" data-room="19">Area 19: The Deep-Freeze Cabinet</button>
+                <button class="room-chip" data-room="20">Area 20: The False Black Door</button>
+                <button class="room-chip" data-room="21">Area 21: The Trapped False Door</button>
+                <button class="room-chip" data-room="22">Area 22: The Shadow Passage</button>
+                <button class="room-chip" data-room="23">Area 23: The Flooded Shrine</button>
+                <button class="room-chip" data-room="24">Area 24: The Broken Offering Room</button>
+                <button class="room-chip" data-room="25">Area 25: The Demon's Cell</button>
+                <button class="room-chip" data-room="26">Area 26: The Warding Hall</button>
+                <button class="room-chip" data-room="27">Area 27: The Store of the Drowned</button>
+                <button class="room-chip" data-room="28">Area 28: The Warm Room</button>
+                <button class="room-chip" data-room="29">Area 29: The Dead Watch</button>
+                <button class="room-chip" data-room="30">Area 30: The Frozen Reliquary Approach</button>
+                <button class="room-chip" data-room="31">Area 31: The Sea-Cleft</button>
+                <button class="room-chip" data-room="32">Area 32: The Wreck Beach</button>
+                <button class="room-chip" data-room="33">Area 33: The Ice Shelf</button>
+                <button class="room-chip" data-room="34">Area 34: The Tide Cavern</button>
+                <button class="room-chip" data-room="35">Area 35: The Hidden Shelf</button>
+                <button class="room-chip" data-room="36">Area 36: The Old Climb</button>
+                <button class="room-chip" data-room="37">Area 37: The Sea Gate</button>
+                <button class="room-chip" data-room="38">Area 38: The Goblin's Outer Watch</button>
+                <button class="room-chip" data-room="39">Area 39: The Narrow Ledge</button>
+                <button class="room-chip" data-room="40">Area 40: The Goblin's Fishing Hole</button>
+                <button class="room-chip" data-room="41">Area 41: The Ice-Grip Entrance</button>
+                <button class="room-chip" data-room="42">Area 42: The Broken Store</button>
+                <button class="room-chip" data-room="43">Area 43: The Flooded Crossing</button>
+                <button class="room-chip" data-room="44">Area 44: The Old Watch Room</button>
+                <button class="room-chip" data-room="45">Area 45: The Merfolk's Den</button>
+                <button class="room-chip" data-room="46">Area 46: The Flood Stairs</button>
+                <button class="room-chip" data-room="47">Area 47: The Drowned Hall</button>
+                <button class="room-chip" data-room="48">Area 48: The Old Armoury</button>
+                <button class="room-chip" data-room="49">Area 49: The Troglodyte Cavern</button>
+                <button class="room-chip" data-room="50">Area 50: The Ice Well</button>
+                <button class="room-chip" data-room="51">Area 51: The Watcher's Crypt</button>
+                <button class="room-chip" data-room="52">Area 52: The Collapsed Chamber</button>
+                <button class="room-chip" data-room="53">Area 53: The Old Lift</button>
+                <button class="room-chip" data-room="54">Area 54: The Wreck Watch</button>
+                <button class="room-chip" data-room="55">Area 55: The Sealed Niche</button>
+                <button class="room-chip" data-room="56">Area 56: The Wind Shaft</button>
+                <button class="room-chip" data-room="57">Area 57: The Riddle Marks</button>
+                <button class="room-chip" data-room="58">Area 58: The Pale Gallery</button>
+                <button class="room-chip" data-room="59">Area 59: The Old Tide Chapel</button>
+                <button class="room-chip" data-room="60">Area 60: The Deep Probe</button>
+                <button class="room-chip" data-room="61">Area 61: The Ice-Locked Gallery</button>
+                <button class="room-chip" data-room="62">Area 62: The Northern Loop</button>
+                <button class="room-chip" data-room="63">Area 63: The Goblin's Inner Watch</button>
+                <button class="room-chip" data-room="64">Area 64: The Ogre's Scout</button>
+                <button class="room-chip" data-room="65">Area 65: The Ice Elemental's Pool</button>
+                <button class="room-chip" data-room="66">Area 66: The Last Ascent</button>
+                <button class="room-chip" data-room="67">Area 67: The Pale Sphinx's Sanctum</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>Key locations: the Frozen Reliquary, Rathgamon's high cliff stronghold, and the Ice-Grip Tunnels, the Frostbite Goblins' seaside cave network.</em></p>
+
+                        <h3>Adventure Premise.</h3>
+                        <p>The Frozen Reliquary is an ancient complex cut into the highest sea cliff at Winter's Edge. Its lower chambers were built by a forgotten coastal people to preserve their dead, conduct rites, and store objects recovered from the sea. The complex is now half-flooded, ice-choked, and occupied by scavengers, restless dead, and other beasts.</p>
+                        <p><strong>Rathgamon, the Pale Sphinx,</strong> has made the upper cliff its lair. It controls the approaches with impossible demands and riddles. Those who fail its tests may be killed, imprisoned or if they're lucky, sent away. Rathgamon's presence has drawn strange creatures to the Reliquary, and its scavenged treasures have made the place worth exploring.</p>
+                        <p>The <strong>Frostbite Goblins</strong> of the Ice-Grip Tunnels serve as Rathgamon's scouts. They watch the northern approaches toward Frostholm and know the routes through the sea caves, ice shelves, and wrecks. They are not Rathgamon's slaves, but have learned that cooperation is safer than defiance. They can be bargained with, misled, or persuaded to turn against the Sphinx.</p>
+                        <p>The goblins may also know of the Runt-Grown Goblins held by the northern ogres. The Frostbite Goblins regard them as kin, their northern cousins, though they have little reason to trust outsiders who claim they can help.</p>
+                        <h3>Background.</h3>
+                        <p>Long ago, a coastal people carved the Frozen Vaults into the cliff. They used the chambers for research, worship, and the ritual disposal of their dead. Their rites involved cold, tides, and the preservation of bodies and objects beneath the sea. As their settlements declined, the vaults were sealed and forgotten.</p>
+                        <p>Centuries later, Rathgamon found the upper chambers and claimed the cliff. It is old, pale, and altered by the cold. It does not need to patrol every passage; its riddles, reputation, and control of the heights keep most intruders away. It sends the Frostbite Goblins to observe travellers, count their numbers, and report anything moving from Frostholm.</p>
+                        <p>The lower vaults remain dangerous for reasons unrelated to Rathgamon. Old wards still function and the dead stir. Predators use the flooded passages as hunting grounds and a powerful presence in the deepest water has grown around the remains of the ancient complex.</p>
+                        <h3>Getting the Party Involved.</h3>
+                        <p>The party may find a weather-stained map showing a creek-like meltwater channel that enters a cleft below the Frozen Reliquary. A long, arm-length metal implement with several geometric prongs is wrapped inside it. Locals believe the implement is a key or ritual tool.</p>
+                        <p>Rumours say the cliff vaults contain the preserved wealth of a dead king. The Frostbite Goblins know the map's approach and may offer to guide the party for payment, a favour, or news of the Runt-Grown Goblins.</p>
+                        <p>The main entrance is a narrow sea cave at the foot of the cliff (Area 1). The tide and weather can make the approach treacherous. At high tide, the lower part of the entrance is submerged.</p>
+                        <h3>General Features.</h3>
+                        <p>Unless an area says otherwise:</p>
+                        <p><strong>Sea passages.</strong> Cold seawater fills the lower passages. Water depth varies from ankle-deep to chest-deep with the tide. Strong currents pull toward the lower caverns.</p>
+                        <p><strong>Ceilings.</strong> Most rooms and corridors are 10 feet high. Natural caverns are irregular and may be much higher.</p>
+                        <p><strong>Doors.</strong> Ancient wooden doors are swollen, iron-banded, and often frozen in place. Some have been forced or broken by later occupants.</p>
+                        <p><strong>Cold.</strong> Exposed characters become numb after prolonged time in wet clothing. A character soaked in freezing water who cannot get dry and warm risks cold damage or exhaustion at the GM's discretion.</p>
+                        <p><strong>Ice.</strong> Sloped or flooded stone may be slick. Running, fighting, or carrying a heavy load across it may require a check to avoid falling.</p>
+                        <p><strong>Tides.</strong> Unless the party has a reason to know otherwise, the water rises and falls over several hours. Lower routes may become impassable at high tide.</p>
+                        <h3>The Frostbite Goblins.</h3>
+                        <p>The Frostbite Goblins are an independent band occupying the Ice-Grip Tunnels. They are practical, suspicious, and keenly aware that Rathgamon is more powerful than they are. They serve as scouts because the arrangement gives them a measure of safety and leaves them free to trade, fish, and move through the sea caves.</p>
+                        <p>They do not automatically attack intruders. They prefer to observe, bargain, misdirect, or demand a toll. They are especially interested in food, warm clothing, metal tools, information about the west, and news of other goblin bands.</p>
+                        <p><strong>The goblins know:</strong></p>
+                        <p>Rathgamon watches the cliff and can reach the upper ledges quickly.</p>
+                        <p>The Sphinx's riddles are not always fair. Some have no answer that Rathgamon will accept.</p>
+                        <p>A hidden route connects the Ice-Grip Tunnels to a narrow shelf below the Frozen Reliquary.</p>
+                        <p>The lower vaults contain living dead and hunters.</p>
+                        <p>Ogres have taken goblins from other bands and forced them to serve. The Frostbite Goblins know of the Runt-Grown Goblins and want proof that they still live.</p>
+                        <p>The goblins may become allies if the party helps them break Rathgamon's hold, brings reliable news of the Runt-Grown Goblins, or gives them a way to leave the cliff safely. They will not risk their entire band for a vague promise.</p>
+                        <h3>The Lower Vaults and the Ice-Grip Tunnels.</h3>
+                        <p>The original complex's map marks further rooms and passages beyond Area 21. Areas 22 to 67 are the important lairs and features of that deeper section. Use the map's numbered locations to place them. The passages between these sites are flooded, broken, and often crossed by narrow ice shelves.</p>
+                        <h3>GM Notes.</h3>
+                        <p>Rathgamon should feel like the ruler of the region.</p>
+                        <p>The Frostbite Goblins are an independent faction. They can be allies, informants, guides, or antagonists depending on how the party treats them.</p>
+                        <p>Keep the norther approaches toward Frostholm relevant. Goblin scouts may know of approaching threats before anyone in Frostholm does.</p>
+                        <p>Use the Runt-Grown Goblins as a point of connection between the Frostbite Goblins and the ogres. This gives the party a reason to negotiate with the goblins beyond simple treasure.</p>
+                        <p>The sea should remain active throughout the adventure. Tides, wrecks, currents, ice shelves, and predators make travel through the complex different from an ordinary underground dungeon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "main",
+                "label": "The Frozen Vaults",
+                "img": "adv-maps/frozen-vaults.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "main",
+                "name": "The Meltwater Cleft",
+                "description": "A narrow stream of meltwater runs from the cliff and disappears into a sea cave. Animal tracks and small boot prints mark the muddy bank. Two cold fire rings sit beneath an overhang.",
+                "bullets": [
+                    "**Entrance.** The main entrance is a narrow sea cave at the foot of the cliff. At high tide, the lower part of the entrance is submerged.",
+                    "**Black iron key.** The eastern fire ring contains a black iron key wrapped in oilskin and hidden beneath a flat stone. It opens the old store-room door in Area 28. A scrap of parchment calls it a “key to the warm room.”",
+                    "**Concealed trail.** Searching the western bank reveals a concealed trail leading toward the Ice-Grip Tunnels. The trail is easier to find from the cave side.",
+                    "**Lookout.** A goblin lookout sometimes watches the entrance from a crack above the stream. It retreats to warn the others if discovered."
+                ],
+                "stats": ""
+            },
+            "2": {
+                "level": "main",
+                "name": "The Tide Dock",
+                "description": "A stone landing stands five feet above the usual waterline. Two flat-bottomed boats are tied to iron rings. Poles rest on stone supports along the north wall.",
+                "bullets": [
+                    "**Boats.** Each boat carries four passengers and one or two polers. They are difficult to steer through the twisting flooded passages. The northern boat is sound. The southern boat has a rotting line and a crudely patched floor; a hard impact may split it.",
+                    "**Northern boat.** Wet seats, a half-eaten fish, and a message scratched into the boards in Goblin: “PROPERTY OF THE ICE-GRIPS.”",
+                    "**Tide.** At high tide, the landing is nearly level with the water. At low tide, the boats scrape against the stone."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "main",
+                "name": "The Bloodied Landing",
+                "description": "A broken spear, torn pack, and dark bloodstain lie near the centre of the room.",
+                "bullets": [
+                    "**Pack.** Candles, tinder, a fur-lined hood, and a silver holy symbol of a forgotten sea power (5 gp).",
+                    "**Blood trail.** The dead traveller was attacked while trying to reach the dock. The blood trail leads toward Area 4, then disappears beneath the water."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "main",
+                "name": "The Ambush Pool",
+                "description": "Merfolk lurk in the water and wait for travellers to pass.",
+                "bullets": [
+                    "**Ambush.** They try to circle behind the party or cut off anyone returning to Area 3. The creatures know the flooded routes and will not pursue far onto dry ground."
+                ],
+                "stats": ""
+            },
+            "5": {
+                "level": "main",
+                "name": "The Ruined Great Room",
+                "description": "The north door has been smashed. Torn tapestries depicting the nearby cliffs hang from the east wall. Broken furniture and driftwood cover the floor.",
+                "bullets": [
+                    "**Spectral candle.** A spectral candle burns in the room. Its unnatural light makes several objects partly intangible: a fine woven carpet (50 gp), a small carved seal key, a clay seabird statuette, and a wrought-gold egg (170 gp). All rest on the same ghostly patch of floor.",
+                    "The candle's effect ends if it is extinguished or its magic is disrupted.",
+                    "**Panther.** Anyone entering the room draws the attention of a panther in Area 7."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "main",
+                "name": "The Ritual Chamber",
+                "description": "Four tapestries depicting winter storms and a forested coast hang on the walls (20 gp each). A summoning circle is divided into three sections, marked with the signs of bear, seal, and wolf.",
+                "bullets": [
+                    "**Corpse.** A manacled corpse lies against the wall. It has been dead for decades. It wears a dark mantle of water-strider hide (see below)."
+                ],
+                "stats": "The Mantle of the Water-Striders (500 gp). A wide, black hide mantle with two hoods. When draped over two creatures, both can walk across water as if it were solid ground. It does not protect against currents beneath the surface or creatures in the water."
+            },
+            "7": {
+                "level": "main",
+                "name": "The Ruined Bedchamber",
+                "description": "The door has been smashed inward. A broken bed and an open wardrobe containing mouldy tunics, trousers, and robes occupy the room.",
+                "bullets": [
+                    "**Spectral Panther.** A conjured panther guards this chamber and Area 5. It attacks anyone entering either room, then returns here. Its life is magically linked to the seabird statuette in Area 5. Unless the statuette is destroyed, the creature reforms two turns after being killed."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "main",
+                "name": "The Listening Door",
+                "description": "A peephole has been carved into the door. On its south side, in Common, someone has written: “Knock First.”",
+                "bullets": [
+                    "A creature inside listens for voices and footsteps. The door is not locked. The room beyond is currently used as a goblin observation post when the band is active in the lower vaults."
+                ],
+                "stats": ""
+            },
+            "9": {
+                "level": "main",
+                "name": "The Crude Hostel",
+                "description": "Sleeping mats lie in the east side of the room, with two stools and a stack of empty crockery.",
+                "bullets": [
+                    "**Skrit.** A Frostbite Goblin negotiator waits here when the band expects visitors. Skrit is friendly only so long as it is useful. It directs prospective customers to the goblin stores, but will not fight unless the goblins have a clear advantage. It hopes to secure a share of any valuable discoveries and may abandon the party if danger becomes serious.",
+                    "Skrit knows the route to the Ice-Grip Tunnels and can arrange an audience with the tunnel-chief. It will not reveal Rathgamon's habits without payment or a convincing offer."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "main",
+                "name": "The Goblin Market",
+                "description": "Rough tables display fish, old tools, scavenged clothing, and goods taken from wrecks. Goblin sleeping pallets fill the western end. The room smells of fish oil and wet fur.",
+                "bullets": [
+                    "**Traders.** The Frostbite Goblins trade here. They charge high prices to strangers and may attempt to extort anyone who seems wealthy or lost. If they feel cheated, they offer to escort the party by a “safe” route, then lead them toward a dangerous passage or an ambush.",
+                    "**For sale:**",
+                    "▶ Fish or cold fish soup: 5 cp",
+                    "▶ Bowl or spoon: 5 cp",
+                    "▶ Other mundane goods: 5 cp",
+                    "▶ Fresh water: 1 sp",
+                    "▶ Goblin escort or guide, per day: 1 sp",
+                    "▶ Used fishing net: 2 sp",
+                    "▶ Leaky canoe: 10 gp",
+                    "▶ Paddle: 1 sp",
+                    "▶ Prime rod: 10 gp",
+                    "▶ Second prime rod: 50 gp",
+                    "▶ Rotten fish paste sold as poison: 20 gp",
+                    "▶ A supposed magic sword: 300 gp (fake; it is an ordinary blade made to look valuable)"
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "main",
+                "name": "The Tunnel-Chief's Den",
+                "description": "Sleeping furs cover the floor. A giant weasel pelt (200 gp) hangs above the chief's sleeping place. Sacks contain 59 gp in mixed coins and several small trade goods.",
+                "bullets": [
+                    "**Chief.** The chief is not present unless the GM places them here. The room is guarded by two goblins when the band is at home.",
+                    "**Niche.** A concealed niche behind the furs holds messages from Rathgamon, including reports about travellers moving from Frostholm."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "main",
+                "name": "The Lackeys' Workroom",
+                "description": "Stained tables hold grubby food and bloody fishing implements. Barrels and pots contain fermenting fish, seal fat, and sour drink.",
+                "bullets": [
+                    "**Guards.** The goblin guards join any fight in the nearby market if they believe the intruders are dangerous.",
+                    "**Cave hound.** A large, half-wild cave hound is usually chained here. It can be calmed with food or released by cutting its chain."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "main",
+                "name": "The Fire-Carved Junction",
+                "description": "The stone walls are scorched and furrowed. The marks are old, but the passage still carries a faint smell of burned oil.",
+                "bullets": [
+                    "**Ice drake.** There is a 2-in-6 chance that the great many-headed ice drake from Area 15 investigates loud noises within 30 feet. If it does not investigate, it is alert in its lair and cannot be surprised."
+                ],
+                "stats": ""
+            },
+            "14": {
+                "level": "main",
+                "name": "The Rubbled Stair",
+                "description": "Deep furrows mark the stairwell. Loose stone and ice cover the steps. The stair descends toward the warmer, damp lower vaults. The contrast between the cold air above and the stale air below is noticeable.",
+                "bullets": [
+                    "**Rubble.** Anyone moving quickly has a 5-in-6 chance of sending rubble clattering down the stairs, alerting the creature in Area 15."
+                ],
+                "stats": ""
+            },
+            "15": {
+                "level": "main",
+                "name": "The Ice Drake's Lair",
+                "description": "The walls are deeply scored and blackened by old fires. Knee-deep debris covers the floor: rubble, broken gear, bits of furniture, scales, bones, and the remains of travellers (Lesser Drake, swap fire for ice).",
+                "bullets": [
+                    "**Ice drake.** Unless disturbed, the ice drake sleeps much of the time in the southwest corner. It has keen hearing and smell. It is difficult to surprise while awake, but may be caught sleeping if the party approaches quietly.",
+                    "**Searching.** The debris yields 320 sp in loose coins in total. Each turn spent searching finds 3d10 sp until the supply is exhausted. There is also a 50% chance per turn of finding one item from the list below:",
+                    "▶ A partly burned chest containing 80 gp in sacks.",
+                    "▶ A well-made spear.",
+                    "▶ A prime rod.",
+                    "▶ Two ordinary spears.",
+                    "▶ A two-handed sword with a peridot pommel (20 gp).",
+                    "▶ A halberd with a silver-shod head (9 gp).",
+                    "▶ A pack with three oil flasks and two vials of unholy water.",
+                    "▶ A suit of dwarf-sized plate armour.",
+                    "▶ Two suits of human-sized chainmail.",
+                    "▶ Three small shields.",
+                    "▶ A large shield."
+                ],
+                "stats": ""
+            },
+            "16": {
+                "level": "main",
+                "name": "The Frost-Scarred Door",
+                "description": "A blackened iron door opens to the south, but only after the debris in Area 15 has been cleared. Its surface is warm to the touch despite the cold air around it.",
+                "bullets": [],
+                "stats": ""
+            },
+            "17": {
+                "level": "main",
+                "name": "The Jammed Door",
+                "description": "The badly scorched door hangs open six inches. Its iron bands and hinges have fused with ice. Forcing it open makes a loud cracking noise.",
+                "bullets": [
+                    "**Footprints.** Small soot-covered footprints lead in and out. They are more than a week old and do not match the Frostbite Goblins' current tracks."
+                ],
+                "stats": ""
+            },
+            "18": {
+                "level": "main",
+                "name": "The Ash Chamber",
+                "description": "Repeated bursts of extreme heat have cracked the stone. Fourteen humanoid corpses lie among burned furnishings, all covered in ash and soot. The bodies are too badly damaged to identify.",
+                "bullets": [
+                    "Anyone moving through the room stirs clouds of ash and emerges blackened. Small footprints from several weeks ago cross the room. Larger tracks, months old, lead to the far wall.",
+                    "**Secret door.** Pressing a small stone in the southwest corner, seven feet above the floor, opens a secret door. It slides down into the floor and closes after one turn."
+                ],
+                "stats": ""
+            },
+            "19": {
+                "level": "main",
+                "name": "The Deep-Freeze Cabinet",
+                "description": "A door-sized metal cabinet glows faintly and radiates a steady, unnatural chill. Three locks secure it. Each is difficult to pick and protected by a magical shock ward.",
+                "bullets": [
+                    "**Ward.** Speaking the old phrase “Norell-Uf'gtuy” prevents the ward from triggering.",
+                    "**Cold.** The interior is far colder than the surrounding room. Anyone touching its contents without proper insulation suffers cold injury each round.",
+                    "**Shelves.** 3 vials of holy water. 3 vials of unholy water. 2 dormant yellow mould samples. 1 dormant brown mould sample. 1 vial of dust from a slain vampire. 1 dose of blade venom. 1 vial of clear gaseous poison. 1 potion of invisibility. 1 potion of sweet water (two doses). 1 potion of treasure finding. 1 potion of great strength. 1 pot of marvellous pigments. 3 empty vials.",
+                    "Each liquid takes three hours to thaw. The contents may be ruined if exposed to ordinary fire or mishandled.",
+                    "**Secret door.** A small stone in the northeast corner depresses to open a secret door for one turn."
+                ],
+                "stats": ""
+            },
+            "20": {
+                "level": "main",
+                "name": "The False Black Door",
+                "description": "This enormous black stone door has veins of marbled gold and recessed hinges. It is extremely heavy. It opens onto a blank wall.",
+                "bullets": [
+                    "**Inscription.** An inscription runs along the inside of the door frame, in an old language: “afteR a Hard fall kNOck on thE wall. the caReful may find if open of mind, LORe, sage but hidden, Perhaps fOrbiddeN. in faulT, the long-lost tenebrous vault.”",
+                    "**Clue.** The verse hints that a secret door is hidden in a pit. The capital letters, when rearranged, spell “NORTHERN LOOP.” The clue points toward a concealed passage in the northern part of the complex (Area 62)."
+                ],
+                "stats": ""
+            },
+            "21": {
+                "level": "main",
+                "name": "The Trapped False Door",
+                "description": "Opening this false door triggers a mechanism that locks the door to Area 15 for 24 hours.",
+                "bullets": [
+                    "The mechanism is concealed in the hinge and can be found by careful examination."
+                ],
+                "stats": ""
+            },
+            "22": {
+                "level": "main",
+                "name": "The Shadow Passage",
+                "description": "Cold-haunted ghouls gather in this dark stretch of corridor. Their outlines resemble people standing beneath deep water. They attack those carrying bright lights or disturbing the remains scattered along the walls.",
+                "bullets": [
+                    "**Coffer.** A small iron coffer is wedged beneath a fallen flagstone. It contains 12 gp and a silver ring worth 5 gp."
+                ],
+                "stats": ""
+            },
+            "23": {
+                "level": "main",
+                "name": "The Flooded Shrine",
+                "description": "A stone altar stands beneath waist-deep water. Three carved seals face the entrance. The altar was used to bless the dead before they were lowered into the sea.",
+                "bullets": [
+                    "**Vision.** A character who cleans the altar and replaces the missing seal receives a brief vision of the upper cliff: a huge pale shape crouched above the sea, watching the eastern road."
+                ],
+                "stats": ""
+            },
+            "24": {
+                "level": "main",
+                "name": "The Broken Offering Room",
+                "description": "The floor is scattered with cracked bowls, fish bones, and fragments of carved ivory. A narrow fissure in the north wall exhales cold air.",
+                "bullets": [
+                    "**Hidden compartment.** 8 gp, a small gold brooch worth 10 gp, and a scrap of vellum showing a route from the lower vaults toward the Ice-Grip Tunnels."
+                ],
+                "stats": ""
+            },
+            "25": {
+                "level": "main",
+                "name": "The Demon's Cell",
+                "description": "A powerful fiendish prisoner once occupied this chamber. The warding marks have been damaged, and the room is now a place of bitter cold and unnatural silence.",
+                "bullets": [
+                    "**Osmiscal.** The creature that remains here (a cubi devil named Osmiscal) is cunning and seeks to bargain before fighting. It offers information about Rathgamon, but its account is slanted: it wants the party to break the last ward and free it.",
+                    "**Baneful iron rod.** A baneful iron rod lies on the altar. It is a heavy mace with seven charges. When a charge is spent on a successful hit, the target suffers a randomly determined crippling effect. The rod is worth 80 gp to a collector, but its use is dangerous."
+                ],
+                "stats": ""
+            },
+            "26": {
+                "level": "main",
+                "name": "The Warding Hall",
+                "description": "Three stone doors stand in a row. Each bears a different mark: a wave, a closed eye, and a broken crown. Only one door opens freely. The others are held by old magic.",
+                "bullets": [
+                    "**Wave door.** Leads toward the flooded lower passages.",
+                    "**Closed-eye door.** Leads toward the dead.",
+                    "**Broken-crown door.** Leads toward the upper cliff route."
+                ],
+                "stats": ""
+            },
+            "27": {
+                "level": "main",
+                "name": "The Store of the Drowned",
+                "description": "Rotting crates and waterlogged sacks fill the room.",
+                "bullets": [
+                    "Most of the goods are worthless, but a careful search finds 15 gp in a sealed jar, a silver hand mirror worth 8 gp, and a warm wool cloak in surprisingly good condition."
+                ],
+                "stats": ""
+            },
+            "28": {
+                "level": "main",
+                "name": "The Warm Room",
+                "description": "The black iron key from Area 1 opens this door. The room is dry and unexpectedly warm. Old blankets, a small brazier, and a stack of split driftwood remain here.",
+                "bullets": [
+                    "**Warning.** A traveller has scratched a warning into the wall: “THE PALE ONE ASKS WHAT CANNOT BE GIVEN.”",
+                    "**Chest.** A locked chest contains 25 gp, a brass compass, and a map of the cliff ledges. The map marks a narrow ascent to the Frozen Reliquary."
+                ],
+                "stats": ""
+            },
+            "29": {
+                "level": "main",
+                "name": "The Dead Watch",
+                "description": "A group of skeletal guards remain standing at their posts around a stone bier. The bier contains a robed corpse wearing a silver circlet worth 15 gp. Disturbing the body causes the guards to rise.",
+                "bullets": [
+                    "**Bone token.** The corpse's hands are clasped around a small bone token. The token bears the same three marks as the doors in Area 26. It opens the old route toward the upper cliff."
+                ],
+                "stats": ""
+            },
+            "30": {
+                "level": "main",
+                "name": "The Frozen Reliquary Approach",
+                "description": "The passage opens onto a narrow ledge high above the sea. Wind drives snow and ice across the stone. The ledge is exposed, with a sheer drop to the black water below.",
+                "bullets": [
+                    "**Tracks.** Tracks show that something large and heavy regularly crosses the ledge. The tracks lead upward toward Rathgamon's lair.",
+                    "**The Sphinx.** The Sphinx sometimes watches from above. If the party has made itself known, it may speak from the cliff before appearing. It demands an answer to a riddle, a valuable offering, or a service. A wrong answer does not always mean immediate death; Rathgamon may instead impose a task or mark the party as prey."
+                ],
+                "stats": ""
+            },
+            "31": {
+                "level": "main",
+                "name": "The Sea-Cleft",
+                "description": "A natural cleft opens to the frozen sea. At low tide, a narrow strip of black stone can be crossed. At high tide, the passage is submerged and dangerous.",
+                "bullets": [
+                    "**Wreck.** A wrecked boat is trapped in the ice. Its hold contains 18 gp, a coil of good rope, and a sealed case with three maps of the coast."
+                ],
+                "stats": ""
+            },
+            "32": {
+                "level": "main",
+                "name": "The Wreck Beach",
+                "description": "Broken timbers, torn sailcloth, and frozen bodies lie beneath the cliff. The wrecks are from several different decades.",
+                "bullets": [
+                    "**Search.** A search finds a locked sea chest containing 30 gp and a silver drinking cup worth 12 gp. There is a 1-in-6 chance that merfolk arrive while the party searches."
+                ],
+                "stats": ""
+            },
+            "33": {
+                "level": "main",
+                "name": "The Ice Shelf",
+                "description": "A broad shelf of blue ice spans a dark crevasse. The ice is cracked and groaning. Heavy loads or loud impacts may break it.",
+                "bullets": [
+                    "**Cache.** A narrow route around the shelf leads to a small cave with a hidden cache: 10 gp, a fur-lined hood, and a sealed letter addressed to someone in Frostholm."
+                ],
+                "stats": ""
+            },
+            "34": {
+                "level": "main",
+                "name": "The Tide Cavern",
+                "description": "The chamber fills and drains with the tide. A 2 Orcas lair here, using the current to overturn small boats and drag prey beneath the surface.",
+                "bullets": [
+                    "**Niche.** A stone niche above the high-water mark contains a gold chain worth 20 gp and a small ivory carving worth 5 gp."
+                ],
+                "stats": ""
+            },
+            "35": {
+                "level": "main",
+                "name": "The Hidden Shelf",
+                "description": "A narrow shelf is concealed behind a curtain of ice. The Frostbite Goblins use it to move between the Ice-Grip Tunnels and the upper cliff without crossing the exposed ledge.",
+                "bullets": [
+                    "**Lookout.** A goblin lookout watches the route. If approached peacefully, it can be persuaded to guide the party to the tunnels."
+                ],
+                "stats": ""
+            },
+            "36": {
+                "level": "main",
+                "name": "The Old Climb",
+                "description": "A steep, broken stair follows the cliff face. Several steps have fallen away. The climb is exposed to wind and falling ice.",
+                "bullets": [
+                    "**Corpse.** A frozen corpse is wedged beneath a broken step. It carries 7 gp, a small knife, and a scrap of paper reading: “Do not answer the second question.”"
+                ],
+                "stats": ""
+            },
+            "37": {
+                "level": "main",
+                "name": "The Sea Gate",
+                "description": "An old stone gate controls the lower flow of seawater into the complex. Its mechanism is jammed with ice and debris. Opening it changes the water level in several nearby passages.",
+                "bullets": [
+                    "The gate can be forced, repaired, or opened by finding the control lever in the adjoining passage. Doing so may expose a previously flooded route, but it also alerts creatures in the deep vaults."
+                ],
+                "stats": ""
+            },
+            "38": {
+                "level": "main",
+                "name": "The Goblin's Outer Watch",
+                "description": "Two Frostbite Goblins keep watch from behind a low wall of driftwood and stone. They signal the Ice-Grip Tunnels with a small horn.",
+                "bullets": [
+                    "They do not attack immediately. They ask who the party serves, whether it has come from Frostholm, and whether it knows anything of the Runt-Grown Goblins."
+                ],
+                "stats": ""
+            },
+            "39": {
+                "level": "main",
+                "name": "The Narrow Ledge",
+                "description": "A narrow ledge runs along the cliff above the water. It is passable in single file. A fall means a plunge into freezing water and a strong current.",
+                "bullets": [
+                    "**Cairn.** A small cairn marks the safest route. Beneath it is a tin box containing 6 gp and a goblin-made bone whistle."
+                ],
+                "stats": ""
+            },
+            "40": {
+                "level": "main",
+                "name": "The Goblin's Fishing Hole",
+                "description": "A sheltered pool contains fish trapped by the tide. Goblin nets hang from iron spikes. The goblins use this place to gather food and watch movement along the coast.",
+                "bullets": [
+                    "A character who helps repair a net or shares food can gain the trust of the fishermen. They know when Rathgamon last flew and whether it is currently near the Reliquary."
+                ],
+                "stats": ""
+            },
+            "41": {
+                "level": "main",
+                "name": "The Ice-Grip Entrance",
+                "description": "A low tunnel behind a curtain of ice leads into the Ice-Grip Tunnels. The entrance is difficult to see from the sea.",
+                "bullets": [
+                    "**Trail signs.** The tunnel is marked with small cuts in the stone. These are goblin trail signs. A character who understands them can tell whether the route is safe, watched, or recently used."
+                ],
+                "stats": ""
+            },
+            "42": {
+                "level": "main",
+                "name": "The Broken Store",
+                "description": "A storage chamber has partially collapsed. Barrels of salt fish and old supplies lie beneath the rubble.",
+                "bullets": [
+                    "A careful search finds 20 sp, a silver clasp worth 4 gp, and a bundle of dry tinder."
+                ],
+                "stats": ""
+            },
+            "43": {
+                "level": "main",
+                "name": "The Flooded Crossing",
+                "description": "A swift channel cuts across the passage. A rope once stretched between the walls has snapped and hangs into the water.",
+                "bullets": [
+                    "Crossing without a rope is dangerous. The current pulls toward the lower vaults. A submerged skeleton clutches a pouch containing 9 gp."
+                ],
+                "stats": ""
+            },
+            "44": {
+                "level": "main",
+                "name": "The Old Watch Room",
+                "description": "A narrow room overlooks the flooded crossing. A stone bench and a cracked signal mirror remain. The mirror can flash sunlight toward the cliff face, where the Frostbite Goblins use it to signal the upper watch.",
+                "bullets": [
+                    "**Hidden compartment.** 14 gp and a small silver whistle worth 3 gp."
+                ],
+                "stats": ""
+            },
+            "45": {
+                "level": "main",
+                "name": "The Merfolk's Den",
+                "description": "The walls are slick with slime and fish oil. Merfolk use the room as a resting place and store stolen gear in cracks above the waterline.",
+                "bullets": [
+                    "They are hostile to intruders, but may bargain if offered food, a captive, or access to the deeper water. Their leader knows of the great presence in Area 67 and fears it."
+                ],
+                "stats": ""
+            },
+            "46": {
+                "level": "main",
+                "name": "The Flood Stairs",
+                "description": "A steep stair descends into dark water. The lower steps are submerged even at low tide. The stone is covered in pale growth.",
+                "bullets": [
+                    "A character who studies the markings can identify them as warnings: “THE WATER BELOW IS NOT EMPTY.”"
+                ],
+                "stats": ""
+            },
+            "47": {
+                "level": "main",
+                "name": "The Drowned Hall",
+                "description": "The hall is filled with floating debris and the remains of old furnishings. A hidden side passage leads toward the deepest vaults.",
+                "bullets": [
+                    "**Orrery.** A small floating orrery probes through the water. It withdraws if attacked, but returns when the passage is quiet."
+                ],
+                "stats": ""
+            },
+            "48": {
+                "level": "main",
+                "name": "The Old Armoury",
+                "description": "Rusted racks hold corroded weapons and split shields. Most are useless.",
+                "bullets": [
+                    "**Chest.** A sealed chest contains a serviceable spear, a silvered dagger worth 15 gp, and 12 gp."
+                ],
+                "stats": ""
+            },
+            "49": {
+                "level": "main",
+                "name": "The Troglodyte Cavern",
+                "description": "A band of cave-dwellers occupies this rough chamber. They are frightened and angry, having been driven from deeper passages by the things below.",
+                "bullets": [
+                    "They may attack if cornered, but can be persuaded to guide the party through the caves in exchange for food or help escaping the vaults."
+                ],
+                "stats": ""
+            },
+            "50": {
+                "level": "main",
+                "name": "The Ice Well",
+                "description": "A circular shaft descends through the cliff. Its sides are glazed with ice. A narrow ledge spirals down to a pool far below.",
+                "bullets": [
+                    "The pool is connected to the sea. Something large moves beneath its surface.",
+                    "**Box.** A brass-bound box on the ledge contains 16 gp and a silver pendant worth 8 gp."
+                ],
+                "stats": ""
+            },
+            "51": {
+                "level": "main",
+                "name": "The Watcher's Crypt",
+                "description": "A stone bier stands beneath a carved image of a hooded watcher. The corpse (Ghast) has risen and now guards the chamber.",
+                "bullets": [
+                    "**Bier.** The bier contains a silver chain worth 10 gp and a small bronze key that opens the northern route."
+                ],
+                "stats": ""
+            },
+            "52": {
+                "level": "main",
+                "name": "The Collapsed Chamber",
+                "description": "Stone blocks and ice fill much of the room. A gap near the floor allows a small creature to crawl through to the adjoining passage.",
+                "bullets": [
+                    "**Jar.** Behind the rubble is a sealed jar containing 22 gp. The jar is marked with the old coastal sign for “safe passage.”"
+                ],
+                "stats": ""
+            },
+            "53": {
+                "level": "main",
+                "name": "The Old Lift",
+                "description": "A wooden platform hangs from a chain in a vertical shaft. The mechanism is frozen but can be freed with time and tools. It connects the lower passages to a ledge above.",
+                "bullets": [
+                    "The lift is noisy. Using it alerts creatures in nearby rooms."
+                ],
+                "stats": ""
+            },
+            "54": {
+                "level": "main",
+                "name": "The Wreck Watch",
+                "description": "Merfolk watch the wrecks from a crack in the cliff. They are looking for survivors and valuables.",
+                "bullets": [
+                    "They have a small collection of stolen coins, worth 11 gp, and a bronze knife."
+                ],
+                "stats": ""
+            },
+            "55": {
+                "level": "main",
+                "name": "The Sealed Niche",
+                "description": "A secret door opens into a narrow niche. Inside is a stone coffer containing 35 gp and a silver ring set with a pale blue stone worth 20 gp.",
+                "bullets": [
+                    "**Ward.** The coffer is protected by an old ward. Opening it without speaking the phrase “Norell-Uf'gtuy” releases a burst of cold."
+                ],
+                "stats": ""
+            },
+            "56": {
+                "level": "main",
+                "name": "The Wind Shaft",
+                "description": "A vertical shaft connects the lower vaults to the cliff top. Wind whistles through it, carrying snow and salt spray. A rope ladder hangs down from above.",
+                "bullets": [
+                    "The ladder is old but usable. It emerges on a narrow shelf below the Frozen Reliquary."
+                ],
+                "stats": ""
+            },
+            "57": {
+                "level": "main",
+                "name": "The Riddle Marks",
+                "description": "The walls are covered in carved questions and answers. Some are genuine riddles, some are nonsense, and some are warnings left by travellers who encountered Rathgamon.",
+                "bullets": [
+                    "**Inscription.** One inscription reads: “I am the road that cannot be walked, the door that cannot be opened, and the answer that cannot be spoken.”",
+                    "A character who studies the marks may learn that Rathgamon values cleverness less than submission. The Sphinx's riddles are tests of obedience and nerve, not fair puzzles."
+                ],
+                "stats": ""
+            },
+            "58": {
+                "level": "main",
+                "name": "The Pale Gallery",
+                "description": "A small chamber is filled with pale, floating shapes. They are cold spirits bound to a glass globe in the centre of the room.",
+                "bullets": [
+                    "The globe is fragile. If broken, the spirits scatter and the room becomes quiet. If carried away intact, the globe can be sold to a collector for 25 gp, but it brings bad dreams to its bearer."
+                ],
+                "stats": ""
+            },
+            "59": {
+                "level": "main",
+                "name": "The Old Tide Chapel",
+                "description": "A stone altar stands before a wall carved with waves and stars. The chapel is dry, though the surrounding passages are flooded.",
+                "bullets": [
+                    "A character who leaves an offering of food or a coin may receive a brief vision of a safe route through the next flooded passage. The altar contains 5 gp in old offerings."
+                ],
+                "stats": ""
+            },
+            "60": {
+                "level": "main",
+                "name": "The Deep Probe",
+                "description": "A small floating orrery floats high in this room. Rathgamon uses these to scry throughout the stronghold.",
+                "bullets": [
+                    "It drifts away if the party approaches. If the party attacks it, it withdraws and becomes wary. If the party follows it, it leads toward the deepest chamber."
+                ],
+                "stats": ""
+            },
+            "61": {
+                "level": "main",
+                "name": "The Ice-Locked Gallery",
+                "description": "A corridor is blocked by thick clear ice. Shapes are visible inside: old tools, a broken shield, and the outline of a person.",
+                "bullets": [
+                    "The ice can be melted slowly, broken noisily, or bypassed through a narrow crack. The frozen body carries 13 gp and a silver pin worth 6 gp."
+                ],
+                "stats": ""
+            },
+            "62": {
+                "level": "main",
+                "name": "The Northern Loop",
+                "description": "This passage forms a concealed route behind the upper rooms. The false-door inscription in Area 20 points here.",
+                "bullets": [
+                    "A secret door in the floor opens after a heavy impact against the wall.",
+                    "The loop allows a careful party to bypass several guarded passages and approach the upper cliff from behind."
+                ],
+                "stats": ""
+            },
+            "63": {
+                "level": "main",
+                "name": "The Goblin's Inner Watch",
+                "description": "A small watch post overlooks the route toward Rathgamon. A pair of Frostbite Goblins is usually present. They carry a signal horn and a message tube.",
+                "bullets": [
+                    "The goblins know the Sphinx's current demands and can tell the party whether it is accepting visitors, hunting, or brooding in its lair."
+                ],
+                "stats": ""
+            },
+            "64": {
+                "level": "main",
+                "name": "The Ogre's Scout",
+                "description": "A lone ogre scout has entered the vaults searching for escaped goblin slaves. It has heard rumours that the Frostbite Goblins shelter runaways and intends to bring them north.",
+                "bullets": [
+                    "It may bargain with the party if it believes they know the location of the Runt-Grown Goblins. It will not willingly admit that it is afraid of Rathgamon."
+                ],
+                "stats": ""
+            },
+            "65": {
+                "level": "main",
+                "name": "The Ice Elemental's Pool",
+                "description": "A large water spirit inhabits a pool beneath a frozen arch. It is bound to the old vault and reacts violently to anyone disturbing the water.",
+                "bullets": [
+                    "The creature can be calmed by restoring the carved stone seal on the pool's rim. If calmed, it reveals that Rathgamon entered the upper Reliquary through the wind shaft."
+                ],
+                "stats": ""
+            },
+            "66": {
+                "level": "main",
+                "name": "The Last Ascent",
+                "description": "A narrow stair climbs toward the Frozen Reliquary. The steps are steep and glazed with ice. The wind grows stronger with every turn.",
+                "bullets": [
+                    "**Arch.** At the top is a stone arch bearing a final inscription: “Speak what is true, surrender what is dear, and climb without looking down.” The arch is not magical. It is Rathgamon's warning to those who come seeking an audience."
+                ],
+                "stats": ""
+            },
+            "67": {
+                "level": "main",
+                "name": "The Pale Sphinx's Sanctum",
+                "description": "The deepest chamber opens onto a vast natural cavern beneath the highest sea cliff. A broad shelf of stone overlooks a dark pool connected to the frozen ocean. The remains of wrecks and ancient offerings lie scattered around the cavern.",
+                "bullets": [
+                    "**Rathgamon.** Rathgamon, the Pale Sphinx, makes its lair here. It is the master of Winter's Edge. Its pale hide is scarred by ice and salt, and its presence has altered the cliff around it. It watches the eastern approaches toward Frostholm and uses the Frostbite Goblins as scouts.",
+                    "**Demands.** Rathgamon does not immediately attack every intruder. It prefers to establish control through questions, riddles, and impossible demands. It may demand:",
+                    "▶ The name of the last person the party failed to save.",
+                    "▶ A treasure that no member of the party owns.",
+                    "▶ An answer to a riddle whose wording changes as it is answered.",
+                    "▶ A promise to deliver a message to Frostholm.",
+                    "▶ The surrender of a weapon, map, or treasured possession.",
+                    "▶ Proof that the party has dealt with the ogres who hold the Runt-Grown Goblins.",
+                    "Rathgamon treats refusal as defiance. It may attack, drive the party from the cliff, or set a task that it expects them to fail. It may also allow a party that entertains it to leave with a warning or a bargain.",
+                    "**Final confrontation.** The final encounter takes place on the high shelf above the sea. The floor is uneven and slick with ice. Several broken pillars provide cover, but the edge is unguarded and a fall means plunging into the freezing water far below.",
+                    "Rathgamon uses the height and terrain to its advantage. It tries to separate the party, force characters toward the edge, and make them choose between answering its questions and protecting one another. It may retreat to a higher ledge if badly hurt, forcing the party to climb after it.",
+                    "**Goblins.** The Frostbite Goblins do not automatically fight beside Rathgamon. If the party has earned their trust, they may refuse to intervene, open a route to the Sphinx's flank, or help the party escape. If the goblins remain loyal to Rathgamon, they observe from the ledges and report the outcome."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'frozen-vaults-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
