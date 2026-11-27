@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>The Crimson Manor</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #ff5c5c;
+            --line: #4d4c4c;
+            --accent: #f56e7e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>The Crimson Manor</h1><span id="levelTabs" role="group"></span><input id="search" placeholder="Find a room or keyword..." ><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Risky. (2rds)</p>
+                    <p><strong>Light.</strong> Darkness.</p>
+                </div>
+                <div class="lvl-panel" data-panel="ground">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Manor, Day</strong></p>
+                    <table>
+                        <tr>
+                            <th>d4</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Two vampire <strong>thralls</strong> cross the hall carrying a covered basket of food and a stoppered flask of blood</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>A vampire <strong>spawn</strong> disguised in a servant's cloak walks from Area 05 toward Area 18. It watches the characters but does not attack unless exposed</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A thrall <strong>gardener</strong> hides a small stolen treasure in a flowerpot. It begs the characters not to tell the seneschal</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>A captured <strong>woodcutter</strong>, watched by a thrall, is being taken to Area 29 to work on the roots</td>
+                        </tr>
+                    </table>
+                    <p><strong>Manor, Night</strong></p>
+                    <table>
+                        <tr>
+                            <th>d4</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1d4 vampire <strong>spawn</strong> patrol the halls, searching for a missing thrall</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Two <strong>thralls</strong> sneak away from their duties to drink from a blood cask in Area 25</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A vampire <strong>courtier</strong> and two spawn move from Area 23 to Area 28 for a private audience with Malakar</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Two vampire <strong>spawn</strong> return from the forest carrying a bound Rune-Elk Elf. They intend to take the prisoner to Area 32</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="lvl-panel hide" data-panel="upper">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Manor, Day</strong></p>
+                    <table>
+                        <tr>
+                            <th>d4</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Two vampire <strong>thralls</strong> cross the hall carrying a covered basket of food and a stoppered flask of blood</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>A vampire <strong>spawn</strong> disguised in a servant's cloak walks from Area 05 toward Area 18. It watches the characters but does not attack unless exposed</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A thrall <strong>gardener</strong> hides a small stolen treasure in a flowerpot. It begs the characters not to tell the seneschal</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>A captured <strong>woodcutter</strong>, watched by a thrall, is being taken to Area 29 to work on the roots</td>
+                        </tr>
+                    </table>
+                    <p><strong>Manor, Night</strong></p>
+                    <table>
+                        <tr>
+                            <th>d4</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>1d4 vampire <strong>spawn</strong> patrol the halls, searching for a missing thrall</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Two <strong>thralls</strong> sneak away from their duties to drink from a blood cask in Area 25</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>A vampire <strong>courtier</strong> and two spawn move from Area 23 to Area 28 for a private audience with Malakar</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Two vampire <strong>spawn</strong> return from the forest carrying a bound Rune-Elk Elf. They intend to take the prisoner to Area 32</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="lvl-panel hide" data-panel="under">
+                    <h2>Random Encounters</h2>
+                    <p><strong>Undercroft</strong></p>
+                    <table>
+                        <tr>
+                            <th>d4</th>
+                            <th>details</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Two <strong>thralls</strong> carry a cask of blood from Area 25 to Area 28</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Two newly turned vampire <strong>spawn</strong> make their way toward Area 35 under guard</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Two vampire <strong>spawn</strong> use the secret entrance in Area 26 to fetch a barrel from the cellar</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>1d4 vampire <strong>thralls</strong> hide in a side chamber, arguing about whether to flee or remain loyal to Malakar</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/crimson-ground.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="01">Area 01: Vestibule</button>
+                <button class="room-chip" data-room="02">Area 02: Central Courtyard</button>
+                <button class="room-chip" data-room="03">Area 03: Eastern Colonnade</button>
+                <button class="room-chip" data-room="04">Area 04: Guard Quarters</button>
+                <button class="room-chip" data-room="05">Area 05: Shrine of the First Blood</button>
+                <button class="room-chip" data-room="06">Area 06: Guest Quarters</button>
+                <button class="room-chip" data-room="07">Area 07: Veranda</button>
+                <button class="room-chip" data-room="08">Area 08: Blood Baths</button>
+                <button class="room-chip" data-room="09">Area 09: Arcades</button>
+                <button class="room-chip" data-room="10">Area 10: Painter's Studio</button>
+                <button class="room-chip" data-room="11">Area 11: Windcatcher</button>
+                <button class="room-chip" data-room="12">Area 12: Western Garden</button>
+                <button class="room-chip" data-room="13">Area 13: Shrine Gazebo</button>
+                <button class="room-chip" data-room="14">Area 14: Eastern Garden</button>
+                <button class="room-chip" data-room="15">Area 15: Atrium</button>
+                <button class="room-chip" data-room="16">Area 16: Fountain Hall</button>
+                <button class="room-chip" data-room="17">Area 17: Kitchen</button>
+                <button class="room-chip" data-room="18">Area 18: Library</button>
+                <button class="room-chip" data-room="19">Area 19: Balconies</button>
+                <button class="room-chip" data-room="20">Area 20: Lord Malakar's Office</button>
+                <button class="room-chip" data-room="21">Area 21: Windcatcher, Tower Attic</button>
+                <button class="room-chip" data-room="22">Area 22: Upper Palace Floor</button>
+                <button class="room-chip" data-room="23">Area 23: Private Quarters</button>
+                <button class="room-chip" data-room="24">Area 24: Gallery</button>
+                <button class="room-chip" data-room="25">Area 25: Cellar</button>
+                <button class="room-chip" data-room="26">Area 26: Boiler Room</button>
+                <button class="room-chip" data-room="27">Area 27: Private Sauna</button>
+                <button class="room-chip" data-room="28">Area 28: Obsidian Court</button>
+                <button class="room-chip" data-room="29">Area 29: Root-Workshop and Blood Stores</button>
+                <button class="room-chip" data-room="30">Area 30: Common Store</button>
+                <button class="room-chip" data-room="31">Area 31: Bath</button>
+                <button class="room-chip" data-room="32">Area 32: Sleeping Quarters</button>
+                <button class="room-chip" data-room="33">Area 33: Archery Range</button>
+                <button class="room-chip" data-room="34">Area 34: Peeping Hole</button>
+                <button class="room-chip" data-room="35">Area 35: Trial Chamber: Preparation</button>
+                <button class="room-chip" data-room="36">Area 36: Trial Chamber: The Crushing Root</button>
+                <button class="room-chip" data-room="37">Area 37: Trial Chamber: The Riddle</button>
+                <button class="room-chip" data-room="38">Area 38: Trial Chamber: Guardians</button>
+                <button class="room-chip" data-room="39">Area 39: Trial Chamber: Mirrors</button>
+                <button class="room-chip" data-room="40">Area 40: Trial Chamber: The Blood Seal</button>
+                <button class="room-chip" data-room="41">Area 41: Guard Chamber</button>
+                <button class="room-chip" data-room="42">Area 42: Vault Antechamber</button>
+                <button class="room-chip" data-room="43">Area 43: The Crimson Vault</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>Suggested party: 5th-7th level. The sprawling subterranean palace of Lord Malakar and the Obsidian Court.</em></p>
+
+                        <h3>The Manor.</h3>
+                        <p>Beneath the ancient roots of the Emerald Wood lies the Crimson Manor, a sprawling subterranean palace belonging to Lord Malakar and the Obsidian Court. Its upper chambers are hidden beneath an overgrown woodland estate. Its lower halls have been excavated through the roots and bedrock, and its oldest rooms are grown from the petrified remains of trees that stood before the forest.</p>
+                        <p>The manor is not a ruin. It is a working household and the seat of a vampire court. Thralls maintain the rooms, prepare blood and food, tend the gardens, and guard the approaches. Vampire spawn serve as soldiers, hunters, and attendants. The older vampires sleep through the day and gather at night.</p>
+                        <p>The court is at war with the Rune-Elk Elves. The elves cultivate moon-blossoms and phosphorescent fungi to deny the vampires the darkness they need. Malakar's thralls cut sacred trees and widen the underground halls in response. The manor's gardens are therefore both beautiful and strategic: some are cultivated to conceal the entrance, while others are experiments in growing plants that can survive without sunlight.</p>
+                        <p><strong>Areas 01-18:</strong> ground floor and gardens. <strong>Areas 19-24:</strong> upper floor. <strong>Areas 25-43:</strong> undercroft and vault.</p>
+                        <h3>The Court: Day.</h3>
+                        <p>Lord Malakar and most full vampires rest in sealed coffins in Area 23 and the deeper chambers. They do not willingly expose themselves to daylight.</p>
+                        <p>Vampire spawn and thralls remain active. Thralls maintain the manor, tend the gardens, move supplies, and guard entrances. Any spawn not assigned to a post may be found in Areas 28, 32, or 35.</p>
+                        <p>The manor's gardens are bright with moon-blossoms and phosphorescent fungi. These plants are tended carefully and are not to be trampled.</p>
+                        <p>Malakar's seneschal manages visitors and household affairs from Area 20.</p>
+                        <h3>The Court: Night.</h3>
+                        <p>Lord Malakar rises and moves through the manor. He may be found in Area 20, 23, or 28 depending on the situation.</p>
+                        <p>Vampire spawn patrol in pairs. Thralls carry hooded lanterns and sound bells or horns when they discover intruders.</p>
+                        <p>Gargoyles and other stone guardians awaken at dusk in areas marked below.</p>
+                        <p>The moon-blossoms close their petals after midnight. The manor's gardens become much darker, and the vampires move freely through them.</p>
+                        <p>Malakar summons his court to Area 28 for an audience when an alarm is raised or when he wishes to make an example of a disobedient thrall.</p>
+                        <h3>Alarm.</h3>
+                        <p>The manor does not immediately attack as one. An alarm begins locally and spreads:</p>
+                        <p>1. A guard who spots intruders attempts to sound a bell or horn.</p>
+                        <p>2. Nearby thralls retreat toward the nearest guarded room and alert a vampire spawn.</p>
+                        <p>3. Spawn investigate in pairs. They attempt to capture intruders for Malakar rather than kill them immediately.</p>
+                        <p>4. If the alarm reaches Area 23 or 28, Malakar is informed. He sends spawn to block exits while he approaches personally.</p>
+                        <p>5. If Malakar believes the intruders threaten his court, he orders all thralls to seal the surface entrances.</p>
+                        <h3>Doors and Light.</h3>
+                        <p>Ordinary doors can be unlocked quietly with a DC 15 DEX check or forced with a DC 14 STR check.</p>
+                        <p>During the day, most doors are unlocked. The doors to Areas 23 and 24 are locked.</p>
+                        <p>At night, doors to private chambers, the gallery, and the vault approach are locked. Keys are held by the seneschal, the senior spawn, and Malakar.</p>
+                        <p>The doors to Areas 35-40 and 43 are sealed by old blood-magic and cannot be opened by ordinary means. The key or seal is described in the relevant area.</p>
+                        <p>During the day, areas with windows or open roofs are naturally lit. Areas 08, 11, 21, and the entire undercroft are dark unless lit by fungi, lamps, or other sources.</p>
+                        <p>At night, Areas 02, 03, 07, and 09 are dimly lit. The remaining areas are dark unless noted.</p>
+                        <h3>Vampires, Spawn, and Thralls.</h3>
+                        <p>Use the Shadowdark vampire monster for Lord Malakar and the full vampires of his court. Use the same vampire entry for vampire spawn, but reduce their HP by half; spawn are less experienced and do not possess Malakar's magic items or authority.</p>
+                        <p>Vampire thralls are living humanoids under the Court's control. Use the peasant statblock. Most are frightened servants rather than loyal fanatics. A thrall who is given a chance to escape may flee, hide, or help the characters.</p>
+                        <h3>Pieces of Conversation (d8).</h3>
+                        <p>1. “The flowers are closing earlier every night. The elves are changing the garden again.”</p>
+                        <p>2. “Don't look into the master's coffin. He knows when someone has touched it.”</p>
+                        <p>3. “The strongbox is behind the botany books. The seneschal keeps the key, but the master keeps the other one.”</p>
+                        <p>4. “There is a passage behind the old root in the boiler room.”</p>
+                        <p>5. “The master wants the woodcutters taken below before dawn. He says the roots must be opened.”</p>
+                        <p>6. “Something is moving in the cistern. The spawn won't go down there anymore.”</p>
+                        <p>7. “The pale one in the greenhouse doesn't sleep. I saw it standing in the rain with its face turned toward the moon.”</p>
+                        <p>8. “The loose stone by the courtyard columns hides a purse. The old servants put it there before the court came.”</p>
+                        <h3>The Undercroft: Areas 25-43.</h3>
+                        <p>The undercroft is the true heart of the Crimson Manor. Its halls are older than the surface estate and run through the roots of the Emerald Wood. The walls are damp, and in places enormous roots have broken through the stone. The Obsidian Court uses this level for its servants, blood stores, training, and the protection of Malakar's vault.</p>
+                        <p>The manor's thralls are not all willing servants. Some were taken from the forest, some were born below, and others were promised safety from the elves or the dangers of the Wastes. Many will help intruders if they believe Malakar's hold over them can be broken.</p>
+                        <p><strong>Doors and light.</strong> Ordinary doors can be unlocked quietly with a DC 15 DEX check or forced with a DC 14 STR check. The cellar, boiler room, and private sauna are locked. The sealed door between Areas 35 and 40 and the vault door in Area 43 require the blood seal and key described below. Area 25 is completely dark. Areas 26 and 28 have dim fungus-light. The remaining chambers are dark unless noted.</p>
+                        <h3>Running Lord Malakar.</h3>
+                        <p>Lord Malakar is an ancient vampire and the master of the Obsidian Court.</p>
+                        <p><strong>Day.</strong> Malakar rests in his coffin in Area 23. If the coffin is disturbed, he awakens and attempts to escape into the deeper manor before confronting intruders.</p>
+                        <p><strong>Night.</strong> Malakar moves between Areas 20, 23, and 28. He prefers to let spawn and thralls exhaust intruders before revealing himself.</p>
+                        <p>If reduced to half HP, Malakar withdraws toward Area 43 or his coffin. He bargains if doing so might preserve the Heart of the Crimson Root.</p>
+                        <p>Malakar does not willingly fight in the direct light of a moon-blossom or in sunlight. He tries to destroy or smother such sources before engaging.</p>
+                        <p>Malakar's key opens Area 43. The seneschal's false key does not.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "ground",
+                "label": "Ground Floor and Gardens",
+                "img": "adv-maps/crimson-ground.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+            {
+                "id": "upper",
+                "label": "Upper Floor",
+                "img": "adv-maps/crimson-upper.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+            {
+                "id": "under",
+                "label": "Undercroft and Vault",
+                "img": "adv-maps/crimson-undercroft.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "01": {
+                "level": "ground",
+                "name": "Vestibule",
+                "description": "A narrow vaulted passage leads from the hidden forest entrance into the manor. Red glass lamps hang from bronze hooks. Their light makes the walls look wet, though the stone is dry.",
+                "bullets": [
+                    "**Day.** If intruders are discovered, two vampire thralls move here to block the exit. They fight only if cornered.",
+                    "**Night.** Two vampire spawn seal the exit. One carries a scroll or charm that can hold the door shut; forcing it open requires a DC 16 STR check.",
+                    "**Lamps.** The lamps are stained with old blood. Breaking one spills a sticky red fluid that glows faintly for 1 turn."
+                ],
+                "stats": ""
+            },
+            "02": {
+                "level": "ground",
+                "name": "Central Courtyard",
+                "description": "A roofless courtyard lies beneath an enormous hollow tree. Red, white, and black stones form a pattern of twisting roots. Pale flowers grow between the tiles, giving off a cold light.",
+                "bullets": [
+                    "Two vampire thralls guard the door to Area 15.",
+                    "**Day.** Three thralls tend the flowers and patrol the courtyard.",
+                    "**Night.** Four vampire spawn patrol in pairs.",
+                    "Two gargoyles perch above the entries to Areas 03 and 12. They awaken at night or when attacked.",
+                    "**Hidden treasure.** A loose flagstone near the central columns hides a purse containing 200 gp."
+                ],
+                "stats": ""
+            },
+            "03": {
+                "level": "ground",
+                "name": "Eastern Colonnade",
+                "description": "Fluted pillars support a roof of interwoven roots. Each pillar bears carvings of antlered beasts being hunted by pale, crowned figures.",
+                "bullets": [
+                    "**Day.** One thrall walks the colonnade. It is bored and easily distracted.",
+                    "**Night.** Two vampire spawn stand motionless in the darkest recesses, watching the courtyard and the hidden shrine.",
+                    "**Gargoyle.** One gargoyle sits above the archway to Area 02.",
+                    "**Spyhole.** A false tile can be moved to look into Area 06.",
+                    "**False wall.** A section of root-bound stone turns on a hidden pivot, revealing Area 05."
+                ],
+                "stats": ""
+            },
+            "04": {
+                "level": "ground",
+                "name": "Guard Quarters",
+                "description": "Cramped bunks, spare clothes, shields, and weapons fill this low room. The air smells of damp wool and old blood.",
+                "bullets": [
+                    "**Day.** Three vampire thralls sit at a table, playing cards and arguing quietly. They surrender if badly outmatched.",
+                    "**Night.** The door is locked and one vampire spawn stands guard outside.",
+                    "**Armory.** Contains three chain shirts, two spears, two swords, two warhammers, and spare keys to Areas 06 and 24."
+                ],
+                "stats": ""
+            },
+            "05": {
+                "level": "ground",
+                "name": "Shrine of the First Blood",
+                "description": "A faceless figure carved from black wood sits upon a root-throne. Eight red candles stand around it. The statue represents the first vampire, though the court refuses to say whether it is a god, ancestor, or warning.",
+                "bullets": [
+                    "Lighting all eight candles causes the statue to open its hands and reveal a blood-red gemstone worth 300 gp. It crumbles to dust after one hour.",
+                    "A narrow stair descends to Area 28.",
+                    "A character who spills fresh blood on the altar hears a faint voice asking to be invited into the manor."
+                ],
+                "stats": ""
+            },
+            "06": {
+                "level": "ground",
+                "name": "Guest Quarters",
+                "description": "Geometric tiles cover the walls. Silvered candelabras hold blue candles. A heavy bed stands behind a curtain, and a carved chest rests at its foot.",
+                "bullets": [
+                    "**Day.** One vampire thrall guards the belongings of a visiting courtier.",
+                    "The chest contains fine clothes, an antidote, and two potions of healing.",
+                    "A locked strongbox contains a spyglass of true sight. The key is held by the guest, currently absent, or by the seneschal in Area 20."
+                ],
+                "stats": ""
+            },
+            "07": {
+                "level": "ground",
+                "name": "Veranda",
+                "description": "Red marble columns overlook the western garden. Small chairs and low tables are arranged to face the glowing flowers.",
+                "bullets": [
+                    "**Day.** Two thralls sit here, watching the garden. One carries the key to Area 15.",
+                    "**Night.** Two vampire spawn watch the garden entrances. One has a potion of healing; the other carries a potion of giant strength.",
+                    "The key can be lifted with a successful DEX check opposed by the guard's WIS check."
+                ],
+                "stats": ""
+            },
+            "08": {
+                "level": "ground",
+                "name": "Blood Baths",
+                "description": "Steam rises from tiled pools fed by hot springs beneath the roots. Frescoes show pale figures drinking from silver bowls while trees wither around them.",
+                "bullets": [
+                    "**Hot steam.** The boiler in Area 26 controls the vents. After 1 round in the hottest chamber, creatures in metal armor have DISADV on ATK, STR, and DEX checks. A creature exposed to lethal steam must make a DC 15 CON check each round or take 1d6 damage.",
+                    "**Day.** Two thralls clean the pools and prepare blood-wine for the court.",
+                    "**Night.** Two vampire spawn and two ghouls use the cold pools after returning from the forest.",
+                    "The dressing room contains ordinary clothing, a key to Area 35, and a 2-in-6 chance of a minor treasure."
+                ],
+                "stats": ""
+            },
+            "09": {
+                "level": "ground",
+                "name": "Arcades",
+                "description": "Rows of dark clay columns curve around the garden toward the tall air shaft. The smell of damp pine and crushed flowers hangs in the air.",
+                "bullets": [
+                    "Stairs descend to Area 25.",
+                    "One vampire thrall patrols between Areas 07 and 11.",
+                    "At night, the columns create deep shadows. Spawn can use them to approach unseen."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "ground",
+                "name": "Painter's Studio",
+                "description": "Wide windows illuminate six easels and half-finished portraits. Five granite statues stand around the room, each depicting a former servant in a different pose.",
+                "bullets": [
+                    "**Day.** A vampire spawn courtier works on a portrait of Lord Malakar. It wears layered clothing and a veil to hide its face.",
+                    "The statues are petrified servants and traitors. If the courtier is attacked, two statues animate as animated armor and defend it.",
+                    "One portrait shows a Rune-Elk Elf with its eyes scratched out. A hidden message is painted beneath the frame: “The roots will remember.”"
+                ],
+                "stats": ""
+            },
+            "11": {
+                "level": "ground",
+                "name": "Windcatcher",
+                "description": "A constant draft moves through this dark tower, drawn down through slanted vanes and hidden vents into the undercroft.",
+                "bullets": [
+                    "A gargoyle crouches above the entrance, facing Area 09.",
+                    "Stairs climb to Area 21.",
+                    "The draft carries sounds from below. A character who listens here may hear activity in Area 26 or 28."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "ground",
+                "name": "Western Garden",
+                "description": "A lush garden of hyacinth, hibiscus, and blood-red roses surrounds a deep well. A strange fruit tree grows beside it, its red fruit glossy as fresh blood.",
+                "bullets": [
+                    "**Well.** The well is 20 feet deep and contains 10 feet of water. Pale parasites infest it. Drinking the water requires a DC 13 CON check or the drinker is incapacitated and vomiting for 1d4 rounds.",
+                    "**Day.** Two wolves trained by the court prowl the garden. They attack anyone not wearing the court's sign.",
+                    "**Night.** A stone beast statue becomes a gargoyle. Scraping away the runes carved into its flanks during the day prevents it from awakening.",
+                    "The well connects to the cistern in Area 31."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "ground",
+                "name": "Shrine Gazebo",
+                "description": "A domed roof of red teak shelters a stone altar. A seated, hairless figure smiles with its mouth full of tiny teeth. Incense and raw meat cover the smell of blood.",
+                "bullets": [
+                    "**Hollow statue.** Its head unscrews, revealing a scarab of protection.",
+                    "**Day.** A trough of raw meat is kept here for the wolves in Area 12.",
+                    "**Night.** Two thralls kneel at the altar, praying that Malakar will spare them from being turned."
+                ],
+                "stats": ""
+            },
+            "14": {
+                "level": "ground",
+                "name": "Eastern Garden",
+                "description": "Purple iris and white jasmine grow beneath fig trees. A greenhouse pavilion stands at the end of the path, filled with strange skull-headed flowers.",
+                "bullets": [
+                    "The flowers are poisonous to touch. A creature touching one with bare skin must make a DC 15 CON check or its STR becomes 3 for 1d4 hours.",
+                    "A vampire spawn tends the greenhouse while disguised as a servant. It encourages visitors to smell or touch the flowers, then attacks when they weaken.",
+                    "The greenhouse contains notes on moon-blossoms stolen from the Rune-Elk Elves."
+                ],
+                "stats": ""
+            },
+            "15": {
+                "level": "ground",
+                "name": "Atrium",
+                "description": "Twin staircases rise around a perfectly symmetrical chamber. Brass lanterns hang from the rafters, burning a sweet-smelling incense.",
+                "bullets": [
+                    "The incense is made from the flowers in Area 14. A creature entering must make a DC 15 CON check or suffer DISADV on STR checks for 1 hour.",
+                    "Two gargoyles perch above the arches leading to Areas 16 and 17. They awaken at night or when the incense is disturbed.",
+                    "A hidden lever behind the eastern lantern opens a narrow passage to Area 18."
+                ],
+                "stats": ""
+            },
+            "16": {
+                "level": "ground",
+                "name": "Fountain Hall",
+                "description": "High marble walls surround a sunken floor. A raised platform stands beside a fountain carved to resemble a tree whose roots drink from a bowl.",
+                "bullets": [
+                    "The fountain water is infused with restorative herbs and blessed by an older forest spirit. Drinking from it cures poison and ends the effects of the flowers in Areas 14 and 15.",
+                    "The water is harmful to vampires. A vampire that drinks it takes 1d6 damage."
+                ],
+                "stats": ""
+            },
+            "17": {
+                "level": "ground",
+                "name": "Kitchen",
+                "description": "A vast hearth dominates the northern wall. Knives, cleavers, hooks, and iron pots hang from racks. The kitchen is always warm.",
+                "bullets": [
+                    "**Day.** A ghoul cook and two vampire thralls prepare meals for the household. The cook is territorial but can be bribed with fresh meat.",
+                    "**Night.** The cook remains awake for the first 10 rounds, then retires to Area 32.",
+                    "The eastern room contains cramped servant cots. Searching finds three purses containing 12-15 sp each.",
+                    "A locked cupboard contains a small stock of preserved blood."
+                ],
+                "stats": ""
+            },
+            "18": {
+                "level": "ground",
+                "name": "Library",
+                "description": "Stone shelves hold hundreds of books, scrolls, and botanical records. A single high window admits a thin shaft of daylight.",
+                "bullets": [
+                    "**Day.** One vampire spawn studies old texts and copies spells into scrolls.",
+                    "**Night.** One vampire spawn instructs two thralls in the history of the Obsidian Court.",
+                    "A strongbox hidden behind books on botany contains gems, gold rings, silverware, and coins worth 500 gp.",
+                    "A journal describes how the court first entered the Emerald Wood and names an old root passage leading beneath Runewillow."
+                ],
+                "stats": ""
+            },
+            "19": {
+                "level": "upper",
+                "name": "Balconies",
+                "description": "A small antechamber opens onto two balconies overlooking the forest canopy. Paintings show the manor before it was buried beneath the roots.",
+                "bullets": [
+                    "**Day.** A thrall brings refreshments here at the ninth round. A vampire spawn courtier may be found here shortly afterward, watching the forest from behind a curtain.",
+                    "**Night.** Two vampire spawn guard the balconies. One watches the stairs with a crossbow; the other patrols between the doors.",
+                    "The western balcony has a narrow ledge leading to the roof of Area 21."
+                ],
+                "stats": ""
+            },
+            "20": {
+                "level": "upper",
+                "name": "Lord Malakar's Office",
+                "description": "A massive darkwood desk dominates the chamber. Ledgers record the manor's stores, thrall assignments, blood tithes, and the cutting of sacred trees. A black glass lens rests beside a stack of maps.",
+                "bullets": [
+                    "**Day.** Malakar sleeps below. His seneschal, a vampire spawn, manages the manor from this room and is accompanied by two thralls disguised as servants.",
+                    "**Night.** Malakar may receive visitors here before retiring to Area 28. If the manor is on alert, he leaves the office and hunts intruders.",
+                    "Malakar carries the only key to the vault in Area 43. The seneschal has a false key that opens the gallery and guest quarters.",
+                    "**Three hidden traps.** Buttons beneath the desk activate one trap each.",
+                    "▶ **Blood darts.** Three darts shoot from the desk. Up to three creatures must make a DC 15 DEX check or take 1d4 damage and suffer DISADV on STR checks for 1 hour.",
+                    "▶ **Root snare.** Barbed roots burst from the floor in a near-sized area. Creatures must make a DC 16 DEX check or become restrained and take 3d4 damage. A DC 16 STR check frees a trapped creature.",
+                    "▶ **Paralytic mist.** A hidden bellows releases a cloud in a near-sized cone. Creatures must make a DC 15 CON check or be paralyzed for 1d4 rounds.",
+                    "A key to Area 24 rests in the desk. Beneath the carpet, a hidden compartment contains three gold ingots worth 250 gp each."
+                ],
+                "stats": ""
+            },
+            "21": {
+                "level": "upper",
+                "name": "Windcatcher, Tower Attic",
+                "description": "A tall chamber is lined with vents and narrow windows. Dozens of unfinished gargoyle carvings stand around a hammock suspended between two beams. A bronze horn rests on a tripod.",
+                "bullets": [
+                    "**Day.** A giant bat roosts here. It watches the manor grounds and screeches if it sees intruders.",
+                    "**Night.** The bat hunts outside on a 2-in-6 chance; otherwise it hangs from the rafters. It returns in 1d4 rounds if disturbed.",
+                    "The hammock contains half-eaten fruit, bones, and five rough emeralds worth 120 gp each.",
+                    "Blowing the horn alerts the entire manor.",
+                    "An unfinished gargoyle can be disabled for 3 rounds by a successful dispel magic spellcasting check."
+                ],
+                "stats": ""
+            },
+            "22": {
+                "level": "upper",
+                "name": "Upper Palace Floor",
+                "description": "Blue and red mosaics cover the walls and floor. A brass chandelier hangs above a balcony overlooking the courtyard.",
+                "bullets": [
+                    "**Day.** One thrall watches the courtyard from the balcony.",
+                    "**Night.** Two vampire spawn sleep before the door to Area 23. They awaken if the door is opened or if a loud noise is made.",
+                    "The door to Area 24 is unlocked during the day. The door to Area 23 is locked from outside during the day and from inside at night."
+                ],
+                "stats": ""
+            },
+            "23": {
+                "level": "upper",
+                "name": "Private Quarters",
+                "description": "A grand bed stands beneath a canopy of black silk. Swords hang beside a portrait of Malakar standing beneath a dead tree. A heavy wardrobe contains fine clothing and black armor.",
+                "bullets": [
+                    "**Day.** Lord Malakar lies in a sealed coffin hidden beneath the bed. Opening the coffin wakes him unless the lid is lifted with great care. Driving a wooden stake through his heart while he sleeps is possible, but the attempt requires a successful attack against AC 15. The stake does not destroy him unless he is subsequently exposed to sunlight or otherwise destroyed according to the vampire rules.",
+                    "**Night.** Malakar is usually absent, moving through Areas 20 and 28. If the manor is on alert, he returns here to defend his coffin and treasures.",
+                    "Malakar carries the vault key at all times.",
+                    "The black armor counts as +2 plate mail. It is worked from dark iron and is impervious to ordinary fire."
+                ],
+                "stats": ""
+            },
+            "24": {
+                "level": "upper",
+                "name": "Gallery",
+                "description": "Red marble tiles gleam beneath gold-framed paintings, carved statues, and glass vitrines filled with treasures. Windows overlook the courtyard and eastern garden.",
+                "bullets": [
+                    "**Day.** One thrall sits by the door, usually asleep.",
+                    "Eight portraits are worth 600 gp each. Four landscapes are worth 700 gp each. Portraits take 2 gear slots; landscapes take 3.",
+                    "Three blue-quartz statuettes are worth 700 gp each and take 2 gear slots apiece.",
+                    "Two glass vitrines contain eight pieces of jewellery worth 150 gp each.",
+                    "The southern window opens. The eastern window is a painted panel over solid stone."
+                ],
+                "stats": ""
+            },
+            "25": {
+                "level": "under",
+                "name": "Cellar",
+                "description": "Grey stone and darkness surround crates of food, oil, and a dozen large casks of preserved blood. The casks are cold to the touch.",
+                "bullets": [
+                    "**Day.** One thrall and one spawn secretly drink from a cask. The thrall is terrified of being discovered.",
+                    "Two casks are empty. They can be used to hide a person or to wait out the day.",
+                    "A small tunnel behind the easternmost cask leads toward the cistern in Area 31, but is partly flooded."
+                ],
+                "stats": ""
+            },
+            "26": {
+                "level": "under",
+                "name": "Boiler Room",
+                "description": "Bronze pipes crawl across the ceiling, carrying hot water and steam to the baths above. The walls are smooth white plaster, stained by mineral deposits.",
+                "bullets": [
+                    "**Day.** Three thralls operate the boilers. They wear heavy gloves and avoid looking at the pipes.",
+                    "The boilers control the heat in Area 08. They can be shut off or raised to lethal levels.",
+                    "The key to Area 27 hangs on a hook by the entrance.",
+                    "A rotating wall on the northern side conceals a passage into the deeper undercroft.",
+                    "One pipe can be opened to fill the room with scalding steam. Creatures in the room must make a DC 15 DEX check or take 2d6 damage."
+                ],
+                "stats": ""
+            },
+            "27": {
+                "level": "under",
+                "name": "Private Sauna",
+                "description": "A small steam chamber is attached to the boiler room by a narrow hall. A stone bench stands beneath a low vent.",
+                "bullets": [
+                    "**Night.** One vampire spawn rests here after hunting in the forest.",
+                    "The hearth can be stoked from Area 26 to make the chamber lethal. Creatures inside must make a DC 15 CON check each round or take 1d6 damage.",
+                    "A narrow drain leads to Area 31. A small creature can crawl through it."
+                ],
+                "stats": ""
+            },
+            "28": {
+                "level": "under",
+                "name": "Obsidian Court",
+                "description": "A large hall is divided into seating alcoves, drinking tables, and a central floor of black stone. A raised throne stands at the northern end. The walls are carved with the names of the vampires who have ruled the court.",
+                "bullets": [
+                    "**Day.** One vampire spawn, one vampire thrall priest, and two thralls plan the next expansion of the underground halls.",
+                    "**Night.** Four vampire spawn, two ghouls, and four thralls gather here. Two spawn may be sparring while the others drink blood-wine and trade stories of the hunt.",
+                    "Malakar appears here when he wishes to address the court.",
+                    "A concealed stair behind the throne leads to Area 05.",
+                    "The court's records name several Rune-Elk patrol routes and the locations of three moon-blossom groves."
+                ],
+                "stats": ""
+            },
+            "29": {
+                "level": "under",
+                "name": "Root-Workshop and Blood Stores",
+                "description": "A dim workshop is divided between tools, saws, and timber-cutting equipment, and a cold room where blood is stored in glass jars.",
+                "bullets": [
+                    "**Day.** Two thralls instruct three captured woodcutters in cutting and shaping roots without collapsing the tunnels.",
+                    "The captured workers are exhausted and will help the characters if freed.",
+                    "The blood stores contain six sealed jars. Each jar is worth 25 gp to an alchemist or vampire.",
+                    "A vampire spawn called the Root-Keeper oversees the work. It knows the location of a concealed passage to the surface but will reveal it only if threatened or offered a way out.",
+                    "The Root-Keeper is not a unique monster: use the vampire spawn rules above."
+                ],
+                "stats": ""
+            },
+            "30": {
+                "level": "under",
+                "name": "Common Store",
+                "description": "Red tiles mark this vestibule. Crates hold tools, clothing, lanterns, rope, and equipment used by the manor's thralls.",
+                "bullets": [
+                    "A common chest contains four random common gear items, 10d20 gp, and one potion of healing. There is a 2-in-6 chance it also contains a potion of invisibility.",
+                    "Hooks hold the common key to Area 31.",
+                    "A loose floor tile hides a silver signet ring bearing Malakar's crest, worth 50 gp."
+                ],
+                "stats": ""
+            },
+            "31": {
+                "level": "under",
+                "name": "Bath",
+                "description": "Stone basins and simple alcoves surround a well connected to underground cisterns.",
+                "bullets": [
+                    "**Day.** Three thralls wash here. They flee or surrender if surprised.",
+                    "The cistern lies 30 feet below the undercroft and connects to several wells around the manor. It is a possible escape route.",
+                    "Something large moves in the dark water. Use a giant snake or giant rat, depending on the tone desired. It attacks anyone who enters the water."
+                ],
+                "stats": ""
+            },
+            "32": {
+                "level": "under",
+                "name": "Sleeping Quarters",
+                "description": "Fourteen beds and cots and five hammocks are crowded into a low chamber. A few candles burn in the early hours.",
+                "bullets": [
+                    "**Day.** Four vampire spawn sleep in the room, each in a narrow coffin beneath a bed. Two thralls keep watch and dare not wake them.",
+                    "**Night.** The room is used by thralls and servants who are not assigned to a post.",
+                    "There is a 3-in-6 chance of finding a minor treasure among the abandoned belongings."
+                ],
+                "stats": ""
+            },
+            "33": {
+                "level": "under",
+                "name": "Archery Range",
+                "description": "Four shafts are carved into the rock, each fitted with targets at different distances. Several bows and crossbows hang from the walls. A few targets depict Rune-Elk Elves.",
+                "bullets": [
+                    "**Day.** Two thralls practice shooting while a vampire spawn instructor criticizes them.",
+                    "A secret passage behind a loose board and cloth curtain leads to Area 34.",
+                    "Captured elf archers have scratched a map of the surface patrols into the back of one target."
+                ],
+                "stats": ""
+            },
+            "34": {
+                "level": "under",
+                "name": "Peeping Hole",
+                "description": "A narrow hidden passage was dug by a curious thrall. A small hole looks into Area 27.",
+                "bullets": [
+                    "A chest contains ten +2 arrows, two flasks of oil, and a potion of vitality.",
+                    "The passage is cramped. Medium creatures must crawl.",
+                    "A second narrow crack allows a view into Area 35."
+                ],
+                "stats": ""
+            },
+            "35": {
+                "level": "under",
+                "name": "Trial Chamber: Preparation",
+                "description": "A bare stone room is interrupted by a black gate to the right, a portcullis straight ahead, and a stone desk rising from the floor.",
+                "bullets": [
+                    "**Day.** Two newly turned spawn await their trial under the supervision of a senior spawn.",
+                    "**Black gate.** It bears the mark of a red root. It opens only with the blood seal from Area 40 or a key held by Malakar.",
+                    "**Portcullis.** It drops after the last creature enters and will not rise until the black gate is opened.",
+                    "**Stone desk.** Contains two crossbows, five +1 bolts, two sets of thieves' tools, and two potions of healing.",
+                    "The trial is intended to test new spawn and thralls. It is not a necessary route for the manor's inhabitants."
+                ],
+                "stats": ""
+            },
+            "36": {
+                "level": "under",
+                "name": "Trial Chamber: The Crushing Root",
+                "description": "A curved passage leads to a small chamber. An iron key rests on a plinth at its centre.",
+                "bullets": [
+                    "If the key is lifted without placing a counterweight on the plinth, the plinth sinks and the walls slam together.",
+                    "Creatures in the chamber must make a DC 16 DEX check or take 5d8 damage.",
+                    "Preventing the plinth from sinking disables the trap.",
+                    "The iron key opens the door in Area 38."
+                ],
+                "stats": ""
+            },
+            "37": {
+                "level": "under",
+                "name": "Trial Chamber: The Riddle",
+                "description": "Three alcoves contain objects on stone plinths. Behind each plinth, a grotesque spider is carved into the wall. The following riddle is written on the floor: “When I am plenty, no thought is lost on me. When I am fleeting, I am seldom regained. When I am gone, the world may well end.”",
+                "bullets": [
+                    "A portcullis drops between the entrance and exit when all characters enter.",
+                    "The choices are a gold coin, a feather, and a lamp. The correct answer is the lamp: hope.",
+                    "A wrong answer or three turns of inaction fills the room with toxic gas for 5 rounds. Creatures must make a DC 16 CON check or drop to 0 HP.",
+                    "Forcing the portcullis, destroying it, or finding another way out counts as solving the riddle."
+                ],
+                "stats": ""
+            },
+            "38": {
+                "level": "under",
+                "name": "Trial Chamber: Guardians",
+                "description": "A cylindrical chamber rises 30 feet into darkness. Black webs cover the ceiling.",
+                "bullets": [
+                    "The iron door can be opened with the key from Area 36, a DC 17 DEX check, or a DC 18 STR check.",
+                    "A giant spider lurks in the webs above the entrance.",
+                    "A pressure plate in the hallway triggers sweeping blades. Creatures in the hallway must make a DC 15 DEX check or take 3d10 damage."
+                ],
+                "stats": ""
+            },
+            "39": {
+                "level": "under",
+                "name": "Trial Chamber: Mirrors",
+                "description": "The chamber is lined with mirrors from floor to ceiling. Most appear to be made from still water.",
+                "bullets": [
+                    "One mirror is made of glass. It can be pushed and rotated to reveal the entrance to Area 40.",
+                    "The water mirrors are cursed. A creature touching one must make a DC 16 DEX check or be pulled inside and begin drowning.",
+                    "A trapped creature can escape with a DC 16 STR check, or with help from a rope or another creature.",
+                    "Vampires do not appear in the water mirrors. The absence of a reflection is a clue to the correct mirror."
+                ],
+                "stats": ""
+            },
+            "40": {
+                "level": "under",
+                "name": "Trial Chamber: The Blood Seal",
+                "description": "A narrow forest of pillars is carved with open-mouthed faces. A single path leads to a small chamber containing a plinth and a stone case.",
+                "bullets": [
+                    "**Poison darts.** Stepping on the marked tile triggers darts from every mouth. The trap lasts 5 rounds. Moving through the chamber requires a DC 17 DEX check. On a failure, a creature takes 6d4 damage and its maximum HP is reduced by the same amount until restored.",
+                    "The stone case contains a blood seal. A creature pressing the seal to its skin is marked with Malakar's sign and can pass the guardians in Areas 41 and 42 without triggering them.",
+                    "The mark fades after 24 hours."
+                ],
+                "stats": ""
+            },
+            "41": {
+                "level": "under",
+                "name": "Guard Chamber",
+                "description": "Two statues of crowned, antlered figures are embedded in the northern and southern walls. Their stone faces have been worn smooth.",
+                "bullets": [
+                    "The statues animate as stone golems if a creature without Malakar's blood seal enters.",
+                    "A creature carrying the blood seal may pass without being attacked.",
+                    "The golems do not pursue beyond the chamber."
+                ],
+                "stats": ""
+            },
+            "42": {
+                "level": "under",
+                "name": "Vault Antechamber",
+                "description": "A plain chamber contains a statue of the first vampire, six-armed and faceless, opposite the entrance.",
+                "bullets": [
+                    "Two vampire spawn guard the sealed vault door.",
+                    "The door requires Malakar's key. It can also be forced with a DC 19 STR check, but doing so alerts the entire court.",
+                    "The statue curses any creature that enters without the blood seal. The target must make a DC 16 WIS check or be paralyzed for 1d4 rounds.",
+                    "Dispel magic with a spellcasting check of 15+ suppresses the curse for 3 rounds."
+                ],
+                "stats": ""
+            },
+            "43": {
+                "level": "under",
+                "name": "The Crimson Vault",
+                "description": "A grand hall has been carved from the bedrock and held up by arching roots. Gold, silver, and jewels lie beside old paintings, ebony cases, and chests of stolen wealth. At the far end stands a sealed door of black iron veined with red crystal.",
+                "bullets": [
+                    "**Sealed door.** Requires Malakar's key. It is immune to magic and cannot be forced or picked by ordinary means.",
+                    "**Vault watchers.** Two stone golems guard the hall. They attack anyone except Malakar or a creature bearing his exact blood seal.",
+                    "**Treasure.** The vault contains 10,000 gp in valuables. Each chest contains three random treasures from the Shadowdark treasure tables; roll with ADV.",
+                    "**The Heart of the Crimson Root.** Behind the black iron door rests a dark red crystal embedded in the petrified heart of an ancient tree. Malakar claims it is the source of his court's right to rule the forest. The crystal pulses when blood is spilled nearby. The court uses it in its rites to bind thralls and corrupt the roots. Removing it weakens the court's hold over the underground roots, but may also cause sections of the manor to collapse.",
+                    "A character who touches the Heart hears a voice from deep beneath the Emerald Wood. It asks for the blood of the one who planted the first root."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'crimson-manor-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <title>Ruin on the Hill</title>
+    <style>
+        :root {
+            --bg: #151515;
+            --panel: #222;
+            --ink: #eeecea;
+            --muted: #b4b3b2;
+            --bolden: #b49088;
+            --line: #4d4c4c;
+            --accent: #eecb69;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.45 system-ui, -apple-system, Segoe UI, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: #1d1d1d;
+            border-bottom: 1px solid var(--line);
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin: 0 12px 0 0;
+            letter-spacing: .03em;
+            font-family: "Pirata One", system-ui;
+        }
+
+        h2,
+        h3,
+        h4 {
+            margin-bottom: 5px;
+            margin-top: 5px;
+            color: var(--accent);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        input {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 8px 10px;
+            min-width: 190px
+        }
+
+        button {
+            cursor: pointer;
+            color: var(--ink);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 5px;
+            padding: 7px 10px;
+            height: 35px;
+        }
+
+        button:hover {
+            background: var(--line);
+        }
+
+        main {
+            padding: 16px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .top {
+            display: flex;
+        }
+
+        .summ {
+            font-size: 10px;
+
+            p {
+                margin: 0 5px;
+            }
+        }
+
+        #legend {
+            display: flex;
+            flex-direction: column;
+            width: min(100%, 900px);
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .map-wrap {
+            position: relative;
+            width: min(100%, 900px);
+            background: var(--ink);
+            box-shadow: 0 8px 32px var(--panel);
+            line-height: 0;
+        }
+
+        .map-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            max-width: 900px;
+            margin: 12px auto;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #room-list {
+            max-width: 900px;
+            margin: 14px auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            button {
+                width: 250px;
+            }
+        }
+
+        .room-chip {
+            font-size: 13px;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            left: calc(50% - 210px);
+            top: 90px;
+            width: min(420px, calc(100vw - 20px));
+            max-height: calc(100vh - 110px);
+            background: var(--panel);
+            border: 1px solid var(--muted);
+            border-radius: 8px;
+            box-shadow: 0 16px 48px var(--bg);
+            display: none;
+            overflow: hidden;
+            resize: both;
+            min-width: 280px;
+            min-height: 180px;
+        }
+
+        .popup.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-head {
+            background: var(--line);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid var(--bg);
+        }
+
+        .popup-head strong {
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .popup-head button {
+            padding: 3px 9px;
+        }
+
+        .popup-body {
+            padding: 14px;
+            overflow: auto;
+            line-height: 1.5;
+        }
+
+        .popup-body h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--accent);
+            margin: 16px 0 6px;
+        }
+
+        .popup-body p {
+            margin: 0 0 10px;
+        }
+
+        .popup-body ul {
+            padding-left: 20px;
+            margin: 6px 0
+        }
+
+        .popup-body li {
+            margin: 0 0 7px;
+        }
+
+        strong {
+            color: var(--bolden);
+        }
+
+        .stats {
+            white-space: pre-wrap;
+            background: var(--bg);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-top: 12px;
+            font: 12px/1.5 ui-monospace, SFMono-Regular, monospace;
+        }
+
+        .popup-body li.no-bullet {
+            list-style: none;
+        }
+
+        .party-token {
+            position: absolute;
+            z-index: 4;
+            width: 24px;
+            height: 24px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--ink);
+            border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--bolden), 0 3px 10px var(--bg);
+            display: grid;
+            place-items: center;
+            font: 800 15px/1 system-ui, sans-serif;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            padding: 0;
+        }
+
+        .party-token:hover {
+            background: var(--bolden);
+        }
+
+        .party-token.dragging {
+            cursor: grabbing;
+            box-shadow: 0 0 0 3px var(--bolden), 0 6px 16px var(--bg);
+        }
+
+        .extrabtns {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            display: none;
+        }
+
+        .rngenc {
+            width: 20%;
+            padding-right: 10px;
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10px;
+            }
+
+            td,
+            th {
+                border: 1px solid var(--ink);
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: var(--panel);
+            }
+
+            tr:hover {
+                background-color: var(--line);
+            }
+        }
+
+        .btmsection {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* check then delete from inline */
+        #levelTabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        @media(max-width:600px) {
+            main {
+                padding: 8px;
+            }
+
+            header {
+                position: static;
+            }
+
+            .popup {
+                left: 10px !important;
+                top: 80px !important;
+                width: calc(100vw - 20px);
+                max-height: 75vh;
+                resize: vertical;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Ruin on the Hill</h1><span id="levelTabs" role="group"></span><input id="search" placeholder="Find a room or keyword..." ><button id="reset">Close Pops</button>
+    </header>
+    <main>
+        <div class="top">
+            <div class="rngenc">
+                <div class="summ">
+                    <p><strong>Danger Level.</strong> Noise draws the bandits.</p>
+                    <p><strong>Light.</strong> Not an issue. Daylight reaches every room; torches and campfires burn at night.</p>
+                </div>
+                <div class="lvl-panel" data-panel="all">
+                    <h2>Treasure Tables</h2>
+                    <table>
+                        <tr>
+                            <th>d20</th>
+                            <th>Poor (0 XP)</th>
+                            <th>Normal (1 XP)</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>pair of dirty, tin spoons (2cp)</td>
+                            <td>silver ring (5sp)</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>soapstone carving of a dog (5cp)</td>
+                            <td>copper snake armband (10sp)</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>wooden drink token (3cp)</td>
+                            <td>leather armor (10sp)</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>clay pot (1sp)</td>
+                            <td>pouch of turquoise stones (20sp)</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>empty potion vial (1sp)</td>
+                            <td>silver, leaf broach (15sp)</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>dirty rags (0cp)</td>
+                            <td>scroll of holy weapon (50sp)</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>rusty manacles (10cp)</td>
+                            <td>silvered dagger (10sp)</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>drinking horn (5cp)</td>
+                            <td>loose, 30sp</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>dagger, poor quality (5cp)</td>
+                            <td>3 rations (5sp)</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>torch (5cp)</td>
+                            <td>tome of trolls* (50sp)</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>4 russet potatoes (4cp)</td>
+                            <td>silver inlayed demon mask (30sp)</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>10' rope (2cp)</td>
+                            <td>painting of a crying child (50sp)</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>3 iron spikes (3cp)</td>
+                            <td>ivory statuette of stag (35sp)</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>oil flask (5cp)</td>
+                            <td>10 silvered arrows (10sp)</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>4 lockpicks (1sp)</td>
+                            <td>rundlet of ale (15sp)</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>old orc banner (5cp)</td>
+                            <td>3 jade dice set (6sp)</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>bag of caltrops (1sp)</td>
+                            <td>quills and ink travel kit (10sp)</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>lock, easy w/o key (5cp)</td>
+                            <td>ceremonial kyrss* (10sp)</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>buckler (3sp)</td>
+                            <td>pouch of preservation* (50sp)</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td>3 grave dust* (0sp)</td>
+                            <td>hugo's healing potion* (25sp)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="map-wrap" id="mapWrap">
+                <img id="mapImg" src="adv-maps/ruin-main.png" alt="Dungeon map">
+
+                <button class="party-token" id="partyToken" type="button" title="Drag to move the party">⚔️</button>
+            </div>
+        </div>
+
+        <div id="legend">
+            <div class="extrabtns">
+                <button class="hide">Random Encounter Table</button>
+                <button class="statblocks">Statblocks</button>
+            </div>
+            <div id="room-list">
+                <button class="room-chip" data-room="1">Area 1: Front Steps</button>
+                <button class="room-chip" data-room="2">Area 2: Bandit Camp</button>
+                <button class="room-chip" data-room="3">Area 3: Storage?</button>
+                <button class="room-chip" data-room="4">Area 4: Missing Altar</button>
+                <button class="room-chip" data-room="5">Area 5: Stairs, Up and Down</button>
+                <button class="room-chip" data-room="6">Area 6: Second Entrance</button>
+                <button class="room-chip" data-room="7">Area 7: Opening on the Second Floor</button>
+                <button class="room-chip" data-room="8">Area 8: Roloff</button>
+                <button class="room-chip" data-room="9">Area 9: Gathering of Stuff</button>
+                <button class="room-chip" data-room="10">Area 10: Bandit Bossman</button>
+                <button class="room-chip" data-room="11">Area 11: Hacked Statue</button>
+                <button class="room-chip" data-room="12">Area 12: The Room of Sheets</button>
+                <button class="room-chip" data-room="13">Area 13: Hedonistic Graffiti</button>
+                <div class="btmsection">
+                    <div class="other">
+                        <h2>OTHER INFO</h2>
+                        <p><em>An abbey with a dark history hidden by the church, but the ruin remains a scar on the land. It attracts creatures and groups of chaos. It has struck again. A serving woman to the baroness was captured by the bandits that now inhabit the abbey.</em></p>
+
+                        <h3>Kidnapped.</h3>
+                        <p>“Three days ago Marium, a gentlewoman, searched the countryside for the magenta petals of the echinacea flower. Her lady suffers from clepid artetica.” Melinda dabs away a few tears. “I'm afraid we'll take the brunt of the lord's anger if his wife is not tended to. But Marium is a sweet woman who helped us with salves and healing powders when she could sneak away.”</p>
+                        <h3>No Potatoes for You!</h3>
+                        <p>A young man, Mitchell, approaches. He holds his blood soaked shoulder. He is covered in dirt and holds a shovel in his free hand. “Bandits came down the hill to steal our potatoes. The idiots don't know it's too early to eat the potatoes.”</p>
+                        <p>Mitchell tells the party four thieving bastards approached with weapons out. “They thought they were going to walk up and take it all. We chased them away. A wood axe caught my shoulder. I'll go see Lilly for a salve. Then I'm taking the two spears to the field. Next time we'll gut the dumbasses.”</p>
+                        <p>The bandits blocked the north road with trees and branches. Two of the idiots stand guard. Mitchell says the bandits are holed up in the abbey. “That abbey has been nothing but trouble. Should've been torn down long ago, but it's noble land.”</p>
+                        <h3>The Abbey.</h3>
+                        <p>Several years ago the abbey was abandoned when the pious monks and nuns gave into hedonistic desires. Their desires grew darker. They captured villagers to experiment upon. The justiciars executed them within the abbey then stripped it of valuables. The local baron, thinking it would make a fantastic addition to his assets, purchased the abbey. Upon his first and only visit to the abbey, he forsook any notion of rehabilitating the location.</p>
+                        <p>What remains is a two-story crumbling structure. The party can choose three different ways to enter: the front steps (Area 1), the second entrance (Area 6), or the second floor (Areas 7 and 12).</p>
+                        <p><strong>Danger level.</strong> If the party makes a lot of noise they will attract a lot of attention. A bandit or two may soon become the entire group.</p>
+                        <p><strong>Light.</strong> Light is not an issue in this adventure. The party can choose to attack during the day, when light reaches every room. At night, torches and campfires burn to allow the bandits to see.</p>
+                        <p><strong>Doors.</strong> Wood. Unlocked unless otherwise stated.</p>
+                        <h3>The Bandits.</h3>
+                        <p>There are three types of bandits within this adventure. <strong>Cowardly bandits</strong> possess poor quality weapons and are 0-level combatants. <strong>Bandits</strong> are statted per the quickstart rules. <strong>Hardened bandits</strong> have the equipment of regular bandits but the stats of a soldier.</p>
+                        <p><strong>Poor quality weapons.</strong> Poor quality weapons suffer a -1 to hit and damage penalty. In addition, a critical miss with a poor quality weapon has a 50% chance of breaking (1-3 on a d6).</p>
+                        <p><strong>Sacks.</strong> Using a sack takes up one gear slot, but allows a character to carry two gear slots within. These don't count against the character's maximum gear slots. It requires a free hand to use.</p>
+                        <h3>Roadblock.</h3>
+                        <p>It's a 30 minute walk north. The abbey is easy to see. Its broken walls and peaks are easy to spot on top of the hill. The blockade is poorly executed with a few small trees and branches. As Mitchell said there are two bandits standing behind the blockade. They carry bows.</p>
+                        <p><strong>Parlaying</strong> with the bandits proves they have the collective intelligence of a drunken gnat. They make threats by repeating what the party says. An example, “Leave or die bandits.” Bandits reply, “You need to leave or die.”</p>
+                        <p><strong>Attacking</strong> the bandits causes them to yell a lot. Not to alert the other bandits, but out of fear. They shoot their bows and carry knives, both are of poor quality, suffering a -1 to hit and damage.</p>
+                        <p><strong>Sneaking</strong> up on the bandits is an easy task (DC 9 DEX). Both are jumping at every noise.</p>
+                        <div class="stats">Bandit, cowardly (2). AC 11 (patchwork armor), 13 (behind the trees), HP 2, ATK 1 shortbow (far) -1 (1d4), MV near, S +0, D +0, C +0, I -1, W -2, Ch -1, AL C, LV 0.
+Cowardly. If engaged in melee looks to escape.</div>
+                        <h3>Conclusion.</h3>
+                        <p>Marium gathers the magenta petals of the echinacea flower for her lady. She doesn't wish to speak about what happened. Before the party leaves she asks to keep her capture private. If her locket was returned she gives them a Potion of Healing.</p>
+                        <p><strong>Ally.</strong> Marium can be a long term ally, but she'll never be friendly.</p>
+                        <p><strong>The ruin remains the same.</strong> Attracts a chaotic person, group, or creature within the year.</p>
+                        <p><strong>Statue removed.</strong> Attracts a chaotic person, group, or creature within the week.</p>
+                        <p><strong>Curse removed.</strong> If the party removes the curse, the baron rewards the party 200sp. More interesting, this act could turn into a favor from the baron in the future.</p>
+                        <h3>Treasure Notes.</h3>
+                        <p>The d20 poor (0 XP) and normal (1 XP) treasure tables are in the left panel.</p>
+                        <p><strong>Grave dust.</strong> A spell component that provides a +1 to a priest's roll when used in conjunction with the turn undead spell.</p>
+                        <p><strong>Tome of trolls.</strong> A brief, but insightful book about trolls. It provides the strengths and weaknesses of a troll, providing a +1 to all rolls when battling trolls.</p>
+                        <p><strong>Ceremonial kryss.</strong> This can be used in a chaotic priest's rite and count toward the cost. It can be reused in rites.</p>
+                        <p><strong>Pouch of preservation.</strong> A small pouch created by halflings to preserve the freshness of the herbs and seasonings during long travels. Wizards use them to preserve spell components from going bad. Only a 0 gear slot item can fit within.</p>
+                        <p><strong>Hugo's healing potion.</strong> These healing potions are notorious for being cheap and that they sometimes fail to work (a 1 in 6 chance). They heal 1d4 damage.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="popupContainer"></div>
+
+    <script>
+        const levels = [
+            {
+                "id": "main",
+                "label": "Main Level",
+                "img": "adv-maps/ruin-main.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            },
+            {
+                "id": "upper",
+                "label": "Upper Level",
+                "img": "adv-maps/ruin-upper.png",
+                "start": {
+                    "x": 50,
+                    "y": 50
+                }
+            }
+        ];
+        const levelById = id => levels.find(l => l.id === id);
+
+        const rooms = {
+            "1": {
+                "level": "main",
+                "name": "Front Steps",
+                "description": "Two bandits are on the steps, leaning against the wall. They have javelins.",
+                "bullets": [
+                    "**Sneaking.** Sneaking up on them (DC 9 DEX) is easy.",
+                    "**Alert.** If sighted, or heard, the bandits alert the others in Area 2. It'll take two rounds for those bandits to join.",
+                    "**Treasure.** Roll once on the poor treasure table."
+                ],
+                "stats": "Bandit, cowardly (7). AC 11 (patchwork armor), 13 (behind the trees), HP 2, ATK 1 javelin (c/f) -1 (1d4), MV near, S +0, D +0, C +0, I -1, W -2, Ch -1, AL C, LV 0.\nCowardly. If outnumbered they flee."
+            },
+            "2": {
+                "level": "main",
+                "name": "Bandit Camp",
+                "description": "Five bandits are cleaning the room (unless they've been alerted). Two carry heavy debris to Area 6. The other three argue about the remaining jobs.",
+                "bullets": [
+                    "**Bandits.** Use the cowardly bandit statistics (Area 1).",
+                    "**Sneaking.** Sneaking is possible if the bandits were not alerted. It takes them a round to find and ready their weapons.",
+                    "**Treasure.** Roll twice on the poor treasure table and once on the normal treasure table."
+                ],
+                "stats": ""
+            },
+            "3": {
+                "level": "main",
+                "name": "Storage?",
+                "description": "The door has a padlock keeping lookie-loos away. Inside the room there are four burlap bags hanging on the south wall. A rotted wooden crate sits in the northeast corner.",
+                "bullets": [
+                    "**Smashing.** A good smashing (DC 9 STR) can make short work of the door, but this alerts the bandits in Areas 6, 8, and 9.",
+                    "**Lock.** It is a simple lock (DC 9 DEX).",
+                    "**Treasure.** Roll once on the normal treasure table for the crate contents and twice on the poor treasure table for the burlap sacks."
+                ],
+                "stats": ""
+            },
+            "4": {
+                "level": "main",
+                "name": "Missing Altar",
+                "description": "Three broad steps lead to a raised area with two wooden pillars. Dust and cobwebs cover the floor. Bones protrude from the old webs.",
+                "bullets": [
+                    "**Pillars.** Were decorative at one time. Weapon strikes and fire have erased the details.",
+                    "**Cobwebs.** Four skeletons lie within the strands. They are stripped of valuables.",
+                    "**Missing Altar.** With a DC 12 WIS a character notices the rectangular discoloration on the floor. The altar was removed and destroyed."
+                ],
+                "stats": ""
+            },
+            "5": {
+                "level": "main",
+                "name": "Stairs, Up and Down",
+                "description": "Debris blocks the descending stairs. The stairs up lead to the second level. Voices are heard from above.",
+                "bullets": [
+                    "**Stairs Down.** Anyone attempting to clear debris rolls a DC 12 DEX to avoid damage. A failure results in 1d4 damage.",
+                    "**Stairs Up.** If battle was obvious, two bandits stand at the tops of the stairs with shields and wood axes. Pull them from Areas 6 and 8."
+                ],
+                "stats": ""
+            },
+            "6": {
+                "level": "main",
+                "name": "Second Entrance",
+                "description": "A pile of rocks block a hole in the wall. It's guarded by Petrov.",
+                "bullets": [
+                    "**Rock Pile.** Takes one round to clear.",
+                    "**Alerted.** If Petrov was alerted by combat, he stands ready at the top of the stairs.",
+                    "▶ **Caltrops.** Scattered on the steps if he was alerted. DC 12 DEX to climb stairs normally, failure requires a full round to climb the steps.",
+                    "**Treasure.** Roll once on the poor table and add 1d6 sp."
+                ],
+                "stats": "Bandit Petrov. AC 13 (leather + shield), HP 4, ATK 1 club +1 (1d4), MV near, S +1, D +0, C +0, I -1, W +0, Ch -1, AL C, LV 1.\nAmbush. Deal an extra die of damage if undetected."
+            },
+            "7": {
+                "level": "upper",
+                "name": "Opening on the Second Floor",
+                "description": "Broken boards and stone barricade a hole in the wall on the second floor.",
+                "bullets": [
+                    "**Climbing.** A successful DC 12 DEX would allow a character to enter here. On a failed attempt the character suffers 1d3 damage from the fall.",
+                    "**Surprise Attack.** If Roloff is in Area 8 he waits for the character to get near the top before attempting a surprise attack."
+                ],
+                "stats": ""
+            },
+            "8": {
+                "level": "upper",
+                "name": "Roloff",
+                "description": "The door lies on the floor. Inside is modest furnishings. A recent campfire smolders with a worn bedroll nearby. A backpack lies next to the bedroll.",
+                "bullets": [
+                    "**Roloff.** Is either defending Area 7 or at the top of the stairs with Petrov. He prefers to surprise his victims.",
+                    "**Backpack.** Contains two poor treasures and 1d6 sp. In addition he has 6 arrows."
+                ],
+                "stats": "Bandit Roloff. AC 12 (leather), HP 4, ATK 1 club +1 (1d4) and short bow +0 (far) (1d4), MV near, S +1, D +0, C +0, I -1, W +0, Ch -1, AL C, LV 1.\nAmbush. Deal an extra die of damage if undetected."
+            },
+            "9": {
+                "level": "upper",
+                "name": "Gathering of Stuff",
+                "description": "Piles of debris are sorted here. Stone is separated from wood. Bits of equipment are on a table. Double doors to the south.",
+                "bullets": [
+                    "**Treasure.** Roll twice on the poor treasure table to see what is on the table.",
+                    "**Hidden.** An active search in the stone pile, DC 12 WIS, may find a small pouch of five copper nuggets (4 cp).",
+                    "▶ **Spell Catalyst.** When a copper nugget is used when casting a Detect Magic spell it increases the range to far.",
+                    "**Double Doors.** Are barred, DC 12 STR to break through."
+                ],
+                "stats": ""
+            },
+            "10": {
+                "level": "upper",
+                "name": "Bandit Bossman",
+                "description": "The room is dark. Lit only by a candle on small table. Kneeling on the ground is a gagged and bound woman. She has several bruises on her face and arms.",
+                "bullets": [
+                    "**Ambush.** Bogamir and his two men, Samir and Irivic, hide in the shadows. They fire their crossbows as a surprise attack.",
+                    "**Treasure.** The equipment they use, then roll three times on the poor treasure table and twice on the regular treasure table. Samir and Irivic carry 2d6 sp. Bogamir 3d6 sp.",
+                    "**Hidden Treasure.** A successful search (DC 12 WIS) finds Bogamir's stash beneath a loose floorboard. The silver locket (20 sp) Marium wore. Within, is a tiny painting of her daughter.",
+                    "**Marium.** Wants to return to her lady as soon as possible. While she has suffered, she is not injured.",
+                    "▶ **Locket.** If returned, Marium gives the party a Potion of Healing once she is home."
+                ],
+                "stats": "Bandit Samir and Irivic (2). AC 13 (leather + shield), HP 4, ATK 1 short sword +1 (1d6), 1 crossbow (far) (1d6), MV near, S +1, D +0, C +0, I -1, W +0, Ch -1, AL C, LV 1.\nAmbush. Deal an extra die of damage if undetected.\n\nBandit, hardened Bogamir. AC 12 (hide), HP 7, ATK 1 hook +1 (1d3), crossbow (far) +1 (1d6), MV near, S +1, D +1, C +0, I +1, W +0, Ch +1, AL C, LV 2.\nAmbush. Deal an extra die of damage if undetected."
+            },
+            "11": {
+                "level": "upper",
+                "name": "Hacked Statue",
+                "description": "Resting within an alcove is a 7' tall, wood statue. Its features destroyed by weapon strikes and fire. Near the statue is an open wooden door.",
+                "bullets": [
+                    "**Statue.** Is hacked beyond recognition. An active test of DC 15 WIS detects the slightest of divine power. If a priest lost a spell it's regained without a rest. If no spell was lost, for the remainder of this adventure the priest casts spells at +1."
+                ],
+                "stats": ""
+            },
+            "12": {
+                "level": "upper",
+                "name": "The Room of Sheets",
+                "description": "Several tattered sheets hang on lines. They flutter around in the breeze. Squeaking fills the room.",
+                "bullets": [
+                    "**Entrance.** An opening in the west wall allows an adventurer to climb (DC 9 DEX) to gain entry. A failure causes a fall doing 1d4 damage.",
+                    "**Bats.** When a character enters the room a small swarm of bats erupts into the sky. They cause no damage. Roll a 1d6 to determine if it attracts attention."
+                ],
+                "stats": ""
+            },
+            "13": {
+                "level": "upper",
+                "name": "Hedonistic Graffiti",
+                "description": "Carved into the walls are crude depictions of men and women drinking, singing, and having sex. Chunks of the walls are defaced. A feeling of impending doom seeps into each of the party. Soon after the characters become cursed.",
+                "bullets": [
+                    "**Cursed.** Those that stay within the room for more than 3 rounds become cursed, -1 to all rolls. It requires a priest to perform a 5 sp rite to remove the curse for each character affected.",
+                    "▶ **Immunity.** A priest under the boon from the statue (Area 11) is immune.",
+                    "▶ **Contained.** The statue contains the curse from spreading throughout the abbey. If the statue is removed, the curse spreads throughout the abbey the next day.",
+                    "▶ **This House is Clean.** A 4th level priest performing a 90 sp rite removes the curse forever."
+                ],
+                "stats": ""
+            }
+        };
+        const popupContainer = document.getElementById('popupContainer');
+        let popupZIndex = 20;
+        let popupOffset = 0;
+
+        function createPopup(titleText, contentBuilder) {
+            const popup = document.createElement('section');
+            popup.className = 'popup open';
+            popup.setAttribute('role', 'dialog');
+            popup.setAttribute('aria-modal', 'false');
+
+            const head = document.createElement('div');
+            head.className = 'popup-head';
+
+            const title = document.createElement('strong');
+            title.textContent = titleText;
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = '×';
+            close.setAttribute('aria-label', 'Close popup');
+            close.addEventListener('click', () => popup.remove());
+
+            const body = document.createElement('div');
+            body.className = 'popup-body';
+
+            head.append(title, close);
+            popup.append(head, body);
+            popupContainer.appendChild(popup);
+
+            // cascade popups
+            const offset = (popupOffset++ % 2) * 28;
+            popup.style.left = `${offset}px`;
+            popup.style.top = `${offset}px`;
+            popup.style.zIndex = ++popupZIndex;
+
+            contentBuilder(body);
+            makeDraggable(popup, head);
+
+            popup.addEventListener('pointerdown', () => {
+                popup.style.zIndex = ++popupZIndex;
+            });
+
+            return popup;
+        }
+
+        function makeDraggable(popup, handle) {
+            let dragging = false;
+            let dx = 0;
+            let dy = 0;
+
+            handle.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                dragging = true;
+                popup.style.zIndex = ++popupZIndex;
+                const rect = popup.getBoundingClientRect();
+                dx = e.clientX - rect.left;
+                dy = e.clientY - rect.top;
+                popup.style.left = rect.left + 'px';
+                popup.style.top = rect.top + 'px';
+                handle.setPointerCapture(e.pointerId);
+            });
+
+            handle.addEventListener('pointermove', e => {
+                if (!dragging) return;
+                const maxX = window.innerWidth - popup.offsetWidth;
+                const maxY = window.innerHeight - 45;
+                popup.style.left = Math.max(0, Math.min(maxX, e.clientX - dx)) + 'px';
+                popup.style.top = Math.max(0, Math.min(maxY, e.clientY - dy)) + 'px';
+            });
+
+            handle.addEventListener('pointerup', () => dragging = false);
+            handle.addEventListener('pointercancel', () => dragging = false);
+        }
+
+        // turn **word** bold
+        function fmt(el, text) {
+            text.split(/\*\*(.+?)\*\*/).forEach((part, i) => {
+                if (i % 2) {
+                    const b = document.createElement('strong');
+                    b.textContent = part;
+                    el.appendChild(b);
+                } else if (part) {
+                    el.appendChild(document.createTextNode(part));
+                }
+            });
+        }
+
+        function openRoom(id) {
+            const r = rooms[id];
+            if (!r) return;
+
+            if (r.level) setLevel(r.level);
+
+            createPopup('Area ' + id + ': ' + r.name, body => {
+                const p = document.createElement('p');
+                fmt(p, r.description);
+                body.appendChild(p);
+
+                const ul = document.createElement('ul');
+                r.bullets.forEach(item => {
+                    const li = document.createElement('li');
+                    fmt(li, item.trim());
+                    if (li.textContent.startsWith('▶')) li.classList.add('no-bullet');
+                    if (li.textContent.startsWith('▷')) {
+                        li.classList.add('no-bullet');
+                        li.style.marginLeft = '18px';
+                    }
+                    ul.appendChild(li);
+                });
+                if (r.bullets.length) {
+                    const h = document.createElement('h3');
+                    h.textContent = 'Room key';
+                    body.appendChild(h);
+                    body.appendChild(ul);
+                }
+
+                if (r.stats) {
+                    const sh = document.createElement('h3');
+                    sh.textContent = 'Creature / special stats';
+                    body.appendChild(sh);
+
+                    const pre = document.createElement('div');
+                    pre.className = 'stats';
+                    pre.textContent = r.stats;
+                    body.appendChild(pre);
+                }
+            });
+        }
+
+        // can probably dump this, just open toolbox
+        const statblocks = [];
+        function openStatblocks() {
+            const popup = createPopup('Statblocks', body => {
+                statblocks.forEach(s => {
+                    const h = document.createElement('h3');
+                    h.textContent = s.name;
+                    body.appendChild(h);
+
+                    const d = document.createElement('p');
+                    const em = document.createElement('em');
+                    em.textContent = s.description;
+                    d.appendChild(em);
+                    body.appendChild(d);
+
+                    const l = document.createElement('p');
+                    fmt(l, s.line);
+                    body.appendChild(l);
+
+                    s.traits.forEach(t => {
+                        const p = document.createElement('p');
+                        fmt(p, t);
+                        body.appendChild(p);
+                    });
+                });
+            });
+            popup.style.width = 'min(620px, calc(100vw - 20px))';
+        }
+
+        document.querySelectorAll('[data-room]').forEach(el => {
+            el.addEventListener('click', () => openRoom(el.dataset.room));
+        });
+
+        document.querySelector('.statblocks').addEventListener('click', openStatblocks);
+
+        document.getElementById('reset').addEventListener('click', () => {
+            popupContainer.replaceChildren();
+        });
+
+        const search = document.getElementById('search');
+        search.addEventListener('input', () => {
+            const q = search.value.trim().toLowerCase();
+            document.querySelectorAll('.room-chip').forEach(el => {
+                const r = rooms[el.dataset.room], text = ('Area ' + el.dataset.room + ' ' + r.name + ' ' + r.description + ' ' + r.bullets.join(' ') + ' ' + r.stats).toLowerCase();
+                el.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+        // map levels and party token
+        const PARTY_KEY = 'ruin-on-the-hill-party-state';
+        const mapWrap = document.getElementById('mapWrap');
+        const mapImg = document.getElementById('mapImg');
+        const partyToken = document.getElementById('partyToken');
+        const levelTabs = document.getElementById('levelTabs');
+        const partyState = { level: levels[0].id, pos: {} };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem(PARTY_KEY));
+            if (saved) {
+                if (levelById(saved.level)) partyState.level = saved.level;
+                levels.forEach(l => {
+                    const p = saved.pos && saved.pos[l.id];
+                    if (p && Number.isFinite(p.x) && Number.isFinite(p.y)) partyState.pos[l.id] = { x: p.x, y: p.y };
+                });
+            }
+        } catch (e) { }
+
+        const clampPct = v => Math.max(0, Math.min(100, v));
+        function currentPos() {
+            return partyState.pos[partyState.level] || { ...levelById(partyState.level).start };
+        }
+        function placeToken() {
+            const p = currentPos();
+            partyToken.style.left = p.x + '%';
+            partyToken.style.top = p.y + '%';
+        }
+        function savePartyState() {
+            try { localStorage.setItem(PARTY_KEY, JSON.stringify(partyState)); } catch (e) { }
+        }
+
+        // map switcher
+        function setLevel(id) {
+            const lvl = levelById(id);
+            if (!lvl) return;
+            partyState.level = id;
+            if (mapImg.getAttribute('src') !== lvl.img) mapImg.setAttribute('src', lvl.img);
+            mapImg.alt = lvl.label + ' map';
+            levelTabs.querySelectorAll('button').forEach(btn => {
+                const on = btn.dataset.level === id;
+                btn.setAttribute('aria-pressed', on);
+                btn.style.borderColor = on ? 'var(--accent)' : '';
+                btn.style.color = on ? 'var(--accent)' : '';
+            });
+            document.querySelectorAll('.lvl-panel').forEach(panel => {
+                const p = panel.dataset.panel;
+                panel.classList.toggle('hide', p !== 'all' && p !== id);
+            });
+            placeToken();
+            savePartyState();
+        }
+
+        if (levels.length > 1) {
+            levels.forEach(l => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.level = l.id;
+                btn.textContent = l.label;
+                btn.addEventListener('click', () => setLevel(l.id));
+                levelTabs.appendChild(btn);
+            });
+        } else {
+            levelTabs.remove();
+        }
+
+        partyToken.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            partyToken.setPointerCapture(e.pointerId);
+            partyToken.classList.add('dragging');
+        });
+        partyToken.addEventListener('pointermove', e => {
+            if (!partyToken.hasPointerCapture(e.pointerId)) return;
+            const r = mapWrap.getBoundingClientRect();
+            partyState.pos[partyState.level] = {
+                x: clampPct((e.clientX - r.left) / r.width * 100),
+                y: clampPct((e.clientY - r.top) / r.height * 100)
+            };
+            placeToken();
+        });
+        const endDrag = e => {
+            if (!partyToken.classList.contains('dragging')) return;
+            partyToken.classList.remove('dragging');
+            savePartyState();
+        };
+        partyToken.addEventListener('pointerup', endDrag);
+        partyToken.addEventListener('pointercancel', endDrag);
+
+        const resetPartyBtn = document.getElementById('resetParty');
+        if (resetPartyBtn) resetPartyBtn.addEventListener('click', () => {
+            delete partyState.pos[partyState.level];
+            placeToken();
+            savePartyState();
+        });
+
+        setLevel(partyState.level);
+
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'Escape') return;
+            const openPopups = [...popupContainer.querySelectorAll('.popup')];
+            if (!openPopups.length) return;
+            openPopups.sort((a, b) =>
+                Number(getComputedStyle(b).zIndex) - Number(getComputedStyle(a).zIndex)
+            )[0].remove();
+        });
+    </script>
+
+</body>
+
+</html>
